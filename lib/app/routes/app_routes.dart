@@ -1,20 +1,10 @@
-part of 'app_pages.dart';
-
-abstract class Routes {
-  Routes._();
-  static const INITIAL = _Paths.HOME;
-  static const HOME = _Paths.HOME;
-
-  // Add more routes here
-  // static const PRODUCT = _Paths.PRODUCT;
-  // static const CART = _Paths.CART;
-}
-
-abstract class _Paths {
-  _Paths._();
-  static const HOME = '/home';
-
-  // Add more paths here
-  // static const PRODUCT = '/product';
-  // static const CART = '/cart';
+abstract class AppRoutes {
+  static const String home = '/home';
+  static const String pharmacies = '/pharmacies';
+  static const String consultations = '/consultations';
+  static const String profile = '/profile';
+  static const String chat = '/chat';
+  static const String medicines = '/medicines';
+  static const String notifications = '/notifications';
+  static const String pharmacyDetail = '/pharmacy-detail';
 }
