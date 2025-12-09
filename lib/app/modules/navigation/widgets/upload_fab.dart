@@ -5,9 +5,9 @@ class UploadFAB extends StatelessWidget {
   final VoidCallback? onPressed;
 
   const UploadFAB({
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

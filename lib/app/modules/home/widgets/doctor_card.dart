@@ -9,12 +9,12 @@ class DoctorCard extends StatelessWidget {
   final VoidCallback? onBook;
 
   const DoctorCard({
-    Key? key,
+    super.key,
     required this.doctor,
     this.onChat,
     this.onCall,
     this.onBook,
-  }) : super(key: key);
+  });
 
   Color _getStatusColor() {
     switch (doctor.status) {
@@ -43,10 +43,11 @@ class DoctorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 0,
+      elevation: 8,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
-        width: 280,
+        width: 270,
+        
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
@@ -157,26 +158,68 @@ class DoctorCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton.icon(
+                  child: OutlinedButton(
                     onPressed: doctor.status == 'offline' ? null : onChat,
-                    icon: const Icon(Icons.chat_bubble_outline, size: 16),
-                    label: const Text('Chat'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 12,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.chat_bubble_outline, size: 16),
+                        const SizedBox(
+                          height: 2,
+                        ), // Add spacing between icon and text
+                        const Text('Chat'),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: OutlinedButton.icon(
+                  child: OutlinedButton(
                     onPressed: doctor.status == 'offline' ? null : onCall,
-                    icon: const Icon(Icons.phone_outlined, size: 16),
-                    label: const Text('Call'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 12,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.phone_outlined, size: 16),
+                        const SizedBox(
+                          height: 2,
+                        ), // Add spacing between icon and text
+                        const Text('Call'),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: ElevatedButton.icon(
+                  child: ElevatedButton(
                     onPressed: onBook,
-                    icon: const Icon(Icons.calendar_today, size: 16),
-                    label: const Text('Book'),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 12,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.chat_bubble_outline, size: 16),
+                        const SizedBox(
+                          height: 2,
+                        ), 
+                        const Text('Book'),
+                      ],
+                    ),
                   ),
                 ),
               ],

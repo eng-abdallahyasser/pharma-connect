@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../controllers/navigation_controller.dart';
 
 class BottomNavBar extends GetView<NavigationController> {
-  const BottomNavBar({Key? key}) : super(key: key);
+  const BottomNavBar({super.key});
 
   @override
   Widget build(BuildContext context) {

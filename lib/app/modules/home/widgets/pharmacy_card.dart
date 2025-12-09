@@ -8,18 +8,18 @@ class PharmacyCard extends StatelessWidget {
   final VoidCallback? onSelect;
 
   const PharmacyCard({
-    Key? key,
+    super.key,
     required this.pharmacy,
     this.onOrder,
     this.onSelect,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onSelect,
       child: Card(
-        elevation: 0,
+        elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

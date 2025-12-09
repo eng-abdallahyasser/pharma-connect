@@ -8,9 +8,9 @@ class AppShell extends GetView<NavigationController> {
   final Widget child;
 
   const AppShell({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class AppShell extends GetView<NavigationController> {
       body: child,
       bottomNavigationBar: const BottomNavBar(),
       floatingActionButton: const UploadFAB(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

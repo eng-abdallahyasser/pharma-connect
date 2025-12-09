@@ -5,7 +5,7 @@ import '../widgets/pharmacy_map_view.dart';
 import '../../home/widgets/pharmacy_card.dart';
 
 class PharmaciesView extends GetView<PharmaciesController> {
-  const PharmaciesView({Key? key}) : super(key: key);
+  const PharmaciesView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +62,14 @@ class PharmaciesView extends GetView<PharmaciesController> {
                             decoration: const InputDecoration(
                               hintText: 'Search pharmacy by name...',
                               border: InputBorder.none,
+                              enabledBorder:
+                                  InputBorder.none, // For enabled state
+                              focusedBorder:
+                                  InputBorder.none, // For focused state
+                              disabledBorder:
+                                  InputBorder.none, // For disabled state
+                              errorBorder: InputBorder.none, // For error state
+                              focusedErrorBorder: InputBorder.none,
                               contentPadding: EdgeInsets.zero,
                             ),
                           ),
@@ -76,32 +84,29 @@ class PharmaciesView extends GetView<PharmaciesController> {
                     children: [
                       // Filter Button
                       Expanded(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
-                            shape: RoundedRectangleBorder(
+                        child: InkWell(
+                          onTap: () {},
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white.withAlpha(52),
                               borderRadius: BorderRadius.circular(12),
+                              
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.tune,
-                                color: Colors.white,
-                                size: 18,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                'Filters',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.tune, color: Colors.white, size: 18),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Filters',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -110,11 +115,8 @@ class PharmaciesView extends GetView<PharmaciesController> {
                       // View Mode Toggle
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withAlpha(52),
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
-                          ),
                         ),
                         padding: const EdgeInsets.all(4),
                         child: Row(
@@ -238,63 +240,53 @@ class PharmaciesView extends GetView<PharmaciesController> {
           const SizedBox(height: 12),
 
           // Results Count
-          Obx(
-            () {
-              final filtered = controller.getFilteredPharmacies();
-              return Text(
-                'Found ${filtered.length} pharmacies near you',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
-                ),
-              );
-            },
-          ),
+          Obx(() {
+            final filtered = controller.getFilteredPharmacies();
+            return Text(
+              'Found ${filtered.length} pharmacies near you',
+              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+            );
+          }),
           const SizedBox(height: 16),
 
           // Pharmacy List
-          Obx(
-            () {
-              final filtered = controller.getFilteredPharmacies();
-              if (filtered.isEmpty) {
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 32),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.store_outlined,
-                          size: 48,
-                          color: Colors.grey[400],
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'No pharmacies found',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
+          Obx(() {
+            final filtered = controller.getFilteredPharmacies();
+            if (filtered.isEmpty) {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 32),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.store_outlined,
+                        size: 48,
+                        color: Colors.grey[400],
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No pharmacies found',
+                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            return Column(
+              children: filtered.map((pharmacy) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: PharmacyCard(
+                    pharmacy: pharmacy,
+                    onSelect: () => controller.onPharmacySelect(pharmacy),
+                    onOrder: () {},
                   ),
                 );
-              }
-
-              return Column(
-                children: filtered.map((pharmacy) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: PharmacyCard(
-                      pharmacy: pharmacy,
-                      onSelect: () => controller.onPharmacySelect(pharmacy),
-                      onOrder: () {},
-                    ),
-                  );
-                }).toList(),
-              );
-            },
-          ),
+              }).toList(),
+            );
+          }),
         ],
       ),
     );

@@ -8,7 +8,7 @@ import '../widgets/pharmacy_card.dart';
 import '../widgets/health_tip_card.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -109,9 +109,19 @@ class HomeView extends GetView<HomeController> {
                         Expanded(
                           child: TextField(
                             onChanged: controller.updateSearchQuery,
+
                             decoration: const InputDecoration(
                               hintText: 'Search medicine or pharmacy...',
-                              border: InputBorder.none,
+                              // For default border
+                              enabledBorder:
+                                  InputBorder.none, // For enabled state
+                              focusedBorder:
+                                  InputBorder.none, // For focused state
+                              disabledBorder:
+                                  InputBorder.none, // For disabled state
+                              errorBorder: InputBorder.none, // For error state
+                              focusedErrorBorder:
+                                  InputBorder.none, // For error+focused state
                               contentPadding: EdgeInsets.zero,
                             ),
                           ),
@@ -149,26 +159,26 @@ class HomeView extends GetView<HomeController> {
                       QuickActionCard(
                         icon: Icons.camera_alt,
                         title: 'Upload Prescription',
-                        bgColor: const Color(0xFF1A73E8).withOpacity(0.1),
+                        bgColor: const Color(0xFF1A73E8).withAlpha(26),
                         iconColor: const Color(0xFF1A73E8),
                       ),
                       QuickActionCard(
                         icon: FontAwesomeIcons.stethoscope,
                         title: 'Consult a Doctor',
-                        bgColor: const Color(0xFF00C897).withOpacity(0.1),
+                        bgColor: const Color(0xFF00C897).withAlpha(26),
                         iconColor: const Color(0xFF00C897),
                       ),
                       QuickActionCard(
                         icon: Icons.medication,
                         title: 'My Medicine',
-                        bgColor: const Color(0xFF906398).withOpacity(0.1),
+                        bgColor: const Color(0xFF906398).withAlpha(26),
                         iconColor: const Color(0xFF906398),
                         onTap: controller.onNavigateToMedicines,
                       ),
                       QuickActionCard(
                         icon: Icons.store,
                         title: 'Nearby Pharmacies',
-                        bgColor: Colors.orange.withOpacity(0.1),
+                        bgColor: Colors.orange.withAlpha(26),
                         iconColor: Colors.orange,
                       ),
                     ],
@@ -196,13 +206,14 @@ class HomeView extends GetView<HomeController> {
                   ),
                   const SizedBox(height: 12),
                   SizedBox(
-                    height: 320,
+                    height: 200,
+                    
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.doctors.length,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.only(right: 12),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 12, 12),
                           child: DoctorCard(
                             doctor: controller.doctors[index],
                             onChat: () => controller.onChatWithDoctor(
