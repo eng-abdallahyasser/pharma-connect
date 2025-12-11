@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:pharma_connect/app/locales/translations.dart';
 import '../models/doctor_model.dart';
 import '../models/pharmacy_model.dart';
 import '../models/health_tip_model.dart';
@@ -96,25 +97,22 @@ class HomeController extends GetxController {
     healthTips = [
       HealthTipModel(
         id: 1,
-        title: 'Stay Hydrated',
-        description:
-            'Drink at least 8 glasses of water daily to maintain optimal health and energy levels.',
+        title: getTranslation('home.stay_hydrated'),
+        description: getTranslation('home.stay_hydrated_desc'),
         imageUrl:
             'https://images.unsplash.com/photo-1535914254981-b5012eebbd15?w=600',
       ),
       HealthTipModel(
         id: 2,
-        title: 'Regular Exercise',
-        description:
-            'Engage in at least 30 minutes of physical activity daily for better cardiovascular health.',
+        title: getTranslation('home.regular_exercise'),
+        description: getTranslation('home.regular_exercise_desc'),
         imageUrl:
             'https://images.unsplash.com/photo-1535914254981-b5012eebbd15?w=600',
       ),
       HealthTipModel(
         id: 3,
-        title: 'Balanced Diet',
-        description:
-            'Include fruits, vegetables, and whole grains in your daily meals for complete nutrition.',
+        title: getTranslation('home.balanced_diet'),
+        description: getTranslation('home.balanced_diet_desc'),
         imageUrl:
             'https://images.unsplash.com/photo-1535914254981-b5012eebbd15?w=600',
       ),

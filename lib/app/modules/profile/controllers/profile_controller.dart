@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharma_connect/app/locales/translations.dart';
+import 'package:pharma_connect/app/services/localization_service.dart';
 import '../models/user_model.dart';
 import '../models/prescription_model.dart';
 import '../models/family_member_model.dart';
@@ -125,8 +127,8 @@ class ProfileController extends GetxController {
     menuItems = [
       MenuItemModel(
         id: 'personal',
-        label: 'Personal Information',
-        description: 'Update your details',
+        label: getTranslation('profile.edit_profile'),
+        description: getTranslation('profile.view_profile'),
         icon: Icons.person,
         iconColor: const Color(0xFF1A73E8),
         onTap: () {
@@ -135,16 +137,16 @@ class ProfileController extends GetxController {
       ),
       MenuItemModel(
         id: 'medical',
-        label: 'Medical Profile',
-        description: 'Allergies & conditions',
+        label: getTranslation('profile.medical_profile'),
+        description: getTranslation('profile.medical_profile_desc'),
         icon: Icons.favorite,
         iconColor: const Color(0xFFEF4444),
         onTap: () => showMedicalProfile.value = true,
       ),
       MenuItemModel(
         id: 'family',
-        label: 'Family Members',
-        description: 'Manage family profiles',
+        label: getTranslation('profile.family_members'),
+        description: getTranslation('profile.family_members_desc'),
         icon: Icons.people,
         iconColor: const Color(0xFF22C55E),
         badge: familyMembers.length,
@@ -152,8 +154,8 @@ class ProfileController extends GetxController {
       ),
       MenuItemModel(
         id: 'prescriptions',
-        label: 'Prescription History',
-        description: 'View past prescriptions',
+        label: getTranslation('profile.prescriptions'),
+        description: getTranslation('profile.prescriptions_desc'),
         icon: Icons.description,
         iconColor: const Color(0xFFA855F7),
         badge: prescriptions.where((p) => p.isActive).length,
@@ -161,8 +163,8 @@ class ProfileController extends GetxController {
       ),
       MenuItemModel(
         id: 'addresses',
-        label: 'Saved Addresses',
-        description: 'Manage delivery locations',
+        label: getTranslation('profile.saved_addresses'),
+        description: getTranslation('profile.saved_addresses_desc'),
         icon: Icons.location_on,
         iconColor: const Color(0xFFF97316),
         onTap: () {
@@ -171,8 +173,8 @@ class ProfileController extends GetxController {
       ),
       MenuItemModel(
         id: 'orders',
-        label: 'Order History',
-        description: 'View past orders',
+        label: getTranslation('profile.order_history'),
+        description: getTranslation('profile.order_history_desc'),
         icon: Icons.shopping_bag,
         iconColor: const Color(0xFFEC4899),
         onTap: () {
@@ -184,39 +186,118 @@ class ProfileController extends GetxController {
 
   // Initialize settings items with callbacks
   void _initializeSettingsItems() {
+    final localizationService = Get.find<LocalizationService>();
+
     settingsItems = [
       SettingsItemModel(
         id: 'notifications',
-        label: 'Notifications',
+        label: getTranslation('profile.notifications'),
         icon: Icons.notifications,
         hasToggle: true,
         onTap: () => notificationsEnabled.toggle(),
       ),
       SettingsItemModel(
         id: 'darkmode',
-        label: 'Dark Mode',
+        label: getTranslation('profile.dark_mode'),
         icon: Icons.dark_mode,
         hasToggle: true,
         onTap: () => darkModeEnabled.toggle(),
       ),
       SettingsItemModel(
         id: 'language',
-        label: 'Language',
+        label: getTranslation('profile.language'),
         icon: Icons.language,
-        value: 'English',
+        value: localizationService.getCurrentLanguageName(),
         onTap: () {
-          // TODO: Navigate to language selection
+          // Show language selection dialog
+          Get.dialog(
+            AlertDialog(
+              title: Text(getTranslation('language.title')),
+              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: localizationService.getSupportedLanguages().map((
+                    lang,
+                  ) {
+                    return Obx(() {
+                      final isSelected =
+                          localizationService.currentLanguage.value == lang.key;
+                      return GestureDetector(
+                        onTap: () {
+                          localizationService.setLanguage(lang.key);
+                          _updateLanguageInSettings();
+                          Get.back();
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 12,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? Colors.blue.withOpacity(0.1)
+                                : Colors.transparent,
+                            border: Border(
+                              bottom: BorderSide(color: Colors.grey.shade200),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  lang.value,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: isSelected
+                                        ? FontWeight.bold
+                                        : FontWeight.normal,
+                                    color: isSelected
+                                        ? Colors.blue
+                                        : Colors.black87,
+                                  ),
+                                ),
+                              ),
+                              if (isSelected)
+                                const Icon(Icons.check, color: Colors.blue),
+                            ],
+                          ),
+                        ),
+                      );
+                    });
+                  }).toList(),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Get.back(),
+                  child: Text(getTranslation('common.cancel')),
+                ),
+              ],
+            ),
+          );
         },
       ),
       SettingsItemModel(
         id: 'privacy',
-        label: 'Privacy & Security',
+        label: getTranslation('profile.privacy_security'),
         icon: Icons.security,
         onTap: () {
           // TODO: Navigate to privacy settings
         },
       ),
     ];
+  }
+
+  // Update language value in settings items after language change
+  void _updateLanguageInSettings() {
+    final languageItem = settingsItems.firstWhereOrNull(
+      (item) => item.id == 'language',
+    );
+    if (languageItem != null) {
+      // Re-initialize settings items to update all text
+      _initializeSettingsItems();
+    }
   }
 
   // Toggle medical profile modal visibility

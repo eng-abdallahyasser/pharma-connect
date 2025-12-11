@@ -47,12 +47,12 @@ class HomeView extends GetView<HomeController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Location',
+                                'home.location'.tr,
                                 style: Theme.of(context).textTheme.labelSmall
                                     ?.copyWith(color: Colors.white70),
                               ),
                               Text(
-                                'Downtown, City',
+                                'home.location_value'.tr,
                                 style: Theme.of(context).textTheme.bodyMedium
                                     ?.copyWith(
                                       color: Colors.white,
@@ -112,8 +112,8 @@ class HomeView extends GetView<HomeController> {
                           child: TextField(
                             onChanged: controller.updateSearchQuery,
 
-                            decoration: const InputDecoration(
-                              hintText: 'Search medicine or pharmacy...',
+                            decoration: InputDecoration(
+                              hintText: 'home.search_placeholder'.tr,
                               // For default border
                               enabledBorder:
                                   InputBorder.none, // For enabled state
@@ -147,7 +147,7 @@ class HomeView extends GetView<HomeController> {
                 children: [
                   // Quick Actions Section
                   Text(
-                    'Quick Actions',
+                    'home.quick_actions'.tr,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 16),
@@ -160,26 +160,26 @@ class HomeView extends GetView<HomeController> {
                     children: [
                       QuickActionCard(
                         icon: Icons.camera_alt,
-                        title: 'Upload Prescription',
+                        title: 'home.upload_prescription'.tr,
                         bgColor: const Color(0xFF1A73E8).withAlpha(26),
                         iconColor: const Color(0xFF1A73E8),
                       ),
                       QuickActionCard(
                         icon: FontAwesomeIcons.stethoscope,
-                        title: 'Consult a Doctor',
+                        title: 'home.consult_doctor'.tr,
                         bgColor: const Color(0xFF00C897).withAlpha(26),
                         iconColor: const Color(0xFF00C897),
                       ),
                       QuickActionCard(
                         icon: Icons.medication,
-                        title: 'My Medicine',
+                        title: 'home.my_medicine'.tr,
                         bgColor: const Color(0xFF906398).withAlpha(26),
                         iconColor: const Color(0xFF906398),
                         onTap: controller.onNavigateToMedicines,
                       ),
                       QuickActionCard(
                         icon: Icons.store,
-                        title: 'Nearby Pharmacies',
+                        title: 'home.nearby_pharmacies'.tr,
                         bgColor: Colors.orange.withAlpha(26),
                         iconColor: Colors.orange,
                       ),
@@ -191,14 +191,14 @@ class HomeView extends GetView<HomeController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Available Doctors Now',
+                        'home.available_doctors'.tr,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       TextButton(
                         onPressed: () {},
-                        child: const Text(
-                          'See All',
-                          style: TextStyle(
+                        child: Text(
+                          'home.see_all'.tr,
+                          style: const TextStyle(
                             color: Color(0xFF1A73E8),
                             fontSize: 14,
                           ),
@@ -234,14 +234,14 @@ class HomeView extends GetView<HomeController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Nearby Pharmacies',
+                        'home.nearby_pharmacies'.tr,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       TextButton(
                         onPressed: () {},
-                        child: const Text(
-                          'View Map',
-                          style: TextStyle(
+                        child: Text(
+                          'home.view_map'.tr,
+                          style: const TextStyle(
                             color: Color(0xFF1A73E8),
                             fontSize: 14,
                           ),
@@ -273,14 +273,14 @@ class HomeView extends GetView<HomeController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Health Tips',
+                        'home.health_tips'.tr,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       TextButton(
                         onPressed: () {},
-                        child: const Text(
-                          'View All',
-                          style: TextStyle(
+                        child: Text(
+                          'home.view_all'.tr,
+                          style: const TextStyle(
                             color: Color(0xFF1A73E8),
                             fontSize: 14,
                           ),
