@@ -29,6 +29,8 @@ class HomeView extends GetView<HomeController> {
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
               child: Column(
                 children: [
+                  SizedBox(height: MediaQuery.of(context).padding.top),
+
                   // Location and Notification Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -207,7 +209,7 @@ class HomeView extends GetView<HomeController> {
                   const SizedBox(height: 12),
                   SizedBox(
                     height: 200,
-                    
+
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: controller.doctors.length,

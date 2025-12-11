@@ -7,11 +7,11 @@ class ConsultationTabs extends StatelessWidget {
   final int upcomingCount; // Badge count for upcoming tab
 
   const ConsultationTabs({
-    Key? key,
+    super.key,
     required this.currentIndex,
     required this.onTabChanged,
     this.upcomingCount = 0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class ConsultationTabs extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(26),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -52,28 +52,7 @@ class ConsultationTabs extends StatelessWidget {
 
                 // Badge for upcoming count
                 if (upcomingCount > 0)
-                  Positioned(
-                    top: -4,
-                    right: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFEF4444),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        upcomingCount.toString(),
-                        style: const TextStyle(
-                          fontSize: 10,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
+                  _buildTabNotifier(upcomingCount),
               ],
             ),
           ),
@@ -91,6 +70,28 @@ class ConsultationTabs extends StatelessWidget {
     );
   }
 
+  Widget _buildTabNotifier(int count) {
+    return Positioned(
+      top: 4,
+      right: 4,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        decoration: BoxDecoration(
+          color: const Color(0xFFEF4444),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          count.toString(),
+          style: const TextStyle(
+            fontSize: 10,
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
   // Build individual tab button
   Widget _buildTab({
     required String label,
@@ -100,10 +101,7 @@ class ConsultationTabs extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 12,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
           color: isActive ? const Color(0xFF1A73E8) : Colors.transparent,
           borderRadius: BorderRadius.circular(16),

@@ -7,7 +7,7 @@ import '../widgets/consultation_tabs.dart';
 
 // Consultations view - main screen for doctor consultations
 class ConsultationsView extends GetView<ConsultationsController> {
-  const ConsultationsView({Key? key}) : super(key: key);
+  const ConsultationsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +30,8 @@ class ConsultationsView extends GetView<ConsultationsController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                            SizedBox(height: MediaQuery.of(context).padding.top),
+
                   // Header title
                   const Text(
                     'Consultations',
@@ -69,7 +71,15 @@ class ConsultationsView extends GetView<ConsultationsController> {
                                 color: Colors.grey[500],
                                 fontSize: 14,
                               ),
-                              border: InputBorder.none,
+                              enabledBorder:
+                                  InputBorder.none, // For enabled state
+                              focusedBorder:
+                                  InputBorder.none, // For focused state
+                              disabledBorder:
+                                  InputBorder.none, // For disabled state
+                              errorBorder: InputBorder.none, // For error state
+                              focusedErrorBorder:
+                                  InputBorder.none, // For error+focused state
                               contentPadding:
                                   const EdgeInsets.symmetric(vertical: 12),
                             ),
@@ -79,6 +89,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                             ),
                           ),
                         ),
+                        SizedBox(width: 28)
                       ],
                     ),
                   ),

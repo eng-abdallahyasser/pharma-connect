@@ -10,7 +10,7 @@ import '../widgets/family_members_modal.dart';
 
 // Profile view - main screen for user profile management
 class ProfileView extends GetView<ProfileController> {
-  const ProfileView({Key? key}) : super(key: key);
+  const ProfileView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,7 @@ class ProfileView extends GetView<ProfileController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            
             // Profile header with user information
             ProfileHeader(
               user: controller.currentUser,

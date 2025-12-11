@@ -27,6 +27,8 @@ class PharmaciesView extends GetView<PharmaciesController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: MediaQuery.of(context).padding.top),
+
                   // Title
                   const Text(
                     'Find Pharmacies',
@@ -90,7 +92,6 @@ class PharmaciesView extends GetView<PharmaciesController> {
                             decoration: BoxDecoration(
                               color: Colors.white.withAlpha(52),
                               borderRadius: BorderRadius.circular(12),
-                              
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             child: const Row(
