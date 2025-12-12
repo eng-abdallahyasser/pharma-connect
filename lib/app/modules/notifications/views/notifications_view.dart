@@ -54,7 +54,9 @@ class NotificationsView extends GetView<NotificationsController> {
                             }
 
                             return Text(
-                              'notifications.unread'.trParams({'count': unreadCount.toString()}),
+                              'notifications.unread'.trParams({
+                                'count': unreadCount.toString(),
+                              }),
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Colors.white.withAlpha(230),

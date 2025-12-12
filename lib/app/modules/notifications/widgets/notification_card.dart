@@ -40,10 +40,7 @@ class NotificationCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           border: notification.isUnread
               ? Border(
-                  left: BorderSide(
-                    color: const Color(0xFF1A73E8),
-                    width: 4,
-                  ),
+                  left: BorderSide(color: const Color(0xFF1A73E8), width: 4),
                 )
               : null,
           boxShadow: [
@@ -70,11 +67,7 @@ class NotificationCard extends StatelessWidget {
                     color: backgroundColor,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
-                    icon,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+                  child: Icon(icon, color: Colors.white, size: 20),
                 ),
 
                 const SizedBox(width: 12),
@@ -139,10 +132,7 @@ class NotificationCard extends StatelessWidget {
                 // Time
                 Text(
                   notification.time,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.grey[500],
-                  ),
+                  style: TextStyle(fontSize: 11, color: Colors.grey[500]),
                 ),
 
                 // Action buttons (only for actionable unread notifications)
