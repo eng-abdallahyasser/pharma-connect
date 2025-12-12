@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // Chat input field widget for composing and sending messages
 class ChatInputField extends StatefulWidget {
@@ -49,12 +50,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
       // White background with top border
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(
-            color: Colors.grey[200]!,
-            width: 1,
-          ),
-        ),
+        border: Border(top: BorderSide(color: Colors.grey[200]!, width: 1)),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       child: Row(
@@ -72,8 +68,9 @@ class _ChatInputFieldState extends State<ChatInputField> {
               ),
               child: Icon(
                 Icons.attach_file,
-                color:
-                    widget.showAttachmentMenu ? Colors.white : Colors.grey[600],
+                color: widget.showAttachmentMenu
+                    ? Colors.white
+                    : Colors.grey[600],
                 size: 20,
               ),
             ),
@@ -97,7 +94,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                       controller: widget.controller,
                       maxLines: null,
                       decoration: InputDecoration(
-                        hintText: 'Type a message...',
+                        hintText: 'chat.type_message'.tr,
                         hintStyle: TextStyle(
                           color: Colors.grey[500],
                           fontSize: 14,

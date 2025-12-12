@@ -89,9 +89,15 @@ class PharmaciesController extends GetxController {
 
   void _initializeFilters() {
     filters.assignAll([
-      PharmacyFilterModel(id: 'open_now', label: 'Open Now'),
-      PharmacyFilterModel(id: 'within_5km', label: 'Within 5km'),
-      PharmacyFilterModel(id: '24_7', label: '24/7'),
+      PharmacyFilterModel(
+        id: 'open_now',
+        label: 'pharmacies.filter_open_now'.tr,
+      ),
+      PharmacyFilterModel(
+        id: 'within_5km',
+        label: 'pharmacies.filter_within_5km'.tr,
+      ),
+      PharmacyFilterModel(id: '24_7', label: 'pharmacies.filter_24_7'.tr),
     ]);
   }
 
@@ -142,8 +148,10 @@ class PharmaciesController extends GetxController {
     // Apply search filter
     if (searchQuery.value.isNotEmpty) {
       filtered = filtered
-          .where((p) =>
-              p.name.toLowerCase().contains(searchQuery.value.toLowerCase()))
+          .where(
+            (p) =>
+                p.name.toLowerCase().contains(searchQuery.value.toLowerCase()),
+          )
           .toList();
     }
 

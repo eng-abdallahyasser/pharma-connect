@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../models/medicine_model.dart';
 
 // Medicine detail modal widget displaying detailed medicine information
@@ -11,14 +12,14 @@ class MedicineDetailModal extends StatelessWidget {
   final VoidCallback? onEdit;
 
   const MedicineDetailModal({
-    Key? key,
+    super.key,
     required this.medicine,
     required this.memberName,
     required this.reminderEnabled,
     required this.onReminderToggle,
     required this.onClose,
     this.onEdit,
-  }) : super(key: key);
+  });
 
   // Convert hex color to Flutter Color
   Color _getColorFromHex(String hexColor) {
@@ -31,9 +32,7 @@ class MedicineDetailModal extends StatelessWidget {
     final medicineColor = _getColorFromHex(medicine.color);
 
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 500),
         decoration: BoxDecoration(
@@ -97,7 +96,9 @@ class MedicineDetailModal extends StatelessWidget {
 
                           // For member
                           Text(
-                            'For $memberName',
+                            'medicines.for_member'.trParams({
+                              'name': memberName,
+                            }),
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[600],
@@ -121,7 +122,7 @@ class MedicineDetailModal extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Frequency',
+                          'medicines.frequency'.tr,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -147,7 +148,7 @@ class MedicineDetailModal extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Timings',
+                          'medicines.timings'.tr,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -189,7 +190,7 @@ class MedicineDetailModal extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Instructions',
+                            'medicines.instructions'.tr,
                             style: TextStyle(
                               fontSize: 12,
                               color: Colors.grey[600],
@@ -214,7 +215,7 @@ class MedicineDetailModal extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Duration',
+                          'medicines.duration'.tr,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],
@@ -224,7 +225,10 @@ class MedicineDetailModal extends StatelessWidget {
                         const SizedBox(height: 8),
                         Text(
                           medicine.endDate != null
-                              ? '${medicine.startDate} to ${medicine.endDate}'
+                              ? 'medicines.duration_range'.trParams({
+                                  'start': medicine.startDate,
+                                  'end': medicine.endDate!,
+                                })
                               : medicine.startDate,
                           style: const TextStyle(
                             fontSize: 14,
@@ -247,7 +251,7 @@ class MedicineDetailModal extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Reminders',
+                            'medicines.reminders'.tr,
                             style: const TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
@@ -307,13 +311,11 @@ class MedicineDetailModal extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          side: BorderSide(
-                            color: Colors.grey[300]!,
-                          ),
+                          side: BorderSide(color: Colors.grey[300]!),
                         ),
-                        child: const Text(
-                          'Close',
-                          style: TextStyle(
+                        child: Text(
+                          'medicines.close'.tr,
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: Color(0xFF1F2937),
@@ -335,9 +337,9 @@ class MedicineDetailModal extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          'Edit',
-                          style: TextStyle(
+                        child: Text(
+                          'medicines.edit'.tr,
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,

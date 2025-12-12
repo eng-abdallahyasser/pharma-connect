@@ -9,12 +9,12 @@ class MedicineCard extends StatelessWidget {
   final VoidCallback? onMarkAsTaken;
 
   const MedicineCard({
-    Key? key,
+    super.key,
     required this.medicine,
     required this.onTap,
     required this.onReminderToggle,
     this.onMarkAsTaken,
-  }) : super(key: key);
+  });
 
   // Convert hex color to Flutter Color
   Color _getColorFromHex(String hexColor) {
@@ -35,7 +35,7 @@ class MedicineCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withAlpha(13),
               blurRadius: 4,
               spreadRadius: 0,
             ),
@@ -195,7 +195,7 @@ class MedicineCard extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: isTaken
-                        ? medicineColor.withOpacity(0.2)
+                        ? medicineColor.withAlpha(51)
                         : Colors.grey[200],
                     borderRadius: BorderRadius.circular(12),
                   ),

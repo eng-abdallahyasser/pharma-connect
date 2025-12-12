@@ -28,7 +28,7 @@ class BottomNavBar extends GetView<NavigationController> {
             .map(
               (item) => BottomNavigationBarItem(
                 icon: Icon(item.icon),
-                label: item.label,
+                label: item.label.tr,
               ),
             )
             .toList(),

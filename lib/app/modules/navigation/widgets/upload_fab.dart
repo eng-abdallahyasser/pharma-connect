@@ -4,10 +4,7 @@ import 'package:get/get.dart';
 class UploadFAB extends StatelessWidget {
   final VoidCallback? onPressed;
 
-  const UploadFAB({
-    super.key,
-    this.onPressed,
-  });
+  const UploadFAB({super.key, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +12,7 @@ class UploadFAB extends StatelessWidget {
       onPressed: onPressed ?? _showUploadModal,
       backgroundColor: const Color(0xFF00C897),
       elevation: 8,
-      child: const Icon(
-        Icons.camera_alt,
-        color: Colors.white,
-        size: 24,
-      ),
+      child: const Icon(Icons.camera_alt, color: Colors.white, size: 24),
     );
   }
 
@@ -28,7 +21,7 @@ class UploadFAB extends StatelessWidget {
       _buildUploadModal(),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withOpacity(0.5),
+      barrierColor: Colors.black.withAlpha(128),
     );
   }
 
@@ -57,31 +50,25 @@ class UploadFAB extends StatelessWidget {
           ),
 
           // Title
-          const Text(
-            'Upload Prescription',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+          Text(
+            'nav.upload_prescription'.tr,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
 
           // Description
           Text(
-            'Choose how you want to upload your prescription',
+            'nav.upload_description'.tr,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
           ),
           const SizedBox(height: 24),
 
           // Take Photo Option
           _buildUploadOption(
             icon: Icons.camera_alt,
-            title: 'Take Photo',
-            description: 'Use camera to capture',
+            title: 'nav.take_photo'.tr,
+            description: 'nav.use_camera'.tr,
             onTap: () {
               Get.back();
               // TODO: Implement camera functionality
@@ -92,8 +79,8 @@ class UploadFAB extends StatelessWidget {
           // Choose from Gallery Option
           _buildUploadOption(
             icon: Icons.image,
-            title: 'Choose from Gallery',
-            description: 'Select existing photo',
+            title: 'nav.choose_gallery'.tr,
+            description: 'nav.select_photo'.tr,
             onTap: () {
               Get.back();
               // TODO: Implement gallery picker functionality
@@ -112,7 +99,7 @@ class UploadFAB extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              child: const Text('Cancel'),
+              child: Text('nav.cancel'.tr),
             ),
           ),
         ],
@@ -143,11 +130,7 @@ class UploadFAB extends StatelessWidget {
                 color: const Color(0xFF1A73E8).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(
-                icon,
-                color: const Color(0xFF1A73E8),
-                size: 24,
-              ),
+              child: Icon(icon, color: const Color(0xFF1A73E8), size: 24),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -164,19 +147,12 @@ class UploadFAB extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     description,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                   ),
                 ],
               ),
             ),
-            Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-              color: Colors.grey[400],
-            ),
+            Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[400]),
           ],
         ),
       ),

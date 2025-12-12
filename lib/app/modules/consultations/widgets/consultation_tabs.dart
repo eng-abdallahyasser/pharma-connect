@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // Consultation tabs widget for switching between Available, Upcoming, and History
 class ConsultationTabs extends StatelessWidget {
@@ -34,7 +35,7 @@ class ConsultationTabs extends StatelessWidget {
           // Available tab
           Expanded(
             child: _buildTab(
-              label: 'Available',
+              label: 'consultations.available'.tr,
               isActive: currentIndex == 0,
               onTap: () => onTabChanged(0),
             ),
@@ -45,14 +46,13 @@ class ConsultationTabs extends StatelessWidget {
             child: Stack(
               children: [
                 _buildTab(
-                  label: 'Upcoming',
+                  label: 'consultations.upcoming'.tr,
                   isActive: currentIndex == 1,
                   onTap: () => onTabChanged(1),
                 ),
 
                 // Badge for upcoming count
-                if (upcomingCount > 0)
-                  _buildTabNotifier(upcomingCount),
+                if (upcomingCount > 0) _buildTabNotifier(upcomingCount),
               ],
             ),
           ),
@@ -60,7 +60,7 @@ class ConsultationTabs extends StatelessWidget {
           // History tab
           Expanded(
             child: _buildTab(
-              label: 'History',
+              label: 'consultations.history'.tr,
               isActive: currentIndex == 2,
               onTap: () => onTabChanged(2),
             ),

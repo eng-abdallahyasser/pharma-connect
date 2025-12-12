@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../models/medicine_model.dart';
 
 // Next reminder banner widget showing upcoming medicine reminder
@@ -7,10 +8,10 @@ class NextReminderBanner extends StatelessWidget {
   final MedicineModel? nextMedicine;
 
   const NextReminderBanner({
-    Key? key,
+    super.key,
     required this.memberName,
     required this.nextMedicine,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +22,12 @@ class NextReminderBanner extends StatelessWidget {
     return Container(
       // Semi-transparent blue background
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
+        color: Colors.white.withAlpha(38),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.2),
-          width: 1,
-        ),
+        // border: Border.all(
+        //   color: Colors.white.withAlpha(51),
+        //   width: 1,
+        // ),
       ),
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -55,10 +56,10 @@ class NextReminderBanner extends StatelessWidget {
               children: [
                 // Label
                 Text(
-                  'Next Reminder for $memberName',
+                  'medicines.next_reminder'.trParams({'name': memberName}),
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withAlpha(230),
                   ),
                 ),
 
@@ -78,11 +79,7 @@ class NextReminderBanner extends StatelessWidget {
           ),
 
           // Clock icon
-          Icon(
-            Icons.schedule,
-            color: Colors.white.withOpacity(0.9),
-            size: 20,
-          ),
+          Icon(Icons.schedule, color: Colors.white.withAlpha(230), size: 20),
         ],
       ),
     );

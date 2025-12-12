@@ -17,6 +17,7 @@ class ChatView extends GetView<ChatController> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
+          SizedBox(height: MediaQuery.of(context).padding.top),
           // Chat header with doctor info and action buttons
           ChatHeader(
             session: controller.getSession(),
@@ -35,7 +36,7 @@ class ChatView extends GetView<ChatController> {
             ),
             child: Center(
               child: Text(
-                '🔒 This is a secure and encrypted consultation',
+                'chat.secure_banner'.tr,
                 style: TextStyle(
                   fontSize: 12,
                   color: const Color(0xFF1A73E8),
@@ -47,86 +48,85 @@ class ChatView extends GetView<ChatController> {
 
           // Messages area
           Expanded(
-            child: Obx(
-              () {
-                final messages = controller.getAllMessages();
-                final session = controller.getSession();
+            child: Obx(() {
+              final messages = controller.getAllMessages();
+              final session = controller.getSession();
 
-                return ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 16,
-                  ),
-                  itemCount: messages.length +
-                      (session.isTyping
-                          ? 2
-                          : 1), // +2 for date divider and typing
-                  itemBuilder: (context, index) {
-                    // Date divider at the top
-                    if (index == 0) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: Center(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              'Today',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey[600],
-                                fontWeight: FontWeight.w500,
-                              ),
+              return ListView.builder(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                itemCount:
+                    messages.length +
+                    (session.isTyping
+                        ? 2
+                        : 1), // +2 for date divider and typing
+                itemBuilder: (context, index) {
+                  // Date divider at the top
+                  if (index == 0) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            'chat.today'.tr,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                      );
-                    }
+                      ),
+                    );
+                  }
 
-                    // Typing indicator
-                    if (session.isTyping && index == messages.length + 1) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: TypingIndicator(
-                          doctorImageUrl: session.doctorImageUrl,
-                          doctorInitials: session.doctorInitials,
-                        ),
-                      );
-                    }
+                  // Typing indicator
+                  if (session.isTyping && index == messages.length + 1) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: TypingIndicator(
+                        doctorImageUrl: session.doctorImageUrl,
+                        doctorInitials: session.doctorInitials,
+                      ),
+                    );
+                  }
 
-                    // Message bubble
-                    final messageIndex = index - 1;
-                    if (messageIndex < messages.length) {
-                      final message = messages[messageIndex];
+                  // Message bubble
+                  final messageIndex = index - 1;
+                  if (messageIndex < messages.length) {
+                    final message = messages[messageIndex];
 
-                      // Check if we should show timestamp
-                      // Show timestamp if it's the last message from this sender
-                      final showTimestamp = messageIndex ==
-                              messages.length - 1 ||
-                          messages[messageIndex + 1].sender != message.sender;
+                    // Check if we should show timestamp
+                    // Show timestamp if it's the last message from this sender
+                    final showTimestamp =
+                        messageIndex == messages.length - 1 ||
+                        messages[messageIndex + 1].sender != message.sender;
 
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: MessageBubble(
-                          message: message,
-                          doctorImageUrl: session.doctorImageUrl,
-                          doctorInitials: session.doctorInitials,
-                          showTimestamp: showTimestamp,
-                        ),
-                      );
-                    }
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: MessageBubble(
+                        message: message,
+                        doctorImageUrl: session.doctorImageUrl,
+                        doctorInitials: session.doctorInitials,
+                        showTimestamp: showTimestamp,
+                      ),
+                    );
+                  }
 
-                    return const SizedBox.shrink();
-                  },
-                );
-              },
-            ),
+                  return const SizedBox.shrink();
+                },
+              );
+            }),
           ),
 
           // Attachment menu (shown when toggled)

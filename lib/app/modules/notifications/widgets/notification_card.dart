@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../models/notification_model.dart';
 
 // Notification card widget displaying individual notification
@@ -174,7 +175,7 @@ class NotificationCard extends StatelessWidget {
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                'Skip',
+                                'notifications.skip'.tr,
                                 style: TextStyle(
                                   fontSize: 11,
                                   color: Colors.grey[600],
@@ -209,9 +210,9 @@ class NotificationCard extends StatelessWidget {
                                 color: Colors.white,
                               ),
                               const SizedBox(width: 4),
-                              const Text(
-                                'Taken',
-                                style: TextStyle(
+                              Text(
+                                'notifications.taken'.tr,
+                                style: const TextStyle(
                                   fontSize: 11,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,

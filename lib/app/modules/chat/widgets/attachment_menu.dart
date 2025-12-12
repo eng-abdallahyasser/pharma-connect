@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // Attachment menu widget for selecting file types to attach
 class AttachmentMenu extends StatelessWidget {
@@ -20,10 +21,7 @@ class AttachmentMenu extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: Colors.grey[200]!,
-          width: 1,
-        ),
+        border: Border.all(color: Colors.grey[200]!, width: 1),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -39,7 +37,7 @@ class AttachmentMenu extends StatelessWidget {
           // Photo attachment option
           _buildAttachmentOption(
             icon: Icons.image,
-            label: 'Photo',
+            label: 'chat.attachment_photo'.tr,
             backgroundColor: const Color(0xFF1A73E8),
             onPressed: onPhotoPressed,
           ),
@@ -47,7 +45,7 @@ class AttachmentMenu extends StatelessWidget {
           // Document attachment option
           _buildAttachmentOption(
             icon: Icons.description,
-            label: 'Document',
+            label: 'chat.attachment_document'.tr,
             backgroundColor: const Color(0xFF00C897),
             onPressed: onDocumentPressed,
           ),
@@ -55,7 +53,7 @@ class AttachmentMenu extends StatelessWidget {
           // Medical report attachment option
           _buildAttachmentOption(
             icon: Icons.file_present,
-            label: 'Medical Report',
+            label: 'chat.attachment_medical_report'.tr,
             backgroundColor: const Color(0xFFA855F7),
             onPressed: onMedicalReportPressed,
           ),
@@ -84,13 +82,7 @@ class AttachmentMenu extends StatelessWidget {
               shape: BoxShape.circle,
               color: backgroundColor.withOpacity(0.1),
             ),
-            child: Center(
-              child: Icon(
-                icon,
-                color: backgroundColor,
-                size: 24,
-              ),
-            ),
+            child: Center(child: Icon(icon, color: backgroundColor, size: 24)),
           ),
           const SizedBox(height: 8),
 

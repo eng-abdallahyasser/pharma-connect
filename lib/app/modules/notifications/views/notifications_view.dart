@@ -6,7 +6,7 @@ import '../widgets/notification_tabs.dart';
 
 // Notifications view - main screen for managing notifications
 class NotificationsView extends GetView<NotificationsController> {
-  const NotificationsView({Key? key}) : super(key: key);
+  const NotificationsView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +28,7 @@ class NotificationsView extends GetView<NotificationsController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: MediaQuery.of(context).padding.top),
                   // Header with title and mark all read button
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,9 +37,9 @@ class NotificationsView extends GetView<NotificationsController> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Notifications',
-                            style: TextStyle(
+                          Text(
+                            'notifications.title'.tr,
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -46,56 +47,52 @@ class NotificationsView extends GetView<NotificationsController> {
                           ),
 
                           // Unread count
-                          Obx(
-                            () {
-                              final unreadCount = controller.getUnreadCount();
-                              if (unreadCount == 0) {
-                                return const SizedBox.shrink();
-                              }
+                          Obx(() {
+                            final unreadCount = controller.getUnreadCount();
+                            if (unreadCount == 0) {
+                              return const SizedBox.shrink();
+                            }
 
-                              return Text(
-                                '$unreadCount unread',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white.withOpacity(0.9),
-                                ),
-                              );
-                            },
-                          ),
+                            return Text(
+                              'notifications.unread'.trParams({'count': unreadCount.toString()}),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white.withAlpha(230),
+                              ),
+                            );
+                          }),
                         ],
                       ),
 
                       // Mark all read button
-                      Obx(
-                        () {
-                          final unreadCount = controller.getUnreadCount();
-                          if (unreadCount == 0) {
-                            return const SizedBox.shrink();
-                          }
+                      Obx(() {
+                        final unreadCount = controller.getUnreadCount();
+                        if (unreadCount == 0) {
+                          return const SizedBox.shrink();
+                        }
 
-                          return GestureDetector(
-                            onTap: controller.markAllAsRead,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 8,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Text(
-                                'Mark all read',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        return GestureDetector(
+                          onTap: controller.markAllAsRead,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              'notifications.mark_all_read'.tr,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      }),
                     ],
                   ),
                 ],
@@ -113,8 +110,9 @@ class NotificationsView extends GetView<NotificationsController> {
                     () => NotificationTabs(
                       selectedTab: controller.selectedTab.value,
                       allCount: controller.getAllNotifications().length,
-                      medicineCount:
-                          controller.getMedicineNotifications().length,
+                      medicineCount: controller
+                          .getMedicineNotifications()
+                          .length,
                       otherCount: controller.getOtherNotifications().length,
                       onTabChanged: controller.selectTab,
                     ),
@@ -123,66 +121,62 @@ class NotificationsView extends GetView<NotificationsController> {
                   const SizedBox(height: 16),
 
                   // Notifications list
-                  Obx(
-                    () {
-                      final filteredNotifications =
-                          controller.getFilteredNotifications();
+                  Obx(() {
+                    final filteredNotifications = controller
+                        .getFilteredNotifications();
 
-                      if (filteredNotifications.isEmpty) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(vertical: 48),
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.notifications_none,
-                                size: 48,
-                                color: Colors.grey[400],
+                    if (filteredNotifications.isEmpty) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 48),
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.notifications_none,
+                              size: 48,
+                              color: Colors.grey[400],
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              'notifications.no_notifications'.tr,
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.w500,
                               ),
-                              const SizedBox(height: 12),
-                              Text(
-                                'No notifications yet',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[600],
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-
-                      return Column(
-                        children: List.generate(
-                          filteredNotifications.length,
-                          (index) {
-                            final notification = filteredNotifications[index];
-                            final iconColor = controller.getNotificationColor(
-                              notification.type,
-                            );
-                            final icon = controller.getNotificationIcon(
-                              notification.type,
-                            );
-
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: NotificationCard(
-                                notification: notification,
-                                onTap: () =>
-                                    controller.markAsRead(notification.id),
-                                onSkip: () => controller
-                                    .deleteNotification(notification.id),
-                                onTaken: () => controller
-                                    .handleTakeMedicine(notification.id),
-                                iconColor: iconColor,
-                                icon: icon,
-                              ),
-                            );
-                          },
+                            ),
+                          ],
                         ),
                       );
-                    },
-                  ),
+                    }
+
+                    return Column(
+                      children: List.generate(filteredNotifications.length, (
+                        index,
+                      ) {
+                        final notification = filteredNotifications[index];
+                        final iconColor = controller.getNotificationColor(
+                          notification.type,
+                        );
+                        final icon = controller.getNotificationIcon(
+                          notification.type,
+                        );
+
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: NotificationCard(
+                            notification: notification,
+                            onTap: () => controller.markAsRead(notification.id),
+                            onSkip: () =>
+                                controller.deleteNotification(notification.id),
+                            onTaken: () =>
+                                controller.handleTakeMedicine(notification.id),
+                            iconColor: iconColor,
+                            icon: icon,
+                          ),
+                        );
+                      }),
+                    );
+                  }),
 
                   const SizedBox(height: 24),
                 ],

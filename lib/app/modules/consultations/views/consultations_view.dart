@@ -33,9 +33,9 @@ class ConsultationsView extends GetView<ConsultationsController> {
                             SizedBox(height: MediaQuery.of(context).padding.top),
 
                   // Header title
-                  const Text(
-                    'Consultations',
-                    style: TextStyle(
+                  Text(
+                    'consultations.title'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -65,8 +65,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                           child: TextField(
                             onChanged: controller.updateSearchQuery,
                             decoration: InputDecoration(
-                              hintText:
-                                  'Search doctors by name or specialty...',
+                              hintText: 'consultations.search_placeholder'.tr,
                               hintStyle: TextStyle(
                                 color: Colors.grey[500],
                                 fontSize: 14,
@@ -154,7 +153,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                                       ),
                                       const SizedBox(height: 12),
                                       Text(
-                                        'No doctors found',
+                                        'consultations.no_doctors'.tr,
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey[600],
@@ -163,7 +162,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Try adjusting your search',
+                                        'consultations.no_doctors_hint'.tr,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey[500],
@@ -198,7 +197,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                                       ),
                                       const SizedBox(height: 12),
                                       Text(
-                                        'No upcoming consultations',
+                                        'consultations.no_upcoming'.tr,
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey[600],
@@ -207,7 +206,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Book a consultation with a doctor',
+                                        'consultations.no_upcoming_hint'.tr,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey[500],
@@ -268,7 +267,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                                       ),
                                       const SizedBox(height: 12),
                                       Text(
-                                        'No consultation history',
+                                        'consultations.no_history'.tr,
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.grey[600],
@@ -277,7 +276,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        'Your past consultations will appear here',
+                                        'consultations.no_history_hint'.tr,
                                         style: TextStyle(
                                           fontSize: 12,
                                           color: Colors.grey[500],

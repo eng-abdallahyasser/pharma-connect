@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // Progress card widget displaying daily medicine progress
 class ProgressCard extends StatelessWidget {
@@ -8,12 +9,12 @@ class ProgressCard extends StatelessWidget {
   final double progressPercentage;
 
   const ProgressCard({
-    Key? key,
+    super.key,
     required this.memberName,
     required this.takenToday,
     required this.totalToday,
     required this.progressPercentage,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class ProgressCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(13),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -40,7 +41,7 @@ class ProgressCard extends StatelessWidget {
             children: [
               // Title
               Text(
-                '$memberName\'s Progress Today',
+                'medicines.progress_today'.trParams({'name': memberName}),
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -99,7 +100,7 @@ class ProgressCard extends StatelessWidget {
 
               // Progress percentage text
               Text(
-                '${progressPercentage.toStringAsFixed(0)}% Complete',
+                '${progressPercentage.toStringAsFixed(0)}${'medicines.complete'.tr}',
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey[600],

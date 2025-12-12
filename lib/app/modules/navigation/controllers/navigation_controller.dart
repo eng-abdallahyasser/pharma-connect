@@ -17,25 +17,25 @@ class NavigationController extends GetxController {
     navItems.assignAll([
       NavItemModel(
         id: 'home',
-        label: 'Home',
+        label: 'nav.home',
         icon: Icons.home,
         route: '/home',
       ),
       NavItemModel(
         id: 'pharmacies',
-        label: 'Pharmacies',
+        label: 'nav.pharmacies',
         icon: Icons.store,
         route: '/pharmacies',
       ),
       NavItemModel(
         id: 'consultations',
-        label: 'Consultations',
+        label: 'nav.consultations',
         icon: Icons.medical_services,
         route: '/consultations',
       ),
       NavItemModel(
         id: 'profile',
-        label: 'Profile',
+        label: 'nav.profile',
         icon: Icons.person,
         route: '/profile',
       ),

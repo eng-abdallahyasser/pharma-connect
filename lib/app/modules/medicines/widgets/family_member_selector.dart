@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../models/family_medicines_model.dart';
 
 // Family member selector widget for switching between family members
@@ -9,12 +10,12 @@ class FamilyMemberSelector extends StatelessWidget {
   final VoidCallback? onAddMemberPressed;
 
   const FamilyMemberSelector({
-    Key? key,
+    super.key,
     required this.familyMembers,
     required this.selectedMember,
     required this.onMemberSelected,
     this.onAddMemberPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class FamilyMemberSelector extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withAlpha(13),
                         blurRadius: 4,
                         spreadRadius: 0,
                       ),
@@ -56,7 +57,7 @@ class FamilyMemberSelector extends StatelessWidget {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1A73E8).withOpacity(0.1),
+                          color: const Color(0xFF1A73E8).withAlpha(26),
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(
@@ -67,7 +68,7 @@ class FamilyMemberSelector extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Add Member',
+                        'medicines.add_member'.tr,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.grey[600],
@@ -97,9 +98,7 @@ class FamilyMemberSelector extends StatelessWidget {
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(
-                        isSelected ? 0.15 : 0.05,
-                      ),
+                      color: Colors.black.withAlpha(isSelected ? 38 : 13),
                       blurRadius: 4,
                       spreadRadius: 0,
                     ),
@@ -116,7 +115,7 @@ class FamilyMemberSelector extends StatelessWidget {
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: isSelected
-                              ? Colors.white.withOpacity(0.3)
+                              ? Colors.white.withAlpha(77)
                               : Colors.grey[300]!,
                           width: 2,
                         ),
@@ -175,11 +174,11 @@ class FamilyMemberSelector extends StatelessWidget {
 
                     // Relation
                     Text(
-                      member.relation,
+                      'medicines.relation_${member.relation.toLowerCase()}'.tr,
                       style: TextStyle(
                         fontSize: 10,
                         color: isSelected
-                            ? Colors.white.withOpacity(0.8)
+                            ? Colors.white.withAlpha(204)
                             : Colors.grey[600],
                       ),
                       textAlign: TextAlign.center,
@@ -195,12 +194,12 @@ class FamilyMemberSelector extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? Colors.white.withOpacity(0.2)
-                              : const Color(0xFF1A73E8).withOpacity(0.1),
+                              ? Colors.white.withAlpha(51)
+                              : const Color(0xFF1A73E8).withAlpha(26),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          '${member.medicinesCount} med${member.medicinesCount == 1 ? '' : 's'}',
+                          '${member.medicinesCount} ${'medicines.medicine_${member.medicinesCount == 1 ? 'singular' : 'plural'}'.tr}',
                           style: TextStyle(
                             fontSize: 9,
                             color: isSelected

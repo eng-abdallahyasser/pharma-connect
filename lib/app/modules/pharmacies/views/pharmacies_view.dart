@@ -30,9 +30,9 @@ class PharmaciesView extends GetView<PharmaciesController> {
                   SizedBox(height: MediaQuery.of(context).padding.top),
 
                   // Title
-                  const Text(
-                    'Find Pharmacies',
-                    style: TextStyle(
+                  Text(
+                    'pharmacies.title'.tr,
+                    style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -61,8 +61,8 @@ class PharmaciesView extends GetView<PharmaciesController> {
                         Expanded(
                           child: TextField(
                             onChanged: controller.updateSearchQuery,
-                            decoration: const InputDecoration(
-                              hintText: 'Search pharmacy by name...',
+                            decoration: InputDecoration(
+                              hintText: 'pharmacies.search_placeholder'.tr,
                               border: InputBorder.none,
                               enabledBorder:
                                   InputBorder.none, // For enabled state
@@ -94,13 +94,13 @@ class PharmaciesView extends GetView<PharmaciesController> {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: const Row(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(Icons.tune, color: Colors.white, size: 18),
                                 SizedBox(width: 8),
                                 Text(
-                                  'Filters',
+                                  'pharmacies.filters'.tr,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -244,7 +244,9 @@ class PharmaciesView extends GetView<PharmaciesController> {
           Obx(() {
             final filtered = controller.getFilteredPharmacies();
             return Text(
-              'Found ${filtered.length} pharmacies near you',
+              'pharmacies.found_count'.trParams({
+                'count': '${filtered.length}',
+              }),
               style: TextStyle(fontSize: 12, color: Colors.grey[600]),
             );
           }),
@@ -266,7 +268,7 @@ class PharmaciesView extends GetView<PharmaciesController> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'No pharmacies found',
+                        'pharmacies.no_pharmacies_found'.tr,
                         style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       ),
                     ],

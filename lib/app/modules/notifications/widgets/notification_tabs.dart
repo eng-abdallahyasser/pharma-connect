@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // Notification tabs widget for filtering notifications
 class NotificationTabs extends StatelessWidget {
@@ -37,7 +38,7 @@ class NotificationTabs extends StatelessWidget {
         children: [
           // All tab
           _buildTab(
-            label: 'All',
+            label: 'notifications.all'.tr,
             count: allCount,
             isSelected: selectedTab == 'all',
             onTap: () => onTabChanged('all'),
@@ -47,7 +48,7 @@ class NotificationTabs extends StatelessWidget {
 
           // Medicine tab
           _buildTab(
-            label: 'Medicine',
+            label: 'notifications.medicine'.tr,
             count: medicineCount,
             isSelected: selectedTab == 'medicine',
             onTap: () => onTabChanged('medicine'),
@@ -57,7 +58,7 @@ class NotificationTabs extends StatelessWidget {
 
           // Other tab
           _buildTab(
-            label: 'Other',
+            label: 'notifications.other'.tr,
             count: otherCount,
             isSelected: selectedTab == 'other',
             onTap: () => onTabChanged('other'),
