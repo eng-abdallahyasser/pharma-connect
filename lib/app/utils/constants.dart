@@ -25,12 +25,12 @@ class StringConstants {
 
 // Asset Paths
 class AssetPath {
-  static const String _imagesPath = 'assets/images';
-  static const String _iconsPath = 'assets/icons';
-  static const String _animationsPath = 'assets/animations';
+  static const String imagesPath = 'assets/images';
+  static const String iconsPath = 'assets/icons';
+  static const String animationsPath = 'assets/animations';
 
   // Images
-  // static const String logoImage = '$_imagesPath/logo.png';
+  // static const String logoImage = '$imagesPath/logo.png';
 
   // Icons
   // static const String homeIcon = '$_iconsPath/home.svg';

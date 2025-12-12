@@ -235,4 +235,67 @@ const Map<String, String> enUS = {
   'language.arabic': 'العربية',
   'language.select': 'Select Language',
   'language.changed': 'Language changed to English',
+
+  // ==================== Auth Module ====================
+  'auth.login.title': 'Welcome Back',
+  'auth.login.subtitle': 'Login to your account to continue',
+  'auth.login.button': 'Login',
+  'auth.login.success': 'Login successful',
+  'auth.login.error': 'Login failed. Please check your credentials',
+
+  'auth.register.title': 'Create Account',
+  'auth.register.subtitle': 'Fill in the details below to register',
+  'auth.register.button': 'Register',
+  'auth.register.success': 'Registration successful',
+  'auth.register.error': 'Registration failed. Please try again',
+  'auth.register.terms_required': 'Please accept terms and conditions',
+
+  'auth.email': 'Email Address',
+  'auth.email.hint': 'Enter your email',
+  'auth.email.required': 'Email is required',
+  'auth.email.invalid': 'Please enter a valid email',
+
+  'auth.password': 'Password',
+  'auth.password.hint': 'Enter your password',
+  'auth.password.required': 'Password is required',
+  'auth.password.min_length': 'Password must be at least 8 characters',
+  'auth.password.mismatch': 'Passwords do not match',
+  'auth.password.requirements': 'Password Requirements:',
+
+  'auth.confirm.password': 'Confirm Password',
+  'auth.confirm.password.hint': 'Re-enter your password',
+
+  'auth.first.name': 'First Name',
+  'auth.first.name.hint': 'Enter your first name',
+  'auth.first.name.required': 'First name is required',
+  'auth.first.name.min_length': 'First name must be at least 2 characters',
+
+  'auth.last.name': 'Last Name',
+  'auth.last.name.hint': 'Enter your last name',
+  'auth.last.name.required': 'Last name is required',
+  'auth.last.name.min_length': 'Last name must be at least 2 characters',
+
+  'auth.phone': 'Phone Number',
+  'auth.phone.hint': 'Enter your phone number',
+  'auth.phone.required': 'Phone number is required',
+  'auth.phone.invalid': 'Please enter a valid phone number',
+
+  'auth.forgot.password': 'Forgot Password?',
+  'auth.or': 'OR',
+  'auth.no.account': 'Don\'t have an account?',
+  'auth.register.now': 'Register Now',
+  'auth.have.account': 'Already have an account?',
+  'auth.login.now': 'Login Now',
+
+  'auth.i.agree': 'I agree to the',
+  'auth.terms.conditions': 'Terms & Conditions',
+  'auth.and': 'and',
+  'auth.privacy.policy': 'Privacy Policy',
+  'auth.terms.required': 'You must accept terms and conditions',
+
+  'auth.password.requirements.label': 'Password Requirements:',
+  'auth.password.min.length': '8 characters minimum',
+  'auth.password.uppercase': '1 uppercase letter (A-Z)',
+  'auth.password.digit': '1 digit (0-9)',
+  'auth.password.special.char': '1 special character (!@#\$%^&*)',
 };

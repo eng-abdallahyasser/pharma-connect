@@ -41,7 +41,6 @@ const Map<String, String> arAR = {
   'nav.select_photo': 'حدد صورة موجودة',
   'nav.cancel': 'إلغاء',
 
-
   // ==================== Profile Module ====================
   'profile.title': 'الملف الشخصي',
   'profile.edit_profile': 'تعديل الملف الشخصي',
@@ -235,4 +234,67 @@ const Map<String, String> arAR = {
   'language.arabic': 'العربية',
   'language.select': 'اختر اللغة',
   'language.changed': 'تم تغيير اللغة إلى العربية',
+
+  // ==================== Auth Module ====================
+  'auth.login.title': 'أهلا بعودتك',
+  'auth.login.subtitle': 'سجل الدخول إلى حسابك للمتابعة',
+  'auth.login.button': 'دخول',
+  'auth.login.success': 'تم تسجيل الدخول بنجاح',
+  'auth.login.error': 'فشل تسجيل الدخول. يرجى التحقق من بيانات اعتمادك',
+
+  'auth.register.title': 'إنشاء حساب',
+  'auth.register.subtitle': 'ملء التفاصيل أدناه للتسجيل',
+  'auth.register.button': 'تسجيل',
+  'auth.register.success': 'تم التسجيل بنجاح',
+  'auth.register.error': 'فشل التسجيل. يرجى المحاولة مرة أخرى',
+  'auth.register.terms_required': 'يرجى قبول الشروط والأحكام',
+
+  'auth.email': 'عنوان البريد الإلكتروني',
+  'auth.email.hint': 'أدخل بريدك الإلكتروني',
+  'auth.email.required': 'البريد الإلكتروني مطلوب',
+  'auth.email.invalid': 'يرجى إدخال عنوان بريد إلكتروني صحيح',
+
+  'auth.password': 'كلمة المرور',
+  'auth.password.hint': 'أدخل كلمة مرورك',
+  'auth.password.required': 'كلمة المرور مطلوبة',
+  'auth.password.min_length': 'يجب أن تكون كلمة المرور 8 أحرف على الأقل',
+  'auth.password.mismatch': 'كلمات المرور غير متطابقة',
+  'auth.password.requirements': 'متطلبات كلمة المرور:',
+
+  'auth.confirm.password': 'تأكيد كلمة المرور',
+  'auth.confirm.password.hint': 'أعد إدخال كلمة مرورك',
+
+  'auth.first.name': 'الاسم الأول',
+  'auth.first.name.hint': 'أدخل اسمك الأول',
+  'auth.first.name.required': 'الاسم الأول مطلوب',
+  'auth.first.name.min_length': 'يجب أن يكون الاسم الأول حرفين على الأقل',
+
+  'auth.last.name': 'الاسم الأخير',
+  'auth.last.name.hint': 'أدخل اسمك الأخير',
+  'auth.last.name.required': 'الاسم الأخير مطلوب',
+  'auth.last.name.min_length': 'يجب أن يكون الاسم الأخير حرفين على الأقل',
+
+  'auth.phone': 'رقم الهاتف',
+  'auth.phone.hint': 'أدخل رقم هاتفك',
+  'auth.phone.required': 'رقم الهاتف مطلوب',
+  'auth.phone.invalid': 'يرجى إدخال رقم هاتف صحيح',
+
+  'auth.forgot.password': 'هل نسيت كلمة المرور؟',
+  'auth.or': 'أو',
+  'auth.no.account': 'ليس لديك حساب؟',
+  'auth.register.now': 'سجل الآن',
+  'auth.have.account': 'هل لديك حساب بالفعل؟',
+  'auth.login.now': 'دخول الآن',
+
+  'auth.i.agree': 'أوافق على',
+  'auth.terms.conditions': 'الشروط والأحكام',
+  'auth.and': 'و',
+  'auth.privacy.policy': 'سياسة الخصوصية',
+  'auth.terms.required': 'يجب أن توافق على الشروط والأحكام',
+
+  'auth.password.requirements.label': 'متطلبات كلمة المرور:',
+  'auth.password.min.length': '8 أحرف على الأقل',
+  'auth.password.uppercase': 'حرف واحد كبير (A-Z)',
+  'auth.password.digit': 'رقم واحد (0-9)',
+  'auth.password.special.char': 'حرف خاص واحد (!@#\$%^&*)',
 };

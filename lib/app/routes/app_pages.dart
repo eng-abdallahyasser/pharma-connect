@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import 'package:pharma_connect/app/modules/auth/bindings/auth_binding.dart';
+import 'package:pharma_connect/app/modules/auth/views/login_view.dart';
+import 'package:pharma_connect/app/modules/auth/views/register_view.dart';
 import 'package:pharma_connect/app/modules/chat/bindings/chat_binding.dart';
 import 'package:pharma_connect/app/modules/chat/views/chat_view.dart';
 import 'package:pharma_connect/app/modules/consultations/bindings/consultations_binding.dart';
@@ -21,6 +24,18 @@ import 'app_routes.dart';
 
 abstract class AppPages {
   static final pages = [
+    // Auth Routes
+    GetPage(
+      name: AppRoutes.login,
+      page: () => const LoginView(),
+      binding: AuthBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.register,
+      page: () => const RegisterView(),
+      binding: AuthBinding(),
+    ),
+    // App Routes
     GetPage(
       name: AppRoutes.home,
       page: () => AppShell(child: const HomeView()),
