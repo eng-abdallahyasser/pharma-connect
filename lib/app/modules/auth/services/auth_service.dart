@@ -1,11 +1,18 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
+import 'package:pharma_connect/app/core/services/storage_service.dart';
 import '../models/user_model.dart';
+import '../models/signup_request.dart';
+import '../models/login_request.dart';
+import 'auth_repository.dart';
 
 class AuthService extends GetxService {
   // Observable for current user
   final _currentUser = Rx<UserModel?>(null);
   final _isAuthenticated = false.obs;
   final _isLoading = false.obs;
+  late AuthRepository _authRepository;
 
   UserModel? get currentUser => _currentUser.value;
   bool get isAuthenticated => _isAuthenticated.value;
@@ -14,6 +21,7 @@ class AuthService extends GetxService {
   @override
   void onInit() {
     super.onInit();
+    _authRepository = AuthRepository();
     // Initialize auth state (check if user is logged in)
     _checkAuthStatus();
   }
@@ -26,7 +34,7 @@ class AuthService extends GetxService {
       // In real app, you would check shared preferences or secure storage
       await Future.delayed(const Duration(milliseconds: 500));
     } catch (e) {
-      print('Error checking auth status: $e');
+      log('Error checking auth status: $e');
     } finally {
       _isLoading.value = false;
     }
@@ -36,16 +44,22 @@ class AuthService extends GetxService {
   Future<bool> login(String email, String password) async {
     _isLoading.value = true;
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
+      final loginRequest = LoginRequest(email: email, password: password);
+      log('Login Request: ${loginRequest.toJson()}');
+      final response = await _authRepository.login(loginRequest);
 
-      // Mock user creation - in real app, this comes from API
+      // Store token if provided
+      if (response.token != null) {
+        await Get.find<StorageService>().saveToken(response.token!);
+      }
+
+      // Create user model from response
       final user = UserModel(
-        id: '${DateTime.now().millisecondsSinceEpoch}',
-        email: email,
-        firstName: email.split('@')[0],
-        lastName: 'User',
-        phoneNumber: '+1234567890',
+        id: response.id,
+        email: response.email,
+        firstName: response.firstName,
+        lastName: response.lastName,
+        phoneNumber: response.mobile ?? '',
         createdAt: DateTime.now(),
         isEmailVerified: true,
       );
@@ -53,12 +67,78 @@ class AuthService extends GetxService {
       _currentUser.value = user;
       _isAuthenticated.value = true;
 
-      // Store user session (in real app)
-      // await _storeUserSession(user);
+      return true;
+    } catch (e) {
+      log('Login error: $e');
+      return false;
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
+  // Login with OTP (Signin)
+  Future<bool> loginWithOtp(OtpLoginRequest otpLoginRequest) async {
+    _isLoading.value = true;
+    try {
+      final response = await _authRepository.loginWithOtp(otpLoginRequest);
+
+      // Store token if provided
+      if (response.token != null) {
+        await Get.find<StorageService>().saveToken(response.token!);
+      }
+
+      // Create user model from response
+      final user = UserModel(
+        id: response.id,
+        email: response.email,
+        firstName: response.firstName,
+        lastName: response.lastName,
+        phoneNumber: response.mobile ?? otpLoginRequest.mobile,
+        createdAt: DateTime.now(),
+        isEmailVerified: true,
+      );
+
+      _currentUser.value = user;
+      _isAuthenticated.value = true;
 
       return true;
     } catch (e) {
-      print('Login error: $e');
+      log('Login with OTP error: $e');
+      return false;
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
+  // Register new user with signup request
+  Future<bool> signup(SignupRequest signupRequest) async {
+    _isLoading.value = true;
+    try {
+      final response = await _authRepository.signup(signupRequest);
+      log('Signup Response: ${response.toJson()}');
+
+      // Store token if provided
+      if (response.token != null) {
+        await Get.find<StorageService>().saveToken(response.token!);
+      }
+
+      // Create user model from response
+      final user = UserModel(
+        id: response.id,
+        email: response.email,
+        firstName: response.firstName,
+        lastName: response.lastName,
+        phoneNumber: response.mobile,
+        createdAt: DateTime.now(),
+        isEmailVerified: false,
+      );
+
+      _currentUser.value = user;
+      _isAuthenticated.value = true;
+
+      return true;
+    } catch (e) {
+      log('Signup error: $e');
       return false;
     } finally {
       _isLoading.value = false;
@@ -96,7 +176,7 @@ class AuthService extends GetxService {
 
       return true;
     } catch (e) {
-      print('Registration error: $e');
+      log('Registration error: $e');
       return false;
     } finally {
       _isLoading.value = false;
@@ -116,7 +196,7 @@ class AuthService extends GetxService {
       // Clear stored session (in real app)
       // await _clearUserSession();
     } catch (e) {
-      print('Logout error: $e');
+      log('Logout error: $e');
     } finally {
       _isLoading.value = false;
     }
@@ -130,7 +210,7 @@ class AuthService extends GetxService {
       await Future.delayed(const Duration(seconds: 1));
       return true;
     } catch (e) {
-      print('Password reset error: $e');
+      log('Password reset error: $e');
       return false;
     } finally {
       _isLoading.value = false;
@@ -158,7 +238,7 @@ class AuthService extends GetxService {
       }
       return true;
     } catch (e) {
-      print('Email verification error: $e');
+      log('Email verification error: $e');
       return false;
     } finally {
       _isLoading.value = false;
@@ -191,7 +271,7 @@ class AuthService extends GetxService {
       }
       return true;
     } catch (e) {
-      print('Profile update error: $e');
+      log('Profile update error: $e');
       return false;
     } finally {
       _isLoading.value = false;

@@ -124,7 +124,6 @@ class LocalizationService extends GetxService {
   }
 
   /// Save language preference to local storage
-  /// TODO: Implement with SharedPreferences or local database
   void _saveLanguagePreference(String languageCode) {
     // TODO: Save to SharedPreferences
     // await _prefs.setString('language', languageCode);

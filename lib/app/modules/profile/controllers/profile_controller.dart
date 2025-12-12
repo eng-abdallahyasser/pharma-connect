@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
-import 'package:pharma_connect/app/services/localization_service.dart';
+import 'package:pharma_connect/app/core/services/localization_service.dart';
 import '../models/user_model.dart';
 import '../models/prescription_model.dart';
 import '../models/family_member_model.dart';

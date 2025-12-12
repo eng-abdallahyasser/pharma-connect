@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pharma_connect/app/services/localization_service.dart';
+import 'package:pharma_connect/app/core/services/localization_service.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 
 /// Language Selection Widget

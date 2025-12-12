@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/modules/navigation/bindings/navigation_binding.dart';
 import 'package:pharma_connect/app/modules/navigation/services/navigation_service.dart';
-import 'package:pharma_connect/app/services/localization_service.dart';
+import 'package:pharma_connect/app/core/services/localization_service.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 import 'app/routes/app_routes.dart';
 import 'app/routes/app_pages.dart';

@@ -69,7 +69,7 @@ class AuthController extends GetxController {
 
       if (success) {
         successMessage.value = 'login.success';
-        await Future.delayed(const Duration(milliseconds: 1000));
+        
         Get.offAllNamed('/home');
       } else {
         errorMessage.value = 'login.error';

@@ -40,6 +40,12 @@ dependencies:
   # State Management & Routing
   get: ^4.6.6
 
+  # Local Storage
+  get_storage: ^2.1.1
+
+  # HTTP Client
+  dio: ^5.9.0
+
   # Localization
   intl: ^0.20.2
 
