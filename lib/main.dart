@@ -1,19 +1,49 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:pharma_connect/app/modules/navigation/bindings/navigation_binding.dart';
 import 'package:pharma_connect/app/modules/navigation/services/navigation_service.dart';
 import 'package:pharma_connect/app/core/services/localization_service.dart';
+import 'package:pharma_connect/app/core/services/settings_service.dart';
+import 'package:pharma_connect/app/core/services/theme_service.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 import 'app/routes/app_routes.dart';
 import 'app/routes/app_pages.dart';
 import 'app/theme/app_theme.dart';
 
 void main() async {
-  // Initialize localization service first
+  // Initialize GetStorage first - required before using GetStorage anywhere
+  await GetStorage.init();
+  log('GetStorage initialized');
+
+  // Initialize settings service first (before LocalizationService and ThemeService)
+  await Get.putAsync<SettingsService>(() async {
+    final service = SettingsService();
+    log(
+      'SettingsService initialized with settings: ${service.getAllSettings()}',
+    );
+    await Future.delayed(const Duration(milliseconds: 100));
+    return service;
+  });
+
+  // Initialize localization service with saved language
   await Get.putAsync<LocalizationService>(() async {
     final service = LocalizationService();
     service.onInit();
+    // Set the saved language from settings
+    final settingsService = Get.find<SettingsService>();
+    service.setLanguage(settingsService.currentLanguage);
+    return service;
+  });
+
+  // Initialize theme service (depends on settings service)
+  await Get.putAsync<ThemeService>(() async {
+    final service = ThemeService();
+    log('ThemeService initialized - Dark mode: ${service.isDarkMode}');
+    await Future.delayed(const Duration(milliseconds: 100));
     return service;
   });
 
@@ -31,28 +61,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      // 1. Register the Global Delegates
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+    final settingsService = Get.find<SettingsService>();
+    final themeService = Get.find<ThemeService>();
 
-      debugShowCheckedModeBanner: false,
-      title: 'Healthcare App',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
-      initialRoute: AppRoutes.login,
-      getPages: AppPages.pages,
-      defaultTransition: Transition.cupertino,
+    return Obx(
+      () => GetMaterialApp(
+        // 1. Register the Global Delegates
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
 
-      // Localization Configuration
-      translations: AppTranslations(),
-      locale: const Locale('en'), // Default locale
-      fallbackLocale: const Locale('en'), // Fallback locale
-      supportedLocales: LocalizationService.supportedLocales,
+        debugShowCheckedModeBanner: false,
+        title: 'Healthcare App',
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: themeService.isDarkModeRx.value
+            ? ThemeMode.dark
+            : ThemeMode.light,
+        initialRoute: AppRoutes.home,
+        getPages: AppPages.pages,
+        defaultTransition: Transition.cupertino,
+
+        // Localization Configuration
+        translations: AppTranslations(),
+        locale: Locale(settingsService.currentLanguageRx.value),
+        fallbackLocale: const Locale('en'),
+        supportedLocales: LocalizationService.supportedLocales,
+      ),
     );
   }
 }

@@ -19,7 +19,6 @@ class ProfileView extends GetView<ProfileController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            
             // Profile header with user information
             ProfileHeader(
               user: controller.currentUser,
@@ -105,6 +104,8 @@ class ProfileView extends GetView<ProfileController> {
                         (index) => SettingsItemCard(
                           item: controller.settingsItems[index],
                           isLast: index == controller.settingsItems.length - 1,
+                          darkModeEnabled: controller.darkModeEnabled,
+                          notificationsEnabled: controller.notificationsEnabled,
                           onToggleChanged: (value) {
                             // Handle toggle changes if needed
                           },
@@ -155,10 +156,7 @@ class ProfileView extends GetView<ProfileController> {
                   Center(
                     child: Text(
                       'Version 1.0.0',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                     ),
                   ),
 
@@ -178,9 +176,7 @@ class ProfileView extends GetView<ProfileController> {
                   // Backdrop
                   GestureDetector(
                     onTap: controller.toggleMedicalProfile,
-                    child: Container(
-                      color: Colors.black.withOpacity(0.5),
-                    ),
+                    child: Container(color: Colors.black.withOpacity(0.5)),
                   ),
                   // Modal
                   Center(
@@ -196,33 +192,31 @@ class ProfileView extends GetView<ProfileController> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
       // Additional modals using GetX dialog
-      bottomSheet: Obx(
-        () {
-          // Prescriptions modal
-          if (controller.showPrescriptions.value) {
-            return PrescriptionsModal(
-              prescriptions: controller.getAllPrescriptions(),
-              onClose: controller.togglePrescriptions,
-              onDownload: (prescription) {
-                controller.downloadPrescription(prescription);
-              },
-            );
-          }
+      bottomSheet: Obx(() {
+        // Prescriptions modal
+        if (controller.showPrescriptions.value) {
+          return PrescriptionsModal(
+            prescriptions: controller.getAllPrescriptions(),
+            onClose: controller.togglePrescriptions,
+            onDownload: (prescription) {
+              controller.downloadPrescription(prescription);
+            },
+          );
+        }
 
-          // Family members modal
-          if (controller.showFamilyMembers.value) {
-            return FamilyMembersModal(
-              familyMembers: controller.getAllFamilyMembers(),
-              onClose: controller.toggleFamilyMembers,
-              onAddPressed: () {
-                // TODO: Navigate to add family member screen
-              },
-            );
-          }
+        // Family members modal
+        if (controller.showFamilyMembers.value) {
+          return FamilyMembersModal(
+            familyMembers: controller.getAllFamilyMembers(),
+            onClose: controller.toggleFamilyMembers,
+            onAddPressed: () {
+              // TODO: Navigate to add family member screen
+            },
+          );
+        }
 
-          return const SizedBox.shrink();
-        },
-      ),
+        return const SizedBox.shrink();
+      }),
     );
   }
 }

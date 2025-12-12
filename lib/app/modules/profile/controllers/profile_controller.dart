@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 import 'package:pharma_connect/app/core/services/localization_service.dart';
+import 'package:pharma_connect/app/core/services/theme_service.dart';
+import 'package:pharma_connect/app/core/services/settings_service.dart';
 import '../models/user_model.dart';
 import '../models/prescription_model.dart';
 import '../models/family_member_model.dart';
@@ -13,8 +15,14 @@ class ProfileController extends GetxController {
   final showMedicalProfile = false.obs;
   final showPrescriptions = false.obs;
   final showFamilyMembers = false.obs;
-  final notificationsEnabled = true.obs;
-  final darkModeEnabled = false.obs;
+
+  // Services
+  late SettingsService _settingsService;
+  late ThemeService _themeService;
+
+  // Use settings service observables for notifications and dark mode
+  late RxBool notificationsEnabled;
+  late RxBool darkModeEnabled;
 
   // User data
   late UserModel currentUser;
@@ -26,6 +34,14 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // Get service instances
+    _settingsService = Get.find<SettingsService>();
+    _themeService = Get.find<ThemeService>();
+
+    // Bind observables to settings service
+    notificationsEnabled = _settingsService.notificationsEnabledRx;
+    darkModeEnabled = _themeService.isDarkModeRx;
+
     // Initialize all data when controller is created
     _initializeUserData();
     _initializePrescriptions();
@@ -194,14 +210,14 @@ class ProfileController extends GetxController {
         label: getTranslation('profile.notifications'),
         icon: Icons.notifications,
         hasToggle: true,
-        onTap: () => notificationsEnabled.toggle(),
+        onTap: () => _settingsService.toggleNotifications(),
       ),
       SettingsItemModel(
         id: 'darkmode',
         label: getTranslation('profile.dark_mode'),
         icon: Icons.dark_mode,
         hasToggle: true,
-        onTap: () => darkModeEnabled.toggle(),
+        onTap: () => _themeService.toggleDarkMode(),
       ),
       SettingsItemModel(
         id: 'language',
@@ -226,6 +242,7 @@ class ProfileController extends GetxController {
                       return GestureDetector(
                         onTap: () {
                           localizationService.setLanguage(lang.key);
+                          _settingsService.setLanguage(lang.key);
                           _updateLanguageInSettings();
                           Get.back();
                         },
