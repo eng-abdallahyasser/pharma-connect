@@ -9,12 +9,12 @@ class DoctorCard extends StatelessWidget {
   final VoidCallback? onBook;
 
   const DoctorCard({
-    Key? key,
+    super.key,
     required this.doctor,
     this.onChat,
     this.onCall,
     this.onBook,
-  }) : super(key: key);
+  });
 
   // Get status color based on doctor's availability
   Color _getStatusColor() {
@@ -49,11 +49,10 @@ class DoctorCard extends StatelessWidget {
     return Container(
       // White card with rounded corners and shadow
       decoration: BoxDecoration(
-        color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(13),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -138,7 +137,7 @@ class DoctorCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1F2937),
+                        
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -148,7 +147,7 @@ class DoctorCard extends StatelessWidget {
                       doctor.specialization,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -164,7 +163,7 @@ class DoctorCard extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: doctor.isAvailable
-                                ? const Color(0xFF1A73E8).withOpacity(0.1)
+                                ? const Color(0xFF1A73E8).withAlpha(26)
                                 : Colors.grey[200],
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -195,7 +194,7 @@ class DoctorCard extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xFF1F2937),
+                                
                               ),
                             ),
                           ],

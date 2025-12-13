@@ -12,7 +12,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -46,7 +46,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                   // Search bar
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color:Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(24),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 12),

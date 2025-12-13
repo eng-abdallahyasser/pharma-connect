@@ -12,7 +12,7 @@ class BottomNavBar extends GetView<NavigationController> {
         currentIndex: controller.currentIndex.value,
         onTap: controller.navigateToIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         selectedItemColor: const Color(0xFF1A73E8),
         unselectedItemColor: Colors.grey[400],
         selectedLabelStyle: const TextStyle(

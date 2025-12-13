@@ -10,7 +10,6 @@ class PharmaciesView extends GetView<PharmaciesController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -43,12 +42,11 @@ class PharmaciesView extends GetView<PharmaciesController> {
                   // Search Bar
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(24),
                     ),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
-                      vertical: 12,
                     ),
                     child: Row(
                       children: [
@@ -76,6 +74,7 @@ class PharmaciesView extends GetView<PharmaciesController> {
                             ),
                           ),
                         ),
+                        const SizedBox(width: 12),
                       ],
                     ),
                   ),
@@ -211,7 +210,7 @@ class PharmaciesView extends GetView<PharmaciesController> {
                               ),
                               decoration: BoxDecoration(
                                 color: filter.isActive
-                                    ? const Color(0xFF1A73E8).withOpacity(0.1)
+                                    ? const Color(0xFF1A73E8).withAlpha(26)
                                     : Colors.grey[200],
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
@@ -303,7 +302,7 @@ class PharmaciesView extends GetView<PharmaciesController> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withAlpha(26),
             blurRadius: 8,
             spreadRadius: 2,
           ),

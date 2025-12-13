@@ -15,7 +15,6 @@ class ProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -53,7 +52,7 @@ class ProfileView extends GetView<ProfileController> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withAlpha(13),
                           blurRadius: 4,
                           spreadRadius: 0,
                         ),
@@ -92,7 +91,7 @@ class ProfileView extends GetView<ProfileController> {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
+                          color: Colors.black.withAlpha(13),
                           blurRadius: 4,
                           spreadRadius: 0,
                         ),
@@ -176,7 +175,7 @@ class ProfileView extends GetView<ProfileController> {
                   // Backdrop
                   GestureDetector(
                     onTap: controller.toggleMedicalProfile,
-                    child: Container(color: Colors.black.withOpacity(0.5)),
+                    child: Container(color: Colors.black.withAlpha(13)),
                   ),
                   // Modal
                   Center(

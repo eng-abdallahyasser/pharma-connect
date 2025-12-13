@@ -11,13 +11,13 @@ class ConsultationCard extends StatelessWidget {
   final VoidCallback? onCancel;
 
   const ConsultationCard({
-    Key? key,
+    super.key,
     required this.consultation,
     this.isPast = false,
     this.onActionPressed,
     this.onReschedule,
     this.onCancel,
-  }) : super(key: key);
+  });
 
   // Get status badge color
   Color _getStatusColor() {
@@ -58,7 +58,7 @@ class ConsultationCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(13),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -137,7 +137,7 @@ class ConsultationCard extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: _getStatusColor().withOpacity(0.1),
+                    color: _getStatusColor().withAlpha(26),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(

@@ -13,7 +13,6 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -93,12 +92,11 @@ class HomeView extends GetView<HomeController> {
                   // Search Bar
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(24),
                     ),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
-                      vertical: 12,
                     ),
                     child: Row(
                       children: [
