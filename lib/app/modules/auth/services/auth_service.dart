@@ -44,24 +44,38 @@ class AuthService extends GetxService {
   Future<bool> login(String email, String password) async {
     _isLoading.value = true;
     try {
-      final loginRequest = LoginRequest(email: email, password: password);
+      final loginRequest = LoginRequest(
+        grantType: 'password',
+        email: email,
+        password: password,
+        otp: '999999',
+        clientId: 'mobile_app',
+        deviceToken: 'ExponentPushToken[8qSTYvDW3NpPuqqCCqAHTS]',
+        deviceInfo: DeviceInfo(
+          brand: 'google',
+          deviceType: 'mobile',
+          osVersion: '4.0.3',
+        ),
+        clientSecret: 'secret',
+      );
       log('Login Request: ${loginRequest.toJson()}');
       final response = await _authRepository.login(loginRequest);
 
       // Store token if provided
-      if (response.token != null) {
-        await Get.find<StorageService>().saveToken(response.token!);
+      if (response.accessToken != null) {
+        await Get.find<StorageService>().init();
+        await Get.find<StorageService>().saveToken(response.accessToken!);
       }
 
       // Create user model from response
       final user = UserModel(
-        id: response.id,
-        email: response.email,
-        firstName: response.firstName,
-        lastName: response.lastName,
-        phoneNumber: response.mobile ?? '',
-        createdAt: DateTime.now(),
-        isEmailVerified: true,
+        id: response.user.id,
+        email: response.user.email,
+        firstName: response.user.firstName,
+        lastName: response.user.lastName,
+        phoneNumber: response.user.mobile ?? '',
+        createdAt: response.user.metadata?.createdAt ?? DateTime.now(),
+        isEmailVerified: response.user.emailVerified,
       );
 
       _currentUser.value = user;
@@ -83,19 +97,19 @@ class AuthService extends GetxService {
       final response = await _authRepository.loginWithOtp(otpLoginRequest);
 
       // Store token if provided
-      if (response.token != null) {
-        await Get.find<StorageService>().saveToken(response.token!);
+      if (response.accessToken != null) {
+        await Get.find<StorageService>().saveToken(response.accessToken!);
       }
 
       // Create user model from response
       final user = UserModel(
-        id: response.id,
-        email: response.email,
-        firstName: response.firstName,
-        lastName: response.lastName,
-        phoneNumber: response.mobile ?? otpLoginRequest.mobile,
-        createdAt: DateTime.now(),
-        isEmailVerified: true,
+        id: response.user.id,
+        email: response.user.email,
+        firstName: response.user.firstName,
+        lastName: response.user.lastName,
+        phoneNumber: response.user.mobile ?? otpLoginRequest.mobile,
+        createdAt: response.user.metadata?.createdAt ?? DateTime.now(),
+        isEmailVerified: response.user.emailVerified,
       );
 
       _currentUser.value = user;
@@ -118,19 +132,19 @@ class AuthService extends GetxService {
       log('Signup Response: ${response.toJson()}');
 
       // Store token if provided
-      if (response.token != null) {
-        await Get.find<StorageService>().saveToken(response.token!);
+      if (response.accessToken != null) {
+        await Get.find<StorageService>().saveToken(response.accessToken!);
       }
 
       // Create user model from response
       final user = UserModel(
-        id: response.id,
-        email: response.email,
-        firstName: response.firstName,
-        lastName: response.lastName,
-        phoneNumber: response.mobile,
-        createdAt: DateTime.now(),
-        isEmailVerified: false,
+        id: response.user.id,
+        email: response.user.email,
+        firstName: response.user.firstName,
+        lastName: response.user.lastName,
+        phoneNumber: response.user.mobile ?? '',
+        createdAt: response.user.metadata?.createdAt ?? DateTime.now(),
+        isEmailVerified: response.user.emailVerified,
       );
 
       _currentUser.value = user;
@@ -152,11 +166,29 @@ class AuthService extends GetxService {
     required String firstName,
     required String lastName,
     required String phoneNumber,
+    String? middleName,
+    String? gender,
+    String? birthDate,
+    String? countryCode,
+    String? nationalId,
   }) async {
     _isLoading.value = true;
     try {
       // Simulate API call
-      await Future.delayed(const Duration(seconds: 2));
+      final body = {
+        "mobile": phoneNumber,
+        "firstName": firstName,
+        "middleName": middleName ?? "",
+        "lastName": lastName,
+        "password": password,
+        "nationalId": nationalId ?? "",
+        "email": email,
+        "gender": gender ?? "male",
+        "birthDate": birthDate ?? "1999-02-14",
+        "countryCode": countryCode ?? "eg",
+      };
+
+      await _authRepository.signup(SignupRequest.fromJson(body));
 
       final user = UserModel(
         id: '${DateTime.now().millisecondsSinceEpoch}',

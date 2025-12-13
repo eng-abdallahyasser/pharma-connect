@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
         themeMode: themeService.isDarkModeRx.value
             ? ThemeMode.dark
             : ThemeMode.light,
-        initialRoute: AppRoutes.home,
+        initialRoute: AppRoutes.login,
         getPages: AppPages.pages,
         defaultTransition: Transition.cupertino,
 

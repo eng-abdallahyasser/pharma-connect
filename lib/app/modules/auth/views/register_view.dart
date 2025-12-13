@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 import 'package:pharma_connect/app/modules/auth/controllers/auth_controller.dart';
@@ -21,6 +22,7 @@ class _RegisterViewState extends State<RegisterView> {
   void initState() {
     super.initState();
     authController = Get.find<AuthController>();
+    authController.registerCountryCodeController.text = 'eg';
   }
 
   @override
@@ -116,6 +118,67 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     const SizedBox(height: AppSpacing.lg),
 
+                    // National ID
+                    CustomTextField(
+                      label: getTranslation('auth.national.id'),
+                      hintText: getTranslation('auth.national.id.hint'),
+                      controller: authController.registerNationalIdController,
+                      validator: authController.validateNationalId,
+                      keyboardType: TextInputType.number,
+                      prefixIcon: const Icon(Icons.badge_outlined),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // Gender
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          getTranslation('auth.gender'),
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        Obx(
+                          () => Row(
+                            children: [
+                              Expanded(child: _buildGenderOption('male')),
+                              const SizedBox(width: AppSpacing.lg),
+                              Expanded(child: _buildGenderOption('female')),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // Birth Date
+                    CustomTextField(
+                      label: getTranslation('auth.birth.date'),
+                      hintText: getTranslation('auth.birth.date.hint'),
+                      controller: authController.registerBirthDateController,
+                      validator: authController.validateBirthDate,
+                      keyboardType: TextInputType.text,
+                      prefixIcon: const Icon(Icons.calendar_today_outlined),
+                      readOnly: true,
+                      onTap: () => _selectDate(context),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // Country Code
+                    CustomTextField(
+                      label: getTranslation('auth.country.code'),
+                      hintText: getTranslation('auth.country.code.hint'),
+                      controller: authController.registerCountryCodeController,
+                      validator: authController.validateCountryCode,
+                      keyboardType: TextInputType.text,
+                      prefixIcon: const Icon(Icons.public_outlined),
+                      readOnly: true,
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+
                     // Password
                     Obx(
                       () => CustomTextField(
@@ -207,10 +270,7 @@ class _RegisterViewState extends State<RegisterView> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text:
-                                          ' ' +
-                                          getTranslation('auth.and') +
-                                          ' ',
+                                      text: ' ${getTranslation('auth.and')} ',
                                       style: const TextStyle(
                                         color: Colors.grey,
                                       ),
@@ -278,6 +338,56 @@ class _RegisterViewState extends State<RegisterView> {
         ),
       ),
     );
+  }
+
+  Widget _buildGenderOption(String gender) {
+    final isSelected = authController.selectedGender.value == gender;
+    final label = gender == 'male'
+        ? getTranslation('auth.gender.male')
+        : getTranslation('auth.gender.female');
+
+    return GestureDetector(
+      onTap: () {
+        authController.selectedGender.value = gender;
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          vertical: AppSpacing.md,
+          horizontal: AppSpacing.md,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: isSelected ? Color(AppColors.primary) : Colors.grey[300]!,
+            width: isSelected ? 2 : 1,
+          ),
+          borderRadius: BorderRadius.circular(8),
+          color: isSelected ? Color(AppColors.primary).withAlpha(26) : null,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+            color: isSelected ? Color(AppColors.primary) : Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000),
+      firstDate: DateTime(1950),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null) {
+      authController.registerBirthDate.value = picked;
+      authController.registerBirthDateController.text =
+          '${picked.year}-${picked.month.toString().padLeft(2, '0')}-${picked.day.toString().padLeft(2, '0')}';
+    }
   }
 
   Widget _buildPasswordRequirements(BuildContext context) {

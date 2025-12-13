@@ -105,4 +105,74 @@ class AuthValidators {
 
     return null;
   }
+
+  // National ID validation (14 digits)
+  static String? validateNationalId(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'national_id.required';
+    }
+
+    final nationalIdRegex = RegExp(r'^[0-9]{14}$');
+
+    if (!nationalIdRegex.hasMatch(value)) {
+      return 'national_id.invalid';
+    }
+
+    return null;
+  }
+
+  // Birth date validation (YYYY-MM-DD format)
+  static String? validateBirthDate(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'birth_date.required';
+    }
+
+    final dateRegex = RegExp(r'^\d{4}-\d{2}-\d{2}$');
+
+    if (!dateRegex.hasMatch(value)) {
+      return 'birth_date.invalid_format';
+    }
+
+    try {
+      final date = DateTime.parse(value);
+      final now = DateTime.now();
+      final age = now.year - date.year;
+
+      if (age < 18) {
+        return 'birth_date.minimum_age';
+      }
+
+      return null;
+    } catch (e) {
+      return 'birth_date.invalid';
+    }
+  }
+
+  // Gender validation
+  static String? validateGender(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'gender.required';
+    }
+
+    if (value != 'male' && value != 'female') {
+      return 'gender.invalid';
+    }
+
+    return null;
+  }
+
+  // Country code validation
+  static String? validateCountryCode(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'country_code.required';
+    }
+
+    final countryCodeRegex = RegExp(r'^[A-Z]{2}$');
+
+    if (!countryCodeRegex.hasMatch(value)) {
+      return 'country_code.invalid';
+    }
+
+    return null;
+  }
 }

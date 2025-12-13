@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pharma_connect/app/theme/app_colors.dart';
 import 'package:pharma_connect/app/theme/app_spacing.dart';
 
@@ -18,6 +19,7 @@ class CustomTextField extends StatelessWidget {
   final bool readOnly;
   final TextInputAction? textInputAction;
   final ValueChanged<String>? onChanged;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextField({
     super.key,
@@ -36,6 +38,7 @@ class CustomTextField extends StatelessWidget {
     this.readOnly = false,
     this.textInputAction,
     this.onChanged,
+    this.inputFormatters,
   });
 
   @override
@@ -62,6 +65,7 @@ class CustomTextField extends StatelessWidget {
           textInputAction: textInputAction,
           onChanged: onChanged,
           onTap: onTap,
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
             hintText: hintText,
             hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),

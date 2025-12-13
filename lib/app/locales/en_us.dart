@@ -1,7 +1,4 @@
-/// English Translations
-///
-/// This file contains all English text strings used throughout the app.
-/// Each translation is organized by module/feature for easy maintenance.
+
 
 const Map<String, String> enUS = {
   // ==================== Common ====================
@@ -242,6 +239,23 @@ const Map<String, String> enUS = {
   'auth.login.button': 'Login',
   'auth.login.success': 'Login successful',
   'auth.login.error': 'Login failed. Please check your credentials',
+
+  'auth.national.id': 'National ID',
+  'auth.national.id.hint': 'Enter your national ID',
+  'auth.national.id.required': 'National ID is required',
+  'auth.national.id.invalid': 'Please enter a valid national ID',
+
+  'auth.gender': 'Gender',
+  'auth.gender.male': 'Male',
+  'auth.gender.female': 'Female',
+
+  'auth.birth.date': 'Birth Date',
+  'auth.birth.date.hint': 'Enter your birth date',
+  'auth.birth.date.required': 'Birth date is required',
+  'auth.birth.date.invalid_format': 'Please enter a valid birth date format',
+
+  'auth.country.code': 'Country',
+  'auth.country.code.hint': 'Egypt',
 
   'auth.register.title': 'Create Account',
   'auth.register.subtitle': 'Fill in the details below to register',

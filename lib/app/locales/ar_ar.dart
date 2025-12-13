@@ -1,7 +1,3 @@
-/// Arabic Translations
-///
-/// This file contains all Arabic text strings used throughout the app.
-/// Each translation is organized by module/feature for easy maintenance.
 
 const Map<String, String> arAR = {
   // ==================== Common ====================
@@ -241,6 +237,22 @@ const Map<String, String> arAR = {
   'auth.login.button': 'دخول',
   'auth.login.success': 'تم تسجيل الدخول بنجاح',
   'auth.login.error': 'فشل تسجيل الدخول. يرجى التحقق من بيانات اعتمادك',
+  'auth.national.id': 'الرقم القومي',
+  'auth.national.id.hint': 'أدخل رقمك القومي',
+  'auth.national.id.required': 'الرقم القومي مطلوب',
+  'auth.national.id.invalid': 'يرجى إدخال رقم قومي صحيح',
+
+  'auth.gender': 'الجنس',
+  'auth.gender.male': 'ذكر',
+  'auth.gender.female': 'أنثى',
+
+  'auth.birth.date': 'تاريخ الميلاد',
+  'auth.birth.date.hint': 'أدخل تاريخ ميلادك',
+  'auth.birth.date.required': 'تاريخ الميلاد مطلوب',
+  'auth.birth.date.invalid_format': 'يرجى إدخال تاريخ الميلاد بالتنسيق الصحيح',
+
+  'auth.country.code': 'البلد',
+  'auth.country.code.hint': 'مصر ',
 
   'auth.register.title': 'إنشاء حساب',
   'auth.register.subtitle': 'ملء التفاصيل أدناه للتسجيل',

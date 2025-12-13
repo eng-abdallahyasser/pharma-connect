@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/modules/auth/services/auth_service.dart';
@@ -21,6 +23,9 @@ class AuthController extends GetxController {
   final registerPhoneController = TextEditingController();
   final registerPasswordController = TextEditingController();
   final registerConfirmPasswordController = TextEditingController();
+  final registerNationalIdController = TextEditingController();
+  final registerBirthDateController = TextEditingController();
+  final registerCountryCodeController = TextEditingController();
 
   // Observable states
   final isLoginPasswordVisible = false.obs;
@@ -30,6 +35,8 @@ class AuthController extends GetxController {
   final isLoading = false.obs;
   final errorMessage = ''.obs;
   final successMessage = ''.obs;
+  final selectedGender = Rx<String?>(null);
+  final registerBirthDate = Rx<DateTime?>(null);
 
   @override
   void onInit() {
@@ -47,6 +54,9 @@ class AuthController extends GetxController {
     registerPhoneController.dispose();
     registerPasswordController.dispose();
     registerConfirmPasswordController.dispose();
+    registerNationalIdController.dispose();
+    registerBirthDateController.dispose();
+    registerCountryCodeController.dispose();
     super.onClose();
   }
 
@@ -69,7 +79,7 @@ class AuthController extends GetxController {
 
       if (success) {
         successMessage.value = 'login.success';
-        
+
         Get.offAllNamed('/home');
       } else {
         errorMessage.value = 'login.error';
@@ -108,6 +118,10 @@ class AuthController extends GetxController {
         firstName: registerFirstNameController.text.trim(),
         lastName: registerLastNameController.text.trim(),
         phoneNumber: registerPhoneController.text.trim(),
+        nationalId: registerNationalIdController.text.trim(),
+        gender: selectedGender.value ?? '',
+        birthDate: registerBirthDateController.text.trim(),
+        countryCode: registerCountryCodeController.text.trim(),
       );
 
       if (success) {
@@ -118,6 +132,7 @@ class AuthController extends GetxController {
         errorMessage.value = 'registration.error';
       }
     } catch (e) {
+      log(e.toString());
       errorMessage.value = 'registration.error';
     } finally {
       isLoading.value = false;
@@ -156,9 +171,14 @@ class AuthController extends GetxController {
       registerPhoneController.clear();
       registerPasswordController.clear();
       registerConfirmPasswordController.clear();
+      registerNationalIdController.clear();
+      registerBirthDateController.clear();
+      registerCountryCodeController.clear();
       isRegisterPasswordVisible.value = false;
       isRegisterConfirmPasswordVisible.value = false;
       isTermsAccepted.value = false;
+      selectedGender.value = null;
+      registerBirthDate.value = null;
     }
   }
 
@@ -177,4 +197,11 @@ class AuthController extends GetxController {
       AuthValidators.validateFirstName(value);
   String? validateLastName(String? value) =>
       AuthValidators.validateLastName(value);
+  String? validateNationalId(String? value) =>
+      AuthValidators.validateNationalId(value);
+  String? validateBirthDate(String? value) =>
+      AuthValidators.validateBirthDate(value);
+  String? validateGender(String? value) => AuthValidators.validateGender(value);
+  String? validateCountryCode(String? value) =>
+      AuthValidators.validateCountryCode(value);
 }
