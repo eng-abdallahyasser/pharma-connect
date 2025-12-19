@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pharma_connect/app/modules/auth/services/auth_service.dart';
 import 'package:pharma_connect/app/modules/navigation/bindings/navigation_binding.dart';
 import 'package:pharma_connect/app/modules/navigation/services/navigation_service.dart';
 import 'package:pharma_connect/app/core/services/localization_service.dart';
 import 'package:pharma_connect/app/core/services/settings_service.dart';
+import 'package:pharma_connect/app/core/services/storage_service.dart';
 import 'package:pharma_connect/app/core/services/theme_service.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 import 'app/routes/app_routes.dart';
@@ -18,6 +20,13 @@ void main() async {
   // Initialize GetStorage first - required before using GetStorage anywhere
   await GetStorage.init();
   log('GetStorage initialized');
+
+  // Initialize storage service first (before AuthService)
+  await Get.putAsync<StorageService>(() async {
+    final service = await StorageService().init();
+    log('StorageService initialized');
+    return service;
+  });
 
   // Initialize settings service first (before LocalizationService and ThemeService)
   await Get.putAsync<SettingsService>(() async {
@@ -63,6 +72,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final settingsService = Get.find<SettingsService>();
     final themeService = Get.find<ThemeService>();
+    final authService = Get.find<AuthService>();
 
     return Obx(
       () => GetMaterialApp(
@@ -80,7 +90,10 @@ class MyApp extends StatelessWidget {
         themeMode: themeService.isDarkModeRx.value
             ? ThemeMode.dark
             : ThemeMode.light,
-        initialRoute: AppRoutes.login,
+        // Set initial route based on authentication status
+        initialRoute: authService.isAuthenticated
+            ? AppRoutes.home
+            : AppRoutes.login,
         getPages: AppPages.pages,
         defaultTransition: Transition.cupertino,
 

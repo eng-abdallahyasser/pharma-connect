@@ -4,6 +4,7 @@ import 'package:pharma_connect/app/locales/translations.dart';
 import 'package:pharma_connect/app/core/services/localization_service.dart';
 import 'package:pharma_connect/app/core/services/theme_service.dart';
 import 'package:pharma_connect/app/core/services/settings_service.dart';
+import 'package:pharma_connect/app/modules/auth/services/auth_service.dart';
 import '../models/user_model.dart';
 import '../models/prescription_model.dart';
 import '../models/family_member_model.dart';
@@ -334,10 +335,7 @@ class ProfileController extends GetxController {
 
   // Handle logout action
   void logout() {
-    // TODO: Implement actual logout logic
-    // - Clear user data
-    // - Clear authentication tokens
-    // - Navigate to login screen
+    Get.find<AuthService>().logout();
     Get.offNamed('/login');
   }
 

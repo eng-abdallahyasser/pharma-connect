@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 import 'package:pharma_connect/app/modules/auth/controllers/auth_controller.dart';
@@ -155,13 +156,13 @@ class _LoginViewState extends State<LoginView> {
               Row(
                 children: [
                   SocialLoginButton(
-                    icon: '🔵',
+                    icon: FontAwesomeIcons.facebook, // Facebook Icon
                     label: 'Facebook',
                     onPressed: () {},
                   ),
                   const SizedBox(width: AppSpacing.md),
                   SocialLoginButton(
-                    icon: '🔴',
+                    icon: FontAwesomeIcons.google, // Google Icon
                     label: 'Google',
                     onPressed: () {},
                   ),

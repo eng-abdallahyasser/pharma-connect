@@ -19,8 +19,8 @@ class ConsultationTabs extends StatelessWidget {
     return Container(
       // White background with shadow
       decoration: BoxDecoration(
-       
-        borderRadius: BorderRadius.circular(24),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(50),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(26),
@@ -104,7 +104,7 @@ class ConsultationTabs extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
           color: isActive ? const Color(0xFF1A73E8) : Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(50),
         ),
         child: Center(
           child: Text(

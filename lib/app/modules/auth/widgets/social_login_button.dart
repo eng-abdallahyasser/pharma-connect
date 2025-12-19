@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:pharma_connect/app/theme/app_spacing.dart';
 
 class SocialLoginButton extends StatelessWidget {
-  final String icon;
+  final IconData icon;
   final String label;
   final VoidCallback onPressed;
 
   const SocialLoginButton({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class SocialLoginButton extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(icon, style: const TextStyle(fontSize: 24)),
+            Icon(icon, size: 24),
             const SizedBox(height: 4),
             Text(
               label,

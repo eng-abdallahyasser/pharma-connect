@@ -49,6 +49,7 @@ class DoctorCard extends StatelessWidget {
     return Container(
       // White card with rounded corners and shadow
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(

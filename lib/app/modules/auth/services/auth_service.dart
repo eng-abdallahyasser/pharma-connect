@@ -26,15 +26,27 @@ class AuthService extends GetxService {
     _checkAuthStatus();
   }
 
-  // Check if user is already authenticated
+  // Check if user is already authenticated by retrieving stored token
   Future<void> _checkAuthStatus() async {
     _isLoading.value = true;
     try {
-      // Simulate checking stored user session
-      // In real app, you would check shared preferences or secure storage
-      await Future.delayed(const Duration(milliseconds: 500));
+      final storageService = Get.find<StorageService>();
+      final token = storageService.getToken();
+      final user = storageService.getUser();
+
+      if (token != null && user != null) {
+        // User has a stored token and user data, restore the session
+        _currentUser.value = user;
+        _isAuthenticated.value = true;
+        log('User session restored from storage');
+      } else {
+        // No stored session found
+        _isAuthenticated.value = false;
+        log('No stored user session found');
+      }
     } catch (e) {
       log('Error checking auth status: $e');
+      _isAuthenticated.value = false;
     } finally {
       _isLoading.value = false;
     }
@@ -61,12 +73,6 @@ class AuthService extends GetxService {
       log('Login Request: ${loginRequest.toJson()}');
       final response = await _authRepository.login(loginRequest);
 
-      // Store token if provided
-      if (response.accessToken != null) {
-        await Get.find<StorageService>().init();
-        await Get.find<StorageService>().saveToken(response.accessToken!);
-      }
-
       // Create user model from response
       final user = UserModel(
         id: response.user.id,
@@ -77,6 +83,13 @@ class AuthService extends GetxService {
         createdAt: response.user.metadata?.createdAt ?? DateTime.now(),
         isEmailVerified: response.user.emailVerified,
       );
+
+      // Store token and user data if provided
+      if (response.accessToken != null) {
+        final storageService = Get.find<StorageService>();
+        await storageService.saveToken(response.accessToken!);
+        await storageService.saveUser(user);
+      }
 
       _currentUser.value = user;
       _isAuthenticated.value = true;
@@ -96,11 +109,6 @@ class AuthService extends GetxService {
     try {
       final response = await _authRepository.loginWithOtp(otpLoginRequest);
 
-      // Store token if provided
-      if (response.accessToken != null) {
-        await Get.find<StorageService>().saveToken(response.accessToken!);
-      }
-
       // Create user model from response
       final user = UserModel(
         id: response.user.id,
@@ -111,6 +119,13 @@ class AuthService extends GetxService {
         createdAt: response.user.metadata?.createdAt ?? DateTime.now(),
         isEmailVerified: response.user.emailVerified,
       );
+
+      // Store token and user data if provided
+      if (response.accessToken != null) {
+        final storageService = Get.find<StorageService>();
+        await storageService.saveToken(response.accessToken!);
+        await storageService.saveUser(user);
+      }
 
       _currentUser.value = user;
       _isAuthenticated.value = true;
@@ -131,11 +146,6 @@ class AuthService extends GetxService {
       final response = await _authRepository.signup(signupRequest);
       log('Signup Response: ${response.toJson()}');
 
-      // Store token if provided
-      if (response.accessToken != null) {
-        await Get.find<StorageService>().saveToken(response.accessToken!);
-      }
-
       // Create user model from response
       final user = UserModel(
         id: response.user.id,
@@ -146,6 +156,13 @@ class AuthService extends GetxService {
         createdAt: response.user.metadata?.createdAt ?? DateTime.now(),
         isEmailVerified: response.user.emailVerified,
       );
+
+      // Store token and user data if provided
+      if (response.accessToken != null) {
+        final storageService = Get.find<StorageService>();
+        await storageService.saveToken(response.accessToken!);
+        await storageService.saveUser(user);
+      }
 
       _currentUser.value = user;
       _isAuthenticated.value = true;
@@ -188,10 +205,12 @@ class AuthService extends GetxService {
         "countryCode": countryCode ?? "eg",
       };
 
-      await _authRepository.signup(SignupRequest.fromJson(body));
+      final response = await _authRepository.signup(
+        SignupRequest.fromJson(body),
+      );
 
       final user = UserModel(
-        id: '${DateTime.now().millisecondsSinceEpoch}',
+        id: response.user.id,
         email: email,
         firstName: firstName,
         lastName: lastName,
@@ -200,11 +219,15 @@ class AuthService extends GetxService {
         isEmailVerified: false,
       );
 
+      // Store token and user data if provided
+      if (response.accessToken != null) {
+        final storageService = Get.find<StorageService>();
+        await storageService.saveToken(response.accessToken!);
+        await storageService.saveUser(user);
+      }
+
       _currentUser.value = user;
       _isAuthenticated.value = true;
-
-      // Store user session (in real app)
-      // await _storeUserSession(user);
 
       return true;
     } catch (e) {
@@ -219,14 +242,15 @@ class AuthService extends GetxService {
   Future<void> logout() async {
     _isLoading.value = true;
     try {
-      // Simulate API call
-      await Future.delayed(const Duration(milliseconds: 500));
+      // Clear stored token and user data
+      final storageService = Get.find<StorageService>();
+      await storageService.removeToken();
+      await storageService.removeUser();
 
       _currentUser.value = null;
       _isAuthenticated.value = false;
 
-      // Clear stored session (in real app)
-      // await _clearUserSession();
+      log('User logged out and session cleared');
     } catch (e) {
       log('Logout error: $e');
     } finally {
