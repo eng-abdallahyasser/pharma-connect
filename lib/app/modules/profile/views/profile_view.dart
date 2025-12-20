@@ -19,10 +19,16 @@ class ProfileView extends GetView<ProfileController> {
         child: Column(
           children: [
             // Profile header with user information
-            ProfileHeader(
-              user: controller.currentUser,
-              onEditPressed: () {
-                // TODO: Navigate to edit profile screen
+            // Profile header with user information
+            GetBuilder<ProfileController>(
+              builder: (controller) {
+                return ProfileHeader(
+                  user: controller.currentUser,
+                  onEditPressed: () {
+                    // TODO: Navigate to edit profile screen
+                  },
+                  onPhotoEditPressed: controller.updateProfilePhoto,
+                );
               },
             ),
 

@@ -73,4 +73,13 @@ class ApiClient {
       throw ApiException.fromDioError(e);
     }
   }
+  // Patch method for updating profile image
+  Future<dynamic> patch(String endpoint, dynamic data) async {
+    try {
+      final response = await _dio.patch(endpoint, data: data);
+      return response.data;
+    } on DioException catch (e) {
+      throw ApiException.fromDioError(e);
+    }
+  }
 }

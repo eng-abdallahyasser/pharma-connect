@@ -5,6 +5,9 @@ class ApiConstants {
   static const String login = '/api/auth/token';
   static const String signup = '/api/auth/signup';
   static const String sendOtp = '/api/auth/otp';
+  static const String changeProfilePhoto = '/api/profile/photo';
+  static const String getBranches = '/api/branches';
+
 
   // Headers
   static const Map<String, String> headers = {

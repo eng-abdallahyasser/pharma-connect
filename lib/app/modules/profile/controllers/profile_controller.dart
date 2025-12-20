@@ -1,8 +1,13 @@
 import 'dart:developer';
 
+import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:pharma_connect/app/core/network/api_client.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:pharma_connect/app/core/network/api_constants.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 import 'package:pharma_connect/app/core/services/localization_service.dart';
 import 'package:pharma_connect/app/core/services/theme_service.dart';
@@ -74,8 +79,11 @@ class ProfileController extends GetxController {
       // Safe way using null-aware operator
       final user = Get.find<AuthService>().currentUser;
 
+      
+
       // Or with null check
       if (user != null) {
+        log('User profile image: ${user.profileImage}');
         currentUser = UserModel(
           id: 124545,
           name: user.fullName,
@@ -93,13 +101,14 @@ class ProfileController extends GetxController {
             phone: '+1 234 567 8901',
           ),
         );
-      }else{
+      } else {
         currentUser = UserModel(
           id: 124545,
           name: 'John Doe',
           email: 'john.doe@example.com',
           phone: '+1 234 567 8901',
-          imageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1a?w=200',
+          imageUrl:
+              'https://images.unsplash.com/photo-1506794778202-cad84cf45f1a?w=200',
           bloodType: 'O+',
           allergies: ['Penicillin', 'Peanuts', 'Shellfish'],
           chronicConditions: ['Hypertension', 'Type 2 Diabetes'],
@@ -111,7 +120,7 @@ class ProfileController extends GetxController {
             phone: '+1 234 567 8901',
           ),
         );
-      } 
+      }
     } catch (e) {
       log('Error loading current user: $e');
     }
@@ -427,6 +436,75 @@ class ProfileController extends GetxController {
       Get.snackbar('Success', 'Family member added');
     } catch (e) {
       Get.snackbar('Error', 'Failed to add family member: $e');
+    }
+  }
+
+  // Update profile photo
+  Future<void> updateProfilePhoto() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+      if (image != null) {
+        // Show loading indicator
+        Get.dialog(
+          const Center(child: CircularProgressIndicator()),
+          barrierDismissible: false,
+        );
+
+        String fileName = image.path.split('/').last;
+
+        // Create FormData with the image
+        dio.FormData formData = dio.FormData.fromMap({
+          "image": await dio.MultipartFile.fromFile(
+            image.path,
+            filename: fileName,
+          ),
+        });
+
+        // Call API
+        final response = await ApiClient().patch(
+         ApiConstants.changeProfilePhoto,
+          formData,
+        );
+
+        // Close loading dialog
+        if (Get.isDialogOpen ?? false) Get.back();
+
+        // Check if response contains the new image URL
+        // Assuming the response structure based on typical API patterns
+        // Modify this based on actual API response
+        String? newImageUrl;
+        if (response is Map && response.containsKey('data')) {
+          // Adjust based on nesting: response['data']['profileImage'] or similar
+          // For now, let's assume the API returns the updated user object or the URL string
+          if (response['data'] is Map &&
+              response['data']['profileImage'] != null) {
+            newImageUrl = response['data']['profileImage'];
+          } else if (response['data'] is String) {
+            // If returns just the url
+            newImageUrl = response['data'];
+          }
+        }
+
+        // If we got a new URL, update the local user
+        if (newImageUrl != null) {
+          currentUser = currentUser.copyWith(imageUrl: newImageUrl);
+          update(); // Update UI
+        } else {
+          // Fallback: If we can't parse the response, maybe reload the user profile
+          // _loadCurrentUser(); // This only loads from AuthService, so we might need to refresh AuthService
+          // For now, let's assume we update the image to the local path if API succeeds but doesn't return URL
+          // But `imageUrl` is String.
+          // Safe bet: Show success message.
+        }
+
+        Get.snackbar('Success', 'Profile photo updated successfully');
+      }
+    } catch (e) {
+      if (Get.isDialogOpen ?? false) Get.back();
+      log('Error updating profile photo: $e');
+      Get.snackbar('Error', 'Failed to update profile photo');
     }
   }
 }

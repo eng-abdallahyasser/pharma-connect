@@ -5,11 +5,13 @@ import '../models/user_model.dart';
 class ProfileHeader extends StatelessWidget {
   final UserModel user;
   final VoidCallback onEditPressed;
+  final VoidCallback? onPhotoEditPressed;
 
   const ProfileHeader({
     super.key,
     required this.user,
     required this.onEditPressed,
+    this.onPhotoEditPressed,
   });
 
   @override
@@ -29,47 +31,77 @@ class ProfileHeader extends StatelessWidget {
           SizedBox(height: MediaQuery.of(context).padding.top),
           Row(
             children: [
-              // User avatar with border
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.white.withOpacity(0.2),
-                    width: 4,
+              // User avatar with border and edit button
+              Stack(
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white.withAlpha(51),
+                        width: 4,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: Image.network(
+                        user.imageUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          // Fallback avatar with initials
+                          return Container(
+                            color: Colors.white.withAlpha(51),
+                            child: Center(
+                              child: Text(
+                                user.name
+                                    .split(' ')
+                                    .map(
+                                      (word) => word.isNotEmpty ? word[0] : '',
+                                    )
+                                    .join('')
+                                    .toUpperCase(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Image.network(
-                    user.imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      // Fallback avatar with initials
-                      return Container(
-                        color: Colors.white.withOpacity(0.2),
-                        child: Center(
-                          child: Text(
-                            user.name
-                                .split(' ')
-                                .map((word) => word.isNotEmpty ? word[0] : '')
-                                .join('')
-                                .toUpperCase(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                  if (onPhotoEditPressed != null)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: onPhotoEditPressed,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: const Color(0xFF1A73E8),
+                              width: 2,
                             ),
                           ),
+                          child: const Icon(
+                            Icons.camera_alt,
+                            size: 16,
+                            color: Color(0xFF1A73E8),
+                          ),
                         ),
-                      );
-                    },
-                  ),
-                ),
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(width: 16),
-          
+
               // User information section
               Expanded(
                 child: Column(
@@ -85,45 +117,41 @@ class ProfileHeader extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-          
+
                     // User email
                     Text(
                       user.email,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withAlpha(204),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 2),
-          
+
                     // User phone
                     Text(
                       user.phone,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withAlpha(204),
                       ),
                     ),
                   ],
                 ),
               ),
-          
+
               // Edit button
               GestureDetector(
                 onTap: onEditPressed,
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Colors.white.withAlpha(26),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.edit,
-                    color: Colors.white,
-                    size: 20,
-                  ),
+                  child: const Icon(Icons.edit, color: Colors.white, size: 20),
                 ),
               ),
             ],

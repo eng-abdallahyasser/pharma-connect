@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pharma_connect/app/core/network/api_client.dart';
 import 'package:pharma_connect/app/modules/auth/services/auth_service.dart';
 import 'package:pharma_connect/app/modules/navigation/bindings/navigation_binding.dart';
 import 'package:pharma_connect/app/modules/navigation/services/navigation_service.dart';
@@ -19,6 +20,7 @@ import 'app/theme/app_theme.dart';
 void main() async {
   // Initialize GetStorage first - required before using GetStorage anywhere
   await GetStorage.init();
+  ApiClient().init();
   log('GetStorage initialized');
 
   // Initialize storage service first (before AuthService)
