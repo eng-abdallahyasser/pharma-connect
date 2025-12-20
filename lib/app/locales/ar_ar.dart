@@ -1,4 +1,3 @@
-
 const Map<String, String> arAR = {
   // ==================== Common ====================
   'common.ok': 'حسناً',
@@ -23,6 +22,20 @@ const Map<String, String> arAR = {
 
   // ==================== Navigation ====================
   'nav.home': 'الرئيسية',
+  'address.saved_addresses': 'العناوين المحفوظة',
+  'address.no_saved': 'لا توجد عناوين محفوظة بعد',
+  'address.add_new': 'إضافة عنوان جديد',
+  'address.label': 'اسم العنوان (مثال: المنزل, العمل)',
+  'address.details': 'العنوان بالتفصيل',
+  'address.save_btn': 'حفظ العنوان',
+  'address.location_on_map': 'تحديد الموقع على الخريطة',
+  'address.confirm_location': 'تأكيد الموقع',
+  'address.permission_required': 'مطلوب إذن الموقع',
+  'address.permission_denied': 'تم رفض إذن الموقع',
+  'address.success_add': 'تم إضافة العنوان بنجاح',
+  'address.error_add': 'فشل إضافة العنوان',
+  'address.enter_label': 'يرجى إدخال اسم العنوان',
+  'address.enter_details': 'يرجى إدخال تفاصيل العنوان',
   'nav.medicines': 'الأدوية',
   'nav.pharmacies': 'الصيدليات',
   'nav.consultations': 'الاستشارات',

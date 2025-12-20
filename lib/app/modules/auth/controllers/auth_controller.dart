@@ -86,7 +86,7 @@ class AuthController extends GetxController {
         errorMessage.value = 'login.error';
       }
     } catch (e) {
-      errorMessage.value = 'login.error';
+      log("Login Error: ${e.toString()}");
     } finally {
       isLoading.value = false;
     }
@@ -137,10 +137,11 @@ class AuthController extends GetxController {
           }
           this.errorMessage.value = errorMessage;
         }
+      }else {
+        errorMessage.value = 'registration.error';
       }
     } catch (e) {
-      log(e.toString());
-      errorMessage.value = 'registration.error';
+      log("Registration Error: ${e.toString()}");
     } finally {
       isLoading.value = false;
     }

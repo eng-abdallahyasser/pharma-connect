@@ -47,5 +47,7 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to update your profile picture.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need access to your location to simplify address entry and find nearby pharmacies.</string>
 </dict>
 </plist>

@@ -6,6 +6,8 @@ import '../widgets/quick_action_card.dart';
 import '../widgets/doctor_card.dart';
 import '../widgets/pharmacy_card.dart';
 import '../widgets/health_tip_card.dart';
+import '../controllers/address_controller.dart';
+import '../widgets/addresses_bottom_sheet.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
@@ -34,33 +36,52 @@ class HomeView extends GetView<HomeController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.location_on,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'home.location'.tr,
-                                style: Theme.of(context).textTheme.labelSmall
-                                    ?.copyWith(color: Colors.white70),
-                              ),
-                              Text(
-                                'home.location_value'.tr,
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          Get.bottomSheet(
+                            const AddressesBottomSheet(),
+                            isScrollControlled: true,
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'home.location'.tr,
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(color: Colors.white70),
+                                ),
+                                Obx(() {
+                                  final addressController =
+                                      Get.find<AddressController>();
+                                  final selectedAddress =
+                                      addressController.selectedAddress.value;
+                                  return Text(
+                                    selectedAddress?.label ??
+                                        'Tap to add address',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  );
+                                }),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       Stack(
                         children: [
@@ -95,9 +116,7 @@ class HomeView extends GetView<HomeController> {
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(24),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       children: [
                         const Icon(

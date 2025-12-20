@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:pharma_connect/app/modules/home/widgets/addresses_bottom_sheet.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
@@ -78,8 +79,6 @@ class ProfileController extends GetxController {
     try {
       // Safe way using null-aware operator
       final user = Get.find<AuthService>().currentUser;
-
-      
 
       // Or with null check
       if (user != null) {
@@ -238,7 +237,10 @@ class ProfileController extends GetxController {
         icon: Icons.location_on,
         iconColor: const Color(0xFFF97316),
         onTap: () {
-          // TODO: Navigate to addresses
+          Get.bottomSheet(
+            const AddressesBottomSheet(),
+            isScrollControlled: true,
+          );
         },
       ),
       MenuItemModel(
@@ -464,7 +466,7 @@ class ProfileController extends GetxController {
 
         // Call API
         final response = await ApiClient().patch(
-         ApiConstants.changeProfilePhoto,
+          ApiConstants.changeProfilePhoto,
           formData,
         );
 

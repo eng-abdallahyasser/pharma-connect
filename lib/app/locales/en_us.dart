@@ -1,5 +1,3 @@
-
-
 const Map<String, String> enUS = {
   // ==================== Common ====================
   'common.ok': 'OK',
@@ -24,6 +22,20 @@ const Map<String, String> enUS = {
 
   // ==================== Navigation ====================
   'nav.home': 'Home',
+  'address.saved_addresses': 'Saved Addresses',
+  'address.no_saved': 'No addresses saved yet',
+  'address.add_new': 'Add New Address',
+  'address.label': 'Address Label (e.g., Home, Work)',
+  'address.details': 'Full Address Details',
+  'address.save_btn': 'Save Address',
+  'address.location_on_map': 'Locate on Map',
+  'address.confirm_location': 'Confirm Location',
+  'address.permission_required': 'Location permission required',
+  'address.permission_denied': 'Location permission denied',
+  'address.success_add': 'Address added successfully',
+  'address.error_add': 'Failed to add address',
+  'address.enter_label': 'Please enter address label',
+  'address.enter_details': 'Please enter full address details',
   'nav.medicines': 'Medicines',
   'nav.pharmacies': 'Pharmacies',
   'nav.consultations': 'Consultations',
@@ -283,7 +295,7 @@ const Map<String, String> enUS = {
   'auth.first.name.hint': 'Enter your first name',
   'auth.first.name.required': 'First name is required',
   'auth.first.name.min_length': 'First name must be at least 2 characters',
-  
+
   'auth.middle.name': 'Middle Name',
   'auth.middle.name.hint': 'Enter your middle name',
   'auth.middle.name.required': 'Middle name is required',

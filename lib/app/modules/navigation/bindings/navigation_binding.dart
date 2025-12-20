@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/modules/auth/services/auth_service.dart';
+import 'package:pharma_connect/app/modules/home/controllers/address_controller.dart';
 import '../controllers/navigation_controller.dart';
 
 class NavigationBinding extends Bindings {
@@ -11,7 +12,7 @@ class NavigationBinding extends Bindings {
       NavigationController(),
       permanent: true, // Keep in memory even when not in use
     );
-        Get.put<AuthService>(AuthService());
-
+    Get.put<AuthService>(AuthService());
+    Get.put<AddressController>(AddressController(), permanent: true);
   }
 }
