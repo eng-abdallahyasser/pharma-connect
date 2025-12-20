@@ -153,9 +153,11 @@ class ProfileView extends GetView<ProfileController> {
 
                   // App version text
                   Center(
-                    child: Text(
-                      'Version 1.0.0',
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                    child: Obx(
+                      () => Text(
+                        'Version ${controller.version.value}',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      ),
                     ),
                   ),
 

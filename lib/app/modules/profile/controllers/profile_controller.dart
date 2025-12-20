@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 import 'package:pharma_connect/app/core/services/localization_service.dart';
 import 'package:pharma_connect/app/core/services/theme_service.dart';
@@ -16,6 +19,7 @@ class ProfileController extends GetxController {
   final showMedicalProfile = false.obs;
   final showPrescriptions = false.obs;
   final showFamilyMembers = false.obs;
+  final version = "1.0.0".obs;
 
   // Services
   late SettingsService _settingsService;
@@ -44,33 +48,73 @@ class ProfileController extends GetxController {
     darkModeEnabled = _themeService.isDarkModeRx;
 
     // Initialize all data when controller is created
-    _initializeUserData();
+    _loadCurrentUser();
     _initializePrescriptions();
     _initializeFamilyMembers();
     _initializeMenuItems();
     _initializeSettingsItems();
+    _getAppVersion();
+  }
+
+  Future<void> _getAppVersion() async {
+    try {
+      // Await the Future to get PackageInfo
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      log('Package info: $packageInfo');
+      version.value = packageInfo.version; // Now you can access .version
+    } catch (e) {
+      version.value = 'Unknown';
+      log('Error getting package info: $e');
+    }
   }
 
   // Initialize current user data with sample information
-  void _initializeUserData() {
-    currentUser = UserModel(
-      id: 1,
-      name: 'John Doe',
-      email: 'john.doe@email.com',
-      phone: '+1 234 567 8900',
-      imageUrl:
-          'https://images.unsplash.com/photo-1659353888906-adb3e0041693?w=200',
-      bloodType: 'O+',
-      allergies: ['Penicillin', 'Peanuts', 'Shellfish'],
-      chronicConditions: ['Hypertension', 'Type 2 Diabetes'],
-      insuranceProvider: 'HealthCare Plus',
-      insuranceNumber: 'HC123456789',
-      emergencyContact: EmergencyContact(
-        name: 'Jane Doe',
-        relation: 'Spouse',
-        phone: '+1 234 567 8901',
-      ),
-    );
+  void _loadCurrentUser() {
+    try {
+      // Safe way using null-aware operator
+      final user = Get.find<AuthService>().currentUser;
+
+      // Or with null check
+      if (user != null) {
+        currentUser = UserModel(
+          id: 124545,
+          name: user.fullName,
+          email: user.email,
+          phone: user.phoneNumber,
+          imageUrl: user.profileImage ?? "",
+          bloodType: 'O+',
+          allergies: ['Penicillin', 'Peanuts', 'Shellfish'],
+          chronicConditions: ['Hypertension', 'Type 2 Diabetes'],
+          insuranceProvider: 'HealthCare Plus',
+          insuranceNumber: 'HC123456789',
+          emergencyContact: EmergencyContact(
+            name: 'Jane Doe',
+            relation: 'Spouse',
+            phone: '+1 234 567 8901',
+          ),
+        );
+      }else{
+        currentUser = UserModel(
+          id: 124545,
+          name: 'John Doe',
+          email: 'john.doe@example.com',
+          phone: '+1 234 567 8901',
+          imageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1a?w=200',
+          bloodType: 'O+',
+          allergies: ['Penicillin', 'Peanuts', 'Shellfish'],
+          chronicConditions: ['Hypertension', 'Type 2 Diabetes'],
+          insuranceProvider: 'HealthCare Plus',
+          insuranceNumber: 'HC123456789',
+          emergencyContact: EmergencyContact(
+            name: 'Jane Doe',
+            relation: 'Spouse',
+            phone: '+1 234 567 8901',
+          ),
+        );
+      } 
+    } catch (e) {
+      log('Error loading current user: $e');
+    }
   }
 
   // Initialize prescription history with sample data

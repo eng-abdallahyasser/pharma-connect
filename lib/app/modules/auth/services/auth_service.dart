@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/core/services/storage_service.dart';
+import 'package:pharma_connect/app/modules/auth/models/signup_response.dart';
 import '../models/user_model.dart';
 import '../models/signup_request.dart';
 import '../models/login_request.dart';
@@ -146,15 +147,22 @@ class AuthService extends GetxService {
       final response = await _authRepository.signup(signupRequest);
       log('Signup Response: ${response.toJson()}');
 
+      if (response.user == null) {
+        log(
+          'Signup failed: ${response.message ?? response.errorCode ?? "Unknown error"}',
+        );
+        return false;
+      }
+
       // Create user model from response
       final user = UserModel(
-        id: response.user.id,
-        email: response.user.email,
-        firstName: response.user.firstName,
-        lastName: response.user.lastName,
-        phoneNumber: response.user.mobile ?? '',
-        createdAt: response.user.metadata?.createdAt ?? DateTime.now(),
-        isEmailVerified: response.user.emailVerified,
+        id: response.user!.id,
+        email: response.user!.email,
+        firstName: response.user!.firstName,
+        lastName: response.user!.lastName,
+        phoneNumber: response.user!.mobile ?? '',
+        createdAt: response.user!.metadata?.createdAt ?? DateTime.now(),
+        isEmailVerified: response.user!.emailVerified,
       );
 
       // Store token and user data if provided
@@ -177,7 +185,7 @@ class AuthService extends GetxService {
   }
 
   // Register new user
-  Future<bool> register({
+  Future<SignupResponse?> register({
     required String email,
     required String password,
     required String firstName,
@@ -192,25 +200,35 @@ class AuthService extends GetxService {
     _isLoading.value = true;
     try {
       // Simulate API call
+
+      if (phoneNumber.startsWith('0')) {
+        phoneNumber = phoneNumber.substring(1);
+      }else if (phoneNumber.startsWith('+20')) {
+        phoneNumber = phoneNumber.substring(3);
+      }
       final body = {
         "mobile": phoneNumber,
         "firstName": firstName,
-        "middleName": middleName ?? "",
+        "middleName": middleName,
         "lastName": lastName,
         "password": password,
-        "nationalId": nationalId ?? "",
+        "nationalId": nationalId,
         "email": email,
         "gender": gender ?? "male",
         "birthDate": birthDate ?? "1999-02-14",
-        "countryCode": countryCode ?? "eg",
-      };
+        "countryCode": "eg",
+      };  
 
       final response = await _authRepository.signup(
         SignupRequest.fromJson(body),
       );
 
+      if (response.user == null) {
+        return response;
+      }
+
       final user = UserModel(
-        id: response.user.id,
+        id: response.user!.id,
         email: email,
         firstName: firstName,
         lastName: lastName,
@@ -229,13 +247,13 @@ class AuthService extends GetxService {
       _currentUser.value = user;
       _isAuthenticated.value = true;
 
-      return true;
+      return response;
     } catch (e) {
       log('Registration error: $e');
-      return false;
     } finally {
       _isLoading.value = false;
     }
+    return null;
   }
 
   // Logout user

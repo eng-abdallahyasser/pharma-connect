@@ -84,6 +84,19 @@ class AuthValidators {
     return null;
   }
 
+  // Middle name validation
+  static String? validateMiddleName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'middle_name.required';
+    }
+
+    if (value.length < 2) {
+      return 'middle_name.min_length';
+    }
+
+    return null;
+  }
+
   // Last name validation
   static String? validateLastName(String? value) {
     if (value == null || value.isEmpty) {

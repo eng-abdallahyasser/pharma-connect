@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 import 'package:pharma_connect/app/modules/auth/controllers/auth_controller.dart';
@@ -86,6 +85,16 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     const SizedBox(height: AppSpacing.lg),
 
+                    // middle Name
+                    CustomTextField(
+                      label: getTranslation('auth.middle.name'),
+                      hintText: getTranslation('auth.middle.name.hint'),
+                      controller: authController.registerMiddleNameController,
+                      validator: authController.validateMiddleName,
+                      prefixIcon: const Icon(Icons.person_outline),
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+
                     // Last Name
                     CustomTextField(
                       label: getTranslation('auth.last.name'),
@@ -168,16 +177,16 @@ class _RegisterViewState extends State<RegisterView> {
                     const SizedBox(height: AppSpacing.lg),
 
                     // Country Code
-                    CustomTextField(
-                      label: getTranslation('auth.country.code'),
-                      hintText: getTranslation('auth.country.code.hint'),
-                      controller: authController.registerCountryCodeController,
-                      validator: authController.validateCountryCode,
-                      keyboardType: TextInputType.text,
-                      prefixIcon: const Icon(Icons.public_outlined),
-                      readOnly: true,
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
+                    // CustomTextField(
+                    //   label: getTranslation('auth.country.code'),
+                    //   hintText: getTranslation('auth.country.code.hint'),
+                    //   controller: authController.registerCountryCodeController,
+                    //   validator: authController.validateCountryCode,
+                    //   keyboardType: TextInputType.text,
+                    //   prefixIcon: const Icon(Icons.public_outlined),
+                    //   readOnly: true,
+                    // ),
+                    // const SizedBox(height: AppSpacing.lg),
 
                     // Password
                     Obx(

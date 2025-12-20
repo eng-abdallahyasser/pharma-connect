@@ -4,6 +4,7 @@ import '../models/signup_request.dart';
 import '../models/signup_response.dart';
 import '../models/login_request.dart';
 import '../models/login_response.dart';
+import 'package:pharma_connect/app/core/network/api_exceptions.dart';
 
 class AuthRepository {
   final ApiClient _apiClient = ApiClient();
@@ -17,6 +18,13 @@ class AuthRepository {
       );
 
       return SignupResponse.fromJson(response);
+    } on ApiException catch (e) {
+      if (e.response?.data != null && e.statusCode == 400) {
+        return SignupResponse.fromJson(
+          e.response!.data as Map<String, dynamic>,
+        );
+      }
+      rethrow;
     } catch (e) {
       rethrow;
     }

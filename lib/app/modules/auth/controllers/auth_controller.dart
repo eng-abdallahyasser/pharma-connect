@@ -18,6 +18,7 @@ class AuthController extends GetxController {
 
   // Controllers for registration
   final registerFirstNameController = TextEditingController();
+  final registerMiddleNameController = TextEditingController();
   final registerLastNameController = TextEditingController();
   final registerEmailController = TextEditingController();
   final registerPhoneController = TextEditingController();
@@ -112,10 +113,11 @@ class AuthController extends GetxController {
     successMessage.value = '';
 
     try {
-      final success = await authService.register(
+      final response = await authService.register(
         email: registerEmailController.text.trim(),
         password: registerPasswordController.text,
         firstName: registerFirstNameController.text.trim(),
+        middleName: registerMiddleNameController.text.trim(),
         lastName: registerLastNameController.text.trim(),
         phoneNumber: registerPhoneController.text.trim(),
         nationalId: registerNationalIdController.text.trim(),
@@ -124,12 +126,17 @@ class AuthController extends GetxController {
         countryCode: registerCountryCodeController.text.trim(),
       );
 
-      if (success) {
-        successMessage.value = 'registration.success';
-        await Future.delayed(const Duration(milliseconds: 1000));
-        Get.offAllNamed('/home');
-      } else {
-        errorMessage.value = 'registration.error';
+      if (response != null) {
+        if (response.user != null) {
+          successMessage.value = 'registration.success';
+          Get.offAllNamed('/home');
+        } else {
+          String errorMessage = '';
+          for (var error in response.errors ?? []) {
+            errorMessage += "${error.property} : ${error.message}\n";
+          }
+          this.errorMessage.value = errorMessage;
+        }
       }
     } catch (e) {
       log(e.toString());
@@ -195,6 +202,8 @@ class AuthController extends GetxController {
       AuthValidators.validatePhoneNumber(value);
   String? validateFirstName(String? value) =>
       AuthValidators.validateFirstName(value);
+  String? validateMiddleName(String? value) =>
+      AuthValidators.validateMiddleName(value);
   String? validateLastName(String? value) =>
       AuthValidators.validateLastName(value);
   String? validateNationalId(String? value) =>
