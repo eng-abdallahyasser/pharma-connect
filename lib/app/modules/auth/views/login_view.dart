@@ -5,6 +5,7 @@ import 'package:pharma_connect/app/locales/translations.dart';
 import 'package:pharma_connect/app/modules/auth/controllers/auth_controller.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/auth_divider.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/custom_text_field.dart';
+import 'package:pharma_connect/app/modules/auth/widgets/language_selector.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/primary_button.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/social_login_button.dart';
 import 'package:pharma_connect/app/theme/app_colors.dart';
@@ -35,7 +36,12 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: AppSpacing.xl),
+              const SizedBox(height: AppSpacing.md),
+              const Align(
+                alignment: Alignment.center,
+                child: LanguageSelector(),
+              ),
+              const SizedBox(height: AppSpacing.md),
               // Header
               Text(
                 getTranslation('auth.login.title'),
@@ -156,13 +162,20 @@ class _LoginViewState extends State<LoginView> {
               Row(
                 children: [
                   SocialLoginButton(
-                    icon: FontAwesomeIcons.facebook, // Facebook Icon
+                    icon: const Icon(
+                      FontAwesomeIcons.facebook,
+                      size: 24,
+                    ), // Facebook Icon
                     label: 'Facebook',
                     onPressed: () {},
                   ),
                   const SizedBox(width: AppSpacing.md),
                   SocialLoginButton(
-                    icon: FontAwesomeIcons.google, // Google Icon
+                    icon: Image.asset(
+                      "assets/icons/google.png",
+                      width: 24,
+                      height: 24,
+                    ), // Google Icon
                     label: 'Google',
                     onPressed: () {},
                   ),

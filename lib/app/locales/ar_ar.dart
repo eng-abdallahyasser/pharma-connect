@@ -281,6 +281,11 @@ const Map<String, String> arAR = {
   'auth.first.name.required': 'الاسم الأول مطلوب',
   'auth.first.name.min_length': 'يجب أن يكون الاسم الأول حرفين على الأقل',
 
+  'auth.middle.name': 'الاسم الأوسط',
+  'auth.middle.name.hint': 'أدخل اسمك الأوسط',
+  'auth.middle.name.required': 'الاسم الأوسط مطلوب',
+  'auth.middle.name.min_length': 'يجب أن يكون الاسم الأوسط حرفين على الأقل',
+
   'auth.last.name': 'الاسم الأخير',
   'auth.last.name.hint': 'أدخل اسمك الأخير',
   'auth.last.name.required': 'الاسم الأخير مطلوب',

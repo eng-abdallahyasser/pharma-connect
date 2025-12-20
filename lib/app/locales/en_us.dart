@@ -283,6 +283,11 @@ const Map<String, String> enUS = {
   'auth.first.name.hint': 'Enter your first name',
   'auth.first.name.required': 'First name is required',
   'auth.first.name.min_length': 'First name must be at least 2 characters',
+  
+  'auth.middle.name': 'Middle Name',
+  'auth.middle.name.hint': 'Enter your middle name',
+  'auth.middle.name.required': 'Middle name is required',
+  'auth.middle.name.min_length': 'Middle name must be at least 2 characters',
 
   'auth.last.name': 'Last Name',
   'auth.last.name.hint': 'Enter your last name',

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
 import 'package:pharma_connect/app/modules/auth/controllers/auth_controller.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/custom_text_field.dart';
+import 'package:pharma_connect/app/modules/auth/widgets/language_selector.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/primary_button.dart';
 import 'package:pharma_connect/app/theme/app_colors.dart';
 import 'package:pharma_connect/app/theme/app_spacing.dart';
@@ -33,6 +34,14 @@ class _RegisterViewState extends State<RegisterView> {
         elevation: 0,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
+        actions: const [
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: LanguageSelector(),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
