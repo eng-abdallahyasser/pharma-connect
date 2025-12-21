@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/medicine_model.dart';
 import '../models/family_medicines_model.dart';
@@ -37,7 +38,7 @@ class MedicinesController extends GetxController {
             dosage: '100mg',
             frequency: 'Twice Daily',
             times: ['08:00 AM', '08:00 PM'],
-            color: '#3B82F6', // Blue
+            color: const Color(0xFF3B82F6), // Blue
             reminderEnabled: true,
             takenToday: 1,
             totalToday: 2,
@@ -51,7 +52,7 @@ class MedicinesController extends GetxController {
             dosage: '1000 IU',
             frequency: 'Once Daily',
             times: ['09:00 AM'],
-            color: '#FBBF24', // Yellow
+            color: const Color(0xFFFBBF24), // Yellow
             reminderEnabled: true,
             takenToday: 1,
             totalToday: 1,
@@ -64,7 +65,7 @@ class MedicinesController extends GetxController {
             dosage: '400mg',
             frequency: 'Three times daily',
             times: ['08:00 AM', '02:00 PM', '10:00 PM'],
-            color: '#EF4444', // Red
+            color: const Color(0xFFEF4444), // Red
             reminderEnabled: true,
             takenToday: 2,
             totalToday: 3,
@@ -89,7 +90,7 @@ class MedicinesController extends GetxController {
             dosage: '500mg',
             frequency: 'Twice Daily',
             times: ['07:30 AM', '07:30 PM'],
-            color: '#22C55E', // Green
+            color: const Color(0xFF22C55E), // Green
             reminderEnabled: true,
             takenToday: 1,
             totalToday: 2,
@@ -102,7 +103,7 @@ class MedicinesController extends GetxController {
             dosage: '10mg',
             frequency: 'Once Daily',
             times: ['08:00 AM'],
-            color: '#EC4899', // Pink
+            color: const Color(0xFFEC4899), // Pink
             reminderEnabled: true,
             takenToday: 1,
             totalToday: 1,
@@ -126,7 +127,7 @@ class MedicinesController extends GetxController {
             dosage: '1 gummy',
             frequency: 'Once Daily',
             times: ['09:00 AM'],
-            color: '#F97316', // Orange
+            color: const Color(0xFFF97316), // Orange
             reminderEnabled: true,
             takenToday: 1,
             totalToday: 1,
@@ -159,13 +160,15 @@ class MedicinesController extends GetxController {
     if (selectedMember.value == null) return;
 
     final member = selectedMember.value!;
-    final medicineIndex =
-        member.medicines.indexWhere((m) => m.id == medicineId);
+    final medicineIndex = member.medicines.indexWhere(
+      (m) => m.id == medicineId,
+    );
 
     if (medicineIndex != -1) {
       final medicine = member.medicines[medicineIndex];
-      member.medicines[medicineIndex] =
-          medicine.copyWith(reminderEnabled: !medicine.reminderEnabled);
+      member.medicines[medicineIndex] = medicine.copyWith(
+        reminderEnabled: !medicine.reminderEnabled,
+      );
 
       // Update selected medicine if it's the one being toggled
       if (selectedMedicine.value?.id == medicineId) {
@@ -182,14 +185,16 @@ class MedicinesController extends GetxController {
     if (selectedMember.value == null) return;
 
     final member = selectedMember.value!;
-    final medicineIndex =
-        member.medicines.indexWhere((m) => m.id == medicineId);
+    final medicineIndex = member.medicines.indexWhere(
+      (m) => m.id == medicineId,
+    );
 
     if (medicineIndex != -1) {
       final medicine = member.medicines[medicineIndex];
       if (medicine.takenToday < medicine.totalToday) {
-        member.medicines[medicineIndex] =
-            medicine.copyWith(takenToday: medicine.takenToday + 1);
+        member.medicines[medicineIndex] = medicine.copyWith(
+          takenToday: medicine.takenToday + 1,
+        );
         selectedMember.refresh();
       }
     }

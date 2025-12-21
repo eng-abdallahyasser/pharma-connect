@@ -21,22 +21,16 @@ class MedicineDetailModal extends StatelessWidget {
     this.onEdit,
   });
 
-  // Convert hex color to Flutter Color
-  Color _getColorFromHex(String hexColor) {
-    hexColor = hexColor.replaceFirst('#', '');
-    return Color(int.parse('FF$hexColor', radix: 16));
-  }
-
   @override
   Widget build(BuildContext context) {
-    final medicineColor = _getColorFromHex(medicine.color);
+    final medicineColor = medicine.color;
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Container(
         constraints: const BoxConstraints(maxWidth: 500),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
         ),
         child: SingleChildScrollView(
@@ -74,10 +68,10 @@ class MedicineDetailModal extends StatelessWidget {
                           // Medicine name
                           Text(
                             medicine.name,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF1F2937),
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
 
@@ -88,7 +82,9 @@ class MedicineDetailModal extends StatelessWidget {
                             medicine.dosage,
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.grey[600],
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                             ),
                           ),
 
@@ -101,7 +97,9 @@ class MedicineDetailModal extends StatelessWidget {
                             }),
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey[600],
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                             ),
                           ),
                         ],
@@ -125,16 +123,18 @@ class MedicineDetailModal extends StatelessWidget {
                           'medicines.frequency'.tr,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[600],
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           medicine.frequency,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: Color(0xFF1F2937),
+                            color: Theme.of(context).colorScheme.onSurface,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -151,7 +151,9 @@ class MedicineDetailModal extends StatelessWidget {
                           'medicines.timings'.tr,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[600],
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -166,14 +168,18 @@ class MedicineDetailModal extends StatelessWidget {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.grey[100],
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainerHighest,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
                                 time,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 12,
-                                  color: Color(0xFF1F2937),
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
                                 ),
                               ),
                             );
@@ -193,16 +199,18 @@ class MedicineDetailModal extends StatelessWidget {
                             'medicines.instructions'.tr,
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey[600],
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             medicine.instructions!,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xFF1F2937),
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -218,7 +226,9 @@ class MedicineDetailModal extends StatelessWidget {
                           'medicines.duration'.tr,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[600],
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -230,9 +240,9 @@ class MedicineDetailModal extends StatelessWidget {
                                   'end': medicine.endDate!,
                                 })
                               : medicine.startDate,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
-                            color: Color(0xFF1F2937),
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
                       ],
@@ -244,7 +254,9 @@ class MedicineDetailModal extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -252,10 +264,10 @@ class MedicineDetailModal extends StatelessWidget {
                         children: [
                           Text(
                             'medicines.reminders'.tr,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF1F2937),
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                           GestureDetector(
@@ -265,8 +277,10 @@ class MedicineDetailModal extends StatelessWidget {
                               height: 28,
                               decoration: BoxDecoration(
                                 color: reminderEnabled
-                                    ? const Color(0xFF1A73E8)
-                                    : Colors.grey[300],
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Theme.of(
+                                        context,
+                                      ).colorScheme.outlineVariant,
                                 borderRadius: BorderRadius.circular(14),
                               ),
                               child: Stack(
@@ -279,7 +293,9 @@ class MedicineDetailModal extends StatelessWidget {
                                       width: 24,
                                       height: 24,
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.surface,
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                     ),
@@ -311,14 +327,16 @@ class MedicineDetailModal extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          side: BorderSide(color: Colors.grey[300]!),
+                          side: BorderSide(
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
                         ),
                         child: Text(
                           'medicines.close'.tr,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF1F2937),
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
                       ),
@@ -331,7 +349,9 @@ class MedicineDetailModal extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: onEdit,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1A73E8),
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -339,10 +359,10 @@ class MedicineDetailModal extends StatelessWidget {
                         ),
                         child: Text(
                           'medicines.edit'.tr,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
                       ),

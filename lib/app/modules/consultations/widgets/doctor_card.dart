@@ -53,7 +53,7 @@ class DoctorCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(26),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -223,7 +223,7 @@ class DoctorCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     side: BorderSide(
-                      color: Theme.of(context).dividerColor,
+                      color: Theme.of(context).colorScheme.outline,
                     ),
                   ),
                   child: Row(
@@ -263,7 +263,7 @@ class DoctorCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     side: BorderSide(
-                      color: Theme.of(context).dividerColor,
+                      color: Theme.of(context).colorScheme.outline,
                     ),
                   ),
                   child: Row(

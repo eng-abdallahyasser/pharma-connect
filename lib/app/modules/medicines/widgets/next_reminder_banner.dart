@@ -22,7 +22,7 @@ class NextReminderBanner extends StatelessWidget {
     return Container(
       // Semi-transparent blue background
       decoration: BoxDecoration(
-        color: Colors.white.withAlpha(38),
+        color: Theme.of(context).colorScheme.onPrimary.withAlpha(38),
         borderRadius: BorderRadius.circular(24),
         // border: Border.all(
         //   color: Colors.white.withAlpha(51),
@@ -37,12 +37,12 @@ class NextReminderBanner extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: const Color(0xFF00C897),
+              color: Theme.of(context).colorScheme.secondary,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: const Icon(
+            child: Icon(
               Icons.notifications,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onSecondary,
               size: 24,
             ),
           ),
@@ -59,7 +59,9 @@ class NextReminderBanner extends StatelessWidget {
                   'medicines.next_reminder'.trParams({'name': memberName}),
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white.withAlpha(230),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onPrimary.withAlpha(230),
                   ),
                 ),
 
@@ -68,10 +70,10 @@ class NextReminderBanner extends StatelessWidget {
                 // Medicine name and time
                 Text(
                   '${nextMedicine!.name} at ${nextMedicine!.times.first}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
               ],
@@ -79,7 +81,11 @@ class NextReminderBanner extends StatelessWidget {
           ),
 
           // Clock icon
-          Icon(Icons.schedule, color: Colors.white.withAlpha(230), size: 20),
+          Icon(
+            Icons.schedule,
+            color: Theme.of(context).colorScheme.onPrimary.withAlpha(230),
+            size: 20,
+          ),
         ],
       ),
     );

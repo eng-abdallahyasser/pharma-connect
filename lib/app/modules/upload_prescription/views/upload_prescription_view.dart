@@ -6,7 +6,7 @@ import '../widgets/upload_modal.dart';
 
 // Upload prescription view - main screen for managing prescriptions
 class UploadPrescriptionView extends GetView<UploadPrescriptionController> {
-  const UploadPrescriptionView({Key? key}) : super(key: key);
+  const UploadPrescriptionView({super.key});
 
   @override
   Widget build(BuildContext context) {

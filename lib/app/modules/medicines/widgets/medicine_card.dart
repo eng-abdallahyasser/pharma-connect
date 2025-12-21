@@ -16,26 +16,20 @@ class MedicineCard extends StatelessWidget {
     this.onMarkAsTaken,
   });
 
-  // Convert hex color to Flutter Color
-  Color _getColorFromHex(String hexColor) {
-    hexColor = hexColor.replaceFirst('#', '');
-    return Color(int.parse('FF$hexColor', radix: 16));
-  }
-
   @override
   Widget build(BuildContext context) {
-    final medicineColor = _getColorFromHex(medicine.color);
+    final medicineColor = medicine.color;
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         // White card with rounded corners and shadow
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(13),
+              color: Theme.of(context).shadowColor.withAlpha(13),
               blurRadius: 4,
               spreadRadius: 0,
             ),
@@ -73,10 +67,10 @@ class MedicineCard extends StatelessWidget {
                       // Medicine name
                       Text(
                         medicine.name,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xFF1F2937),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -86,7 +80,7 @@ class MedicineCard extends StatelessWidget {
                         '${medicine.dosage} • ${medicine.frequency}',
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey[600],
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -101,8 +95,8 @@ class MedicineCard extends StatelessWidget {
                     height: 28,
                     decoration: BoxDecoration(
                       color: medicine.reminderEnabled
-                          ? const Color(0xFF1A73E8)
-                          : Colors.grey[300],
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.outlineVariant,
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: Stack(
@@ -116,7 +110,7 @@ class MedicineCard extends StatelessWidget {
                             width: 24,
                             height: 24,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.surface,
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
@@ -136,7 +130,7 @@ class MedicineCard extends StatelessWidget {
                 '📝 ${medicine.instructions}',
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey[600],
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 12),
@@ -149,16 +143,21 @@ class MedicineCard extends StatelessWidget {
                   child: Container(
                     height: 8,
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(4),
                       child: LinearProgressIndicator(
                         value: medicine.progressPercentage / 100,
-                        backgroundColor: Colors.transparent,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(medicineColor),
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withAlpha(26),
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          medicineColor,
+                        ),
                       ),
                     ),
                   ),
@@ -170,7 +169,7 @@ class MedicineCard extends StatelessWidget {
                   '${medicine.takenToday}/${medicine.totalToday}',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -196,7 +195,7 @@ class MedicineCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: isTaken
                         ? medicineColor.withAlpha(51)
-                        : Colors.grey[200],
+                        : Theme.of(context).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -205,14 +204,18 @@ class MedicineCard extends StatelessWidget {
                       Icon(
                         Icons.schedule,
                         size: 12,
-                        color: isTaken ? medicineColor : Colors.grey[600],
+                        color: isTaken
+                            ? medicineColor
+                            : Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         time,
                         style: TextStyle(
                           fontSize: 11,
-                          color: isTaken ? medicineColor : Colors.grey[600],
+                          color: isTaken
+                              ? medicineColor
+                              : Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -233,14 +236,14 @@ class MedicineCard extends StatelessWidget {
                     Icon(
                       Icons.calendar_today,
                       size: 14,
-                      color: Colors.grey[600],
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       medicine.startDate,
                       style: TextStyle(
                         fontSize: 11,
-                        color: Colors.grey[600],
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
                     if (medicine.endDate != null) ...[
@@ -249,7 +252,7 @@ class MedicineCard extends StatelessWidget {
                         '- ${medicine.endDate}',
                         style: TextStyle(
                           fontSize: 11,
-                          color: Colors.grey[600],
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -263,7 +266,7 @@ class MedicineCard extends StatelessWidget {
                       'Details',
                       style: TextStyle(
                         fontSize: 11,
-                        color: const Color(0xFF1A73E8),
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -271,7 +274,7 @@ class MedicineCard extends StatelessWidget {
                     Icon(
                       Icons.chevron_right,
                       size: 14,
-                      color: const Color(0xFF1A73E8),
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ],
                 ),

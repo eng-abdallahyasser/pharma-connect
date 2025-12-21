@@ -11,15 +11,15 @@ class NotificationsView extends GetView<NotificationsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
             // Header with title and mark all read button
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF1A73E8),
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(24),
                   bottomRight: Radius.circular(24),
                 ),
@@ -39,10 +39,10 @@ class NotificationsView extends GetView<NotificationsController> {
                         children: [
                           Text(
                             'notifications.title'.tr,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ),
 
@@ -59,7 +59,9 @@ class NotificationsView extends GetView<NotificationsController> {
                               }),
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.white.withAlpha(230),
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withOpacity(0.9),
                               ),
                             );
                           }),
@@ -81,14 +83,16 @@ class NotificationsView extends GetView<NotificationsController> {
                               vertical: 8,
                             ),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onPrimary.withOpacity(0.2),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
                               'notifications.mark_all_read'.tr,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onPrimary,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -135,14 +139,16 @@ class NotificationsView extends GetView<NotificationsController> {
                             Icon(
                               Icons.notifications_none,
                               size: 48,
-                              color: Colors.grey[400],
+                              color: Theme.of(context).colorScheme.outline,
                             ),
                             const SizedBox(height: 12),
                             Text(
                               'notifications.no_notifications'.tr,
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.grey[600],
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),

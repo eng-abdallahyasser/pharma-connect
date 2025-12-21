@@ -8,7 +8,7 @@ class NotificationCard extends StatelessWidget {
   final VoidCallback onTap;
   final VoidCallback? onSkip;
   final VoidCallback? onTaken;
-  final String iconColor;
+  final Color iconColor;
   final IconData icon;
 
   const NotificationCard({
@@ -21,31 +21,26 @@ class NotificationCard extends StatelessWidget {
     required this.icon,
   }) : super(key: key);
 
-  // Convert hex color to Flutter Color
-  Color _getColorFromHex(String hexColor) {
-    hexColor = hexColor.replaceFirst('#', '');
-    return Color(int.parse('FF$hexColor', radix: 16));
-  }
-
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = _getColorFromHex(iconColor);
-
     return GestureDetector(
       onTap: onTap,
       child: Container(
         // White card with rounded corners and shadow
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(24),
           border: notification.isUnread
               ? Border(
-                  left: BorderSide(color: const Color(0xFF1A73E8), width: 4),
+                  left: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 4,
+                  ),
                 )
               : null,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Theme.of(context).shadowColor.withOpacity(0.05),
               blurRadius: 4,
               spreadRadius: 0,
             ),
@@ -64,10 +59,14 @@ class NotificationCard extends StatelessWidget {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: backgroundColor,
+                    color: iconColor,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(icon, color: Colors.white, size: 20),
+                  child: Icon(
+                    icon,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    size: 20,
+                  ),
                 ),
 
                 const SizedBox(width: 12),
@@ -84,8 +83,10 @@ class NotificationCard extends StatelessWidget {
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: notification.isUnread
-                                ? const Color(0xFF1F2937)
-                                : Colors.grey[600],
+                                ? Theme.of(context).colorScheme.onSurface
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ),
@@ -96,8 +97,8 @@ class NotificationCard extends StatelessWidget {
                         Container(
                           width: 8,
                           height: 8,
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF1A73E8),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
                             shape: BoxShape.circle,
                           ),
                           margin: const EdgeInsets.only(top: 4),
@@ -116,7 +117,7 @@ class NotificationCard extends StatelessWidget {
               notification.message,
               style: TextStyle(
                 fontSize: 12,
-                color: Colors.grey[600],
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
                 height: 1.4,
               ),
               maxLines: 2,
@@ -132,7 +133,10 @@ class NotificationCard extends StatelessWidget {
                 // Time
                 Text(
                   notification.time,
-                  style: TextStyle(fontSize: 11, color: Colors.grey[500]),
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
                 ),
 
                 // Action buttons (only for actionable unread notifications)
@@ -148,10 +152,12 @@ class NotificationCard extends StatelessWidget {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.grey[200],
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: Colors.grey[300]!,
+                              color: Theme.of(context).colorScheme.outline,
                               width: 1,
                             ),
                           ),
@@ -161,14 +167,18 @@ class NotificationCard extends StatelessWidget {
                               Icon(
                                 Icons.close,
                                 size: 12,
-                                color: Colors.grey[600],
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 'notifications.skip'.tr,
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: Colors.grey[600],
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurfaceVariant,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -188,23 +198,27 @@ class NotificationCard extends StatelessWidget {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF00C897),
+                            color: Theme.of(context).colorScheme.secondary,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.check,
                                 size: 12,
-                                color: Colors.white,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSecondary,
                               ),
                               const SizedBox(width: 4),
                               Text(
                                 'notifications.taken'.tr,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
-                                  color: Colors.white,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSecondary,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),

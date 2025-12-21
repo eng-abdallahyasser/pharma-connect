@@ -47,7 +47,7 @@ class DoctorCard extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         width: 270,
-        
+
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
@@ -93,7 +93,10 @@ class DoctorCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: _getStatusColor(),
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.outline,
+                            width: 1,
+                          ),
                         ),
                       ),
                     ),
@@ -187,6 +190,9 @@ class DoctorCard extends StatelessWidget {
                         vertical: 8,
                         horizontal: 12,
                       ),
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -214,9 +220,7 @@ class DoctorCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(Icons.chat_bubble_outline, size: 16),
-                        const SizedBox(
-                          height: 2,
-                        ), 
+                        const SizedBox(height: 2),
                         const Text('Book'),
                       ],
                     ),

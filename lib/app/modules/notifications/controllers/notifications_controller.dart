@@ -153,18 +153,19 @@ class NotificationsController extends GetxController {
   }
 
   // Get icon color based on notification type
-  String getNotificationColor(String type) {
+  Color getNotificationColor(String type) {
+    final colorScheme = Get.theme.colorScheme;
     switch (type) {
       case 'medicine':
-        return '#3B82F6'; // Blue
+        return colorScheme.primary; // Blue
       case 'appointment':
-        return '#22C55E'; // Green
+        return colorScheme.secondary; // Green
       case 'order':
-        return '#A855F7'; // Purple
+        return colorScheme.tertiary; // Purple
       case 'message':
-        return '#F97316'; // Orange
+        return Colors.orange; // Orange
       default:
-        return '#6B7280'; // Gray
+        return colorScheme.outline; // Gray
     }
   }
 

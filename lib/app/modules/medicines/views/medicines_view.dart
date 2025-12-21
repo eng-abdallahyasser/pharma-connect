@@ -14,15 +14,15 @@ class MedicinesView extends GetView<MedicinesController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
             // Header with title and next reminder
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF1A73E8),
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(24),
                   bottomRight: Radius.circular(24),
                 ),
@@ -35,10 +35,10 @@ class MedicinesView extends GetView<MedicinesController> {
                   // Header title
                   Text(
                     'medicines.my_medicines'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
 
@@ -71,7 +71,7 @@ class MedicinesView extends GetView<MedicinesController> {
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Colors.grey[600],
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -121,10 +121,10 @@ class MedicinesView extends GetView<MedicinesController> {
                             'name': member?.name ?? '',
                             'count': '$medicinesCount',
                           }),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF1F2937),
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
                         ElevatedButton.icon(
@@ -132,10 +132,21 @@ class MedicinesView extends GetView<MedicinesController> {
                             // TODO: Implement add medicine
                             Get.snackbar('medicines.add_new'.tr, 'Coming soon');
                           },
-                          icon: const Icon(Icons.add, size: 16),
-                          label: Text('medicines.add_new'.tr),
+                          icon: Icon(
+                            Icons.add,
+                            size: 16,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          label: Text(
+                            'medicines.add_new'.tr,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF1A73E8),
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 12,
                               vertical: 8,
@@ -164,14 +175,16 @@ class MedicinesView extends GetView<MedicinesController> {
                             Icon(
                               Icons.medication,
                               size: 48,
-                              color: Colors.grey[400],
+                              color: Theme.of(context).colorScheme.outline,
                             ),
                             const SizedBox(height: 12),
                             Text(
                               'medicines.no_medicines'.tr,
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.grey[600],
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -184,10 +197,22 @@ class MedicinesView extends GetView<MedicinesController> {
                                   'Coming soon',
                                 );
                               },
-                              icon: const Icon(Icons.add),
-                              label: Text('medicines.add_first_medicine'.tr),
+                              icon: Icon(
+                                Icons.add,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                              ),
+                              label: Text(
+                                'medicines.add_first_medicine'.tr,
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
+                                ),
+                              ),
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1A73E8),
+                                backgroundColor: Theme.of(
+                                  context,
+                                ).colorScheme.primary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),

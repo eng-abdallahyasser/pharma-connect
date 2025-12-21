@@ -35,16 +35,16 @@ class FamilyMemberSelector extends StatelessWidget {
                 child: Container(
                   width: 100,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(24),
                     border: Border.all(
-                      color: Colors.grey[300]!,
+                      color: Theme.of(context).colorScheme.outlineVariant,
                       width: 2,
                       strokeAlign: BorderSide.strokeAlignOutside,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withAlpha(13),
+                        color: Theme.of(context).shadowColor.withAlpha(13),
                         blurRadius: 4,
                         spreadRadius: 0,
                       ),
@@ -57,12 +57,14 @@ class FamilyMemberSelector extends StatelessWidget {
                         width: 48,
                         height: 48,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1A73E8).withAlpha(26),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withAlpha(26),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.add,
-                          color: Color(0xFF1A73E8),
+                          color: Theme.of(context).colorScheme.primary,
                           size: 24,
                         ),
                       ),
@@ -71,7 +73,7 @@ class FamilyMemberSelector extends StatelessWidget {
                         'medicines.add_member'.tr,
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.grey[600],
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w500,
                         ),
                         textAlign: TextAlign.center,
@@ -94,11 +96,15 @@ class FamilyMemberSelector extends StatelessWidget {
               child: Container(
                 width: 100,
                 decoration: BoxDecoration(
-                  color: isSelected ? const Color(0xFF1A73E8) : Colors.white,
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withAlpha(isSelected ? 38 : 13),
+                      color: Theme.of(
+                        context,
+                      ).shadowColor.withAlpha(isSelected ? 38 : 13),
                       blurRadius: 4,
                       spreadRadius: 0,
                     ),
@@ -115,8 +121,10 @@ class FamilyMemberSelector extends StatelessWidget {
                         shape: BoxShape.circle,
                         border: Border.all(
                           color: isSelected
-                              ? Colors.white.withAlpha(77)
-                              : Colors.grey[300]!,
+                              ? Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withAlpha(77)
+                              : Theme.of(context).colorScheme.outlineVariant,
                           width: 2,
                         ),
                       ),
@@ -128,12 +136,20 @@ class FamilyMemberSelector extends StatelessWidget {
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Container(
-                                    color: Colors.grey[300],
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.surfaceContainerHighest,
                                     child: Center(
                                       child: Text(
                                         member.initials,
-                                        style: const TextStyle(
-                                          color: Colors.white,
+                                        style: TextStyle(
+                                          color: isSelected
+                                              ? Theme.of(
+                                                  context,
+                                                ).colorScheme.primary
+                                              : Theme.of(
+                                                  context,
+                                                ).colorScheme.onSurfaceVariant,
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -143,12 +159,20 @@ class FamilyMemberSelector extends StatelessWidget {
                                 },
                               )
                             : Container(
-                                color: Colors.grey[300],
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainerHighest,
                                 child: Center(
                                   child: Text(
                                     member.initials,
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                    style: TextStyle(
+                                      color: isSelected
+                                          ? Theme.of(
+                                              context,
+                                            ).colorScheme.primary
+                                          : Theme.of(
+                                              context,
+                                            ).colorScheme.onSurfaceVariant,
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -164,7 +188,9 @@ class FamilyMemberSelector extends StatelessWidget {
                       member.name,
                       style: TextStyle(
                         fontSize: 12,
-                        color: isSelected ? Colors.white : Colors.grey[800],
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
                       textAlign: TextAlign.center,
@@ -178,8 +204,10 @@ class FamilyMemberSelector extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 10,
                         color: isSelected
-                            ? Colors.white.withAlpha(204)
-                            : Colors.grey[600],
+                            ? Theme.of(
+                                context,
+                              ).colorScheme.onPrimary.withAlpha(204)
+                            : Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -194,8 +222,12 @@ class FamilyMemberSelector extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? Colors.white.withAlpha(51)
-                              : const Color(0xFF1A73E8).withAlpha(26),
+                              ? Theme.of(
+                                  context,
+                                ).colorScheme.onPrimary.withAlpha(51)
+                              : Theme.of(
+                                  context,
+                                ).colorScheme.primary.withAlpha(26),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -203,8 +235,8 @@ class FamilyMemberSelector extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 9,
                             color: isSelected
-                                ? Colors.white
-                                : const Color(0xFF1A73E8),
+                                ? Theme.of(context).colorScheme.onPrimary
+                                : Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

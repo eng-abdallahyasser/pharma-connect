@@ -15,6 +15,9 @@ import 'package:pharma_connect/app/core/services/localization_service.dart';
 import 'package:pharma_connect/app/core/services/theme_service.dart';
 import 'package:pharma_connect/app/core/services/settings_service.dart';
 import 'package:pharma_connect/app/modules/auth/services/auth_service.dart';
+import 'package:pharma_connect/app/modules/profile/widgets/family_members_modal.dart';
+import 'package:pharma_connect/app/modules/profile/widgets/medical_profile_modal.dart';
+import 'package:pharma_connect/app/modules/profile/widgets/prescriptions_modal.dart';
 import '../models/user_model.dart';
 import '../models/prescription_model.dart';
 import '../models/family_member_model.dart';
@@ -211,7 +214,15 @@ class ProfileController extends GetxController {
         description: getTranslation('profile.medical_profile_desc'),
         icon: Icons.favorite,
         iconColor: const Color(0xFFEF4444),
-        onTap: () => showMedicalProfile.value = true,
+        onTap: () {
+          Get.bottomSheet(
+            MedicalProfileModal(
+                      user: currentUser,
+                      onClose: toggleMedicalProfile,
+                    ),
+            isScrollControlled: true,
+          );
+        },
       ),
       MenuItemModel(
         id: 'family',
@@ -220,7 +231,18 @@ class ProfileController extends GetxController {
         icon: Icons.people,
         iconColor: const Color(0xFF22C55E),
         badge: familyMembers.length,
-        onTap: () => showFamilyMembers.value = true,
+        onTap: () {
+          Get.bottomSheet(
+            FamilyMembersModal(
+            familyMembers: getAllFamilyMembers(),
+            onClose: toggleFamilyMembers,
+            onAddPressed: () {
+              // TODO: Navigate to add family member screen
+            },
+          ),
+            isScrollControlled: true,
+          );
+        },
       ),
       MenuItemModel(
         id: 'prescriptions',
@@ -229,7 +251,18 @@ class ProfileController extends GetxController {
         icon: Icons.description,
         iconColor: const Color(0xFFA855F7),
         badge: prescriptions.where((p) => p.isActive).length,
-        onTap: () => showPrescriptions.value = true,
+        onTap: () {
+          Get.bottomSheet(
+            PrescriptionsModal(
+              prescriptions: getAllPrescriptions(),
+              onClose: togglePrescriptions,
+              onDownload: (prescription) {
+                downloadPrescription(prescription);
+              },
+            ),
+            isScrollControlled: true,
+          );
+        },
       ),
       MenuItemModel(
         id: 'addresses',
@@ -488,7 +521,7 @@ class ProfileController extends GetxController {
             final savedUser = storageService.getUser();
             final updatedUser = savedUser?.copyWith(profileImage: newImageUrl);
             storageService.saveUser(updatedUser!);
-           
+
             update();
           }
         }

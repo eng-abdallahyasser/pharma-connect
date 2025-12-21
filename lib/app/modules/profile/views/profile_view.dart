@@ -4,9 +4,6 @@ import '../controllers/profile_controller.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/menu_item_card.dart';
 import '../widgets/settings_item_card.dart';
-import '../widgets/medical_profile_modal.dart';
-import '../widgets/prescriptions_modal.dart';
-import '../widgets/family_members_modal.dart';
 
 // Profile view - main screen for user profile management
 class ProfileView extends GetView<ProfileController> {
@@ -178,55 +175,7 @@ class ProfileView extends GetView<ProfileController> {
         ),
       ),
 
-      // Medical Profile Modal
-      floatingActionButton: Obx(
-        () => controller.showMedicalProfile.value
-            ? Stack(
-                children: [
-                  // Backdrop
-                  GestureDetector(
-                    onTap: controller.toggleMedicalProfile,
-                    child: Container(color: Colors.black.withAlpha(13)),
-                  ),
-                  // Modal
-                  Center(
-                    child: MedicalProfileModal(
-                      user: controller.currentUser,
-                      onClose: controller.toggleMedicalProfile,
-                    ),
-                  ),
-                ],
-              )
-            : const SizedBox.shrink(),
-      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-      // Additional modals using GetX dialog
-      bottomSheet: Obx(() {
-        // Prescriptions modal
-        if (controller.showPrescriptions.value) {
-          return PrescriptionsModal(
-            prescriptions: controller.getAllPrescriptions(),
-            onClose: controller.togglePrescriptions,
-            onDownload: (prescription) {
-              controller.downloadPrescription(prescription);
-            },
-          );
-        }
-
-        // Family members modal
-        if (controller.showFamilyMembers.value) {
-          return FamilyMembersModal(
-            familyMembers: controller.getAllFamilyMembers(),
-            onClose: controller.toggleFamilyMembers,
-            onAddPressed: () {
-              // TODO: Navigate to add family member screen
-            },
-          );
-        }
-
-        return const SizedBox.shrink();
-      }),
     );
   }
 }

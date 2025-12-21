@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 // Medicine model representing a medication with dosage and schedule
 class MedicineModel {
   final int id;
@@ -5,7 +7,7 @@ class MedicineModel {
   final String dosage;
   final String frequency; // "Once Daily", "Twice Daily", etc.
   final List<String> times; // ["08:00 AM", "08:00 PM"]
-  final String color; // Hex color code for the medicine
+  final Color color; // Color for the medicine
   final bool reminderEnabled;
   final int takenToday;
   final int totalToday;
@@ -47,7 +49,7 @@ class MedicineModel {
     String? dosage,
     String? frequency,
     List<String>? times,
-    String? color,
+    Color? color,
     bool? reminderEnabled,
     int? takenToday,
     int? totalToday,

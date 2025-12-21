@@ -23,11 +23,11 @@ class NotificationTabs extends StatelessWidget {
     return Container(
       // White background with rounded corners
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Theme.of(context).shadowColor.withOpacity(0.05),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -38,6 +38,7 @@ class NotificationTabs extends StatelessWidget {
         children: [
           // All tab
           _buildTab(
+            context,
             label: 'notifications.all'.tr,
             count: allCount,
             isSelected: selectedTab == 'all',
@@ -48,6 +49,7 @@ class NotificationTabs extends StatelessWidget {
 
           // Medicine tab
           _buildTab(
+            context,
             label: 'notifications.medicine'.tr,
             count: medicineCount,
             isSelected: selectedTab == 'medicine',
@@ -58,6 +60,7 @@ class NotificationTabs extends StatelessWidget {
 
           // Other tab
           _buildTab(
+            context,
             label: 'notifications.other'.tr,
             count: otherCount,
             isSelected: selectedTab == 'other',
@@ -69,7 +72,8 @@ class NotificationTabs extends StatelessWidget {
   }
 
   // Build individual tab
-  Widget _buildTab({
+  Widget _buildTab(
+    BuildContext context, {
     required String label,
     required int count,
     required bool isSelected,
@@ -81,7 +85,9 @@ class NotificationTabs extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF1A73E8) : Colors.transparent,
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -91,7 +97,9 @@ class NotificationTabs extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
-                  color: isSelected ? Colors.white : Colors.grey[600],
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 2),
@@ -100,8 +108,8 @@ class NotificationTabs extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11,
                   color: isSelected
-                      ? Colors.white.withOpacity(0.8)
-                      : Colors.grey[500],
+                      ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.8)
+                      : Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
