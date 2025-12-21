@@ -9,26 +9,26 @@ class UploadFAB extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: onPressed ?? _showUploadModal,
+      onPressed: onPressed ?? (){_showUploadModal(context);},
       backgroundColor: const Color(0xFF00C897),
       elevation: 8,
       child: const Icon(Icons.camera_alt, color: Colors.white, size: 24),
     );
   }
 
-  void _showUploadModal() {
+  void _showUploadModal(BuildContext context) {
     Get.bottomSheet(
-      _buildUploadModal(),
+      _buildUploadModal(context),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       barrierColor: Colors.black.withAlpha(128),
     );
   }
 
-  Widget _buildUploadModal() {
+  Widget _buildUploadModal(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
@@ -43,7 +43,7 @@ class UploadFAB extends StatelessWidget {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: Theme.of(context).colorScheme.onSurface,
               borderRadius: BorderRadius.circular(2),
             ),
             margin: const EdgeInsets.only(bottom: 16),
@@ -60,12 +60,13 @@ class UploadFAB extends StatelessWidget {
           Text(
             'nav.upload_description'.tr,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+            style: TextStyle(fontSize: 14, color: Theme.of(context).colorScheme.onSurface),
           ),
           const SizedBox(height: 24),
 
           // Take Photo Option
           _buildUploadOption(
+            context: context,
             icon: Icons.camera_alt,
             title: 'nav.take_photo'.tr,
             description: 'nav.use_camera'.tr,
@@ -78,6 +79,7 @@ class UploadFAB extends StatelessWidget {
 
           // Choose from Gallery Option
           _buildUploadOption(
+            context: context,
             icon: Icons.image,
             title: 'nav.choose_gallery'.tr,
             description: 'nav.select_photo'.tr,
@@ -112,13 +114,14 @@ class UploadFAB extends StatelessWidget {
     required String title,
     required String description,
     required VoidCallback onTap,
+    required BuildContext context,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey[300]!),
+          border: Border.all(color: Theme.of(context).colorScheme.onSurface),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -127,10 +130,10 @@ class UploadFAB extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: const Color(0xFF1A73E8).withOpacity(0.1),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: const Color(0xFF1A73E8), size: 24),
+              child: Icon(icon, color: Theme.of(context).colorScheme.onSurface, size: 24),
             ),
             const SizedBox(width: 16),
             Expanded(

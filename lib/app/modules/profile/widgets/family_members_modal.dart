@@ -8,11 +8,11 @@ class FamilyMembersModal extends StatelessWidget {
   final VoidCallback? onAddPressed;
 
   const FamilyMembersModal({
-    Key? key,
+    super.key,
     required this.familyMembers,
     required this.onClose,
     this.onAddPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

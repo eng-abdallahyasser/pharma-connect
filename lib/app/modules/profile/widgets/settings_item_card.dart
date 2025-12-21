@@ -11,13 +11,13 @@ class SettingsItemCard extends StatelessWidget {
   final RxBool? notificationsEnabled; // Observable for notifications state
 
   const SettingsItemCard({
-    Key? key,
+    super.key,
     required this.item,
     this.isLast = false,
     this.onToggleChanged,
     this.darkModeEnabled,
     this.notificationsEnabled,
-  }) : super(key: key);
+  });
 
   bool _getInitialToggleValue() {
     if (item.id == 'darkmode' && darkModeEnabled != null) {
@@ -36,24 +36,24 @@ class SettingsItemCard extends StatelessWidget {
         // Add border only if not the last item
         decoration: BoxDecoration(
           border: !isLast
-              ? Border(bottom: BorderSide(color: Colors.grey[300]!, width: 1))
+              ? Border(bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1))
               : null,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
             // Icon
-            Icon(item.icon, color: Colors.grey[600], size: 20),
+            Icon(item.icon, color: Theme.of(context).hintColor, size: 20),
             const SizedBox(width: 16),
 
             // Label
             Expanded(
               child: Text(
                 item.label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF1F2937),
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
               ),
             ),
@@ -73,8 +73,8 @@ class SettingsItemCard extends StatelessWidget {
                     height: 28,
                     decoration: BoxDecoration(
                       color: toggleValue
-                          ? const Color(0xFF1A73E8)
-                          : Colors.grey[300],
+                          ? Theme.of(context).primaryColor
+                          : Theme.of(context).dividerColor,
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: Stack(

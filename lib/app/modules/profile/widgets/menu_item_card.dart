@@ -7,10 +7,10 @@ class MenuItemCard extends StatelessWidget {
   final bool isLast; // Whether this is the last item in the list
 
   const MenuItemCard({
-    Key? key,
+    super.key,
     required this.item,
     this.isLast = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class MenuItemCard extends StatelessWidget {
           border: !isLast
               ? Border(
                   bottom: BorderSide(
-                    color: Colors.grey[300]!,
+                    color: Theme.of(context).dividerColor,
                     width: 1,
                   ),
                 )
@@ -36,7 +36,7 @@ class MenuItemCard extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -55,10 +55,10 @@ class MenuItemCard extends StatelessWidget {
                   // Menu item label
                   Text(
                     item.label,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: Color(0xFF1F2937),
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -68,7 +68,7 @@ class MenuItemCard extends StatelessWidget {
                     item.description,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.grey[600],
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
                   ),
                 ],
@@ -83,14 +83,14 @@ class MenuItemCard extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A73E8),
+                  color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   item.badge.toString(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -100,7 +100,7 @@ class MenuItemCard extends StatelessWidget {
             const SizedBox(width: 8),
             Icon(
               Icons.chevron_right,
-              color: Colors.grey[400],
+              color: Theme.of(context).hintColor,
               size: 20,
             ),
           ],

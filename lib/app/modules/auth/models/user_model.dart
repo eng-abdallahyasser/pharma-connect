@@ -46,4 +46,17 @@ class UserModel {
   }
 
   String get fullName => '$firstName $lastName';
+
+  UserModel? copyWith({String? profileImage ,String? email, String? firstName, String? lastName, String? phoneNumber, DateTime? createdAt, bool? isEmailVerified}) {
+    return UserModel(
+      id: id,
+      email: email ?? this.email,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      profileImage: profileImage ?? this.profileImage,
+      createdAt: createdAt ?? this.createdAt,
+      isEmailVerified: isEmailVerified ?? this.isEmailVerified,
+    );
+  }
 }

@@ -19,12 +19,12 @@ class AttachmentMenu extends StatelessWidget {
     return Container(
       // White card with rounded corners and shadow
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.grey[200]!, width: 1),
+        border: Border.all(color: Theme.of(context).dividerColor, width: 1),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Theme.of(context).shadowColor,
             blurRadius: 8,
             spreadRadius: 0,
           ),
@@ -36,25 +36,28 @@ class AttachmentMenu extends StatelessWidget {
         children: [
           // Photo attachment option
           _buildAttachmentOption(
+            context,
             icon: Icons.image,
             label: 'chat.attachment_photo'.tr,
-            backgroundColor: const Color(0xFF1A73E8),
+            backgroundColor: Theme.of(context).primaryColor,
             onPressed: onPhotoPressed,
           ),
 
           // Document attachment option
           _buildAttachmentOption(
+            context,
             icon: Icons.description,
             label: 'chat.attachment_document'.tr,
-            backgroundColor: const Color(0xFF00C897),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             onPressed: onDocumentPressed,
           ),
 
           // Medical report attachment option
           _buildAttachmentOption(
+            context,
             icon: Icons.file_present,
             label: 'chat.attachment_medical_report'.tr,
-            backgroundColor: const Color(0xFFA855F7),
+            backgroundColor: Theme.of(context).colorScheme.tertiary,
             onPressed: onMedicalReportPressed,
           ),
         ],
@@ -63,7 +66,8 @@ class AttachmentMenu extends StatelessWidget {
   }
 
   // Build individual attachment option
-  Widget _buildAttachmentOption({
+  Widget _buildAttachmentOption(
+    BuildContext context, {
     required IconData icon,
     required String label,
     required Color backgroundColor,
@@ -89,9 +93,9 @@ class AttachmentMenu extends StatelessWidget {
           // Label
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
-              color: Color(0xFF1F2937),
+              color: Theme.of(context).textTheme.bodyMedium?.color,
               fontWeight: FontWeight.w500,
             ),
             textAlign: TextAlign.center,

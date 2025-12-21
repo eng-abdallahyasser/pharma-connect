@@ -8,11 +8,11 @@ class PrescriptionsModal extends StatelessWidget {
   final Function(PrescriptionModel)? onDownload;
 
   const PrescriptionsModal({
-    Key? key,
+    super.key,
     required this.prescriptions,
     required this.onClose,
     this.onDownload,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class PrescriptionsModal extends StatelessWidget {
       child: Container(
         constraints: const BoxConstraints(maxWidth: 500),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(24),
         ),
         child: SingleChildScrollView(
@@ -40,12 +40,12 @@ class PrescriptionsModal extends StatelessWidget {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFA855F7).withOpacity(0.1),
+                        color: Theme.of(context).cardColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.description,
-                        color: Color(0xFFA855F7),
+                        color: Theme.of(context).primaryColor,
                         size: 24,
                       ),
                     ),
@@ -75,7 +75,7 @@ class PrescriptionsModal extends StatelessWidget {
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(

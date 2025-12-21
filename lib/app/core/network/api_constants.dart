@@ -7,6 +7,7 @@ class ApiConstants {
   static const String sendOtp = '/api/auth/otp';
   static const String changeProfilePhoto = '/api/profile/photo';
   static const String getBranches = '/api/branches';
+  static const String getProviders = '/api/providers';
 
 
   // Headers

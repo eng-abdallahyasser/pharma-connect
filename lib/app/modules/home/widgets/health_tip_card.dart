@@ -26,12 +26,15 @@ class HealthTipCard extends StatelessWidget {
                 width: 280,
                 height: 160,
                 fit: BoxFit.cover,
-                placeholder: (context, url) =>
-                    Container(width: 280, height: 160, color: Colors.grey[300]),
+                placeholder: (context, url) => Container(
+                  width: 280,
+                  height: 160,
+                  color: Theme.of(context).highlightColor,
+                ),
                 errorWidget: (context, url, error) => Container(
                   width: 280,
                   height: 160,
-                  color: Colors.grey[300],
+                  color: Theme.of(context).highlightColor,
                   child: const Icon(Icons.image),
                 ),
               ),

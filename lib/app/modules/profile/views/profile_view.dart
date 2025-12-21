@@ -46,7 +46,7 @@ class ProfileView extends GetView<ProfileController> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey[600],
+                        color: Theme.of(context).hintColor,
                       ),
                     ),
                   ),
@@ -54,11 +54,11 @@ class ProfileView extends GetView<ProfileController> {
                   // Account menu items container
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withAlpha(13),
+                          color: Theme.of(context).shadowColor.withAlpha(13),
                           blurRadius: 4,
                           spreadRadius: 0,
                         ),
@@ -85,7 +85,7 @@ class ProfileView extends GetView<ProfileController> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey[600],
+                        color: Theme.of(context).hintColor,
                       ),
                     ),
                   ),
@@ -93,11 +93,11 @@ class ProfileView extends GetView<ProfileController> {
                   // Settings menu items container
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withAlpha(13),
+                          color: Theme.of(context).shadowColor.withAlpha(13),
                           blurRadius: 4,
                           spreadRadius: 0,
                         ),
@@ -127,7 +127,7 @@ class ProfileView extends GetView<ProfileController> {
                     child: ElevatedButton(
                       onPressed: controller.logout,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFEF4444),
+                        backgroundColor: Theme.of(context).colorScheme.error,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -136,16 +136,16 @@ class ProfileView extends GetView<ProfileController> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.logout,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onError,
                             size: 20,
                           ),
                           const SizedBox(width: 8),
-                          const Text(
+                          Text(
                             'Logout',
                             style: TextStyle(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.onError,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
@@ -162,7 +162,10 @@ class ProfileView extends GetView<ProfileController> {
                     child: Obx(
                       () => Text(
                         'Version ${controller.version.value}',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).hintColor,
+                        ),
                       ),
                     ),
                   ),

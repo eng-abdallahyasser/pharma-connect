@@ -37,10 +37,10 @@ class LanguageSelectionDialog extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? Colors.blue.withOpacity(0.1)
+                        ? Theme.of(context).primaryColor.withOpacity(0.1)
                         : Colors.transparent,
                     border: Border(
-                      bottom: BorderSide(color: Colors.grey.shade200),
+                      bottom: BorderSide(color: Theme.of(context).dividerColor),
                     ),
                   ),
                   child: Row(
@@ -53,12 +53,17 @@ class LanguageSelectionDialog extends StatelessWidget {
                             fontWeight: isSelected
                                 ? FontWeight.bold
                                 : FontWeight.normal,
-                            color: isSelected ? Colors.blue : Colors.black87,
+                            color: isSelected
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context).textTheme.bodyLarge?.color,
                           ),
                         ),
                       ),
                       if (isSelected)
-                        const Icon(Icons.check, color: Colors.blue),
+                        Icon(
+                          Icons.check,
+                          color: Theme.of(context).primaryColor,
+                        ),
                     ],
                   ),
                 ),
@@ -101,11 +106,13 @@ class LanguageSelectionTile extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
+            border: Border(
+              bottom: BorderSide(color: Theme.of(context).dividerColor),
+            ),
           ),
           child: Row(
             children: [
-              const Icon(Icons.language, color: Colors.blue),
+              Icon(Icons.language, color: Theme.of(context).primaryColor),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -123,10 +130,13 @@ class LanguageSelectionTile extends StatelessWidget {
               ),
               Text(
                 localizationService.getCurrentLanguageName(),
-                style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).textTheme.bodySmall?.color,
+                ),
               ),
               const SizedBox(width: 8),
-              const Icon(Icons.chevron_right, color: Colors.grey),
+              Icon(Icons.chevron_right, color: Theme.of(context).hintColor),
             ],
           ),
         ),
@@ -136,14 +146,12 @@ class LanguageSelectionTile extends StatelessWidget {
 }
 
 /// Show Language Selection Dialog
-///
 /// This function displays a language selection dialog
 void showLanguageSelectionDialog() {
   Get.dialog(LanguageSelectionDialog(), barrierDismissible: false);
 }
 
 /// Language Controller for managing language state
-///
 /// This controller can be used to manage language-related state and logic
 class LanguageController extends GetxController {
   final localizationService = Get.find<LocalizationService>();

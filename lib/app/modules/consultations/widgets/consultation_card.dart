@@ -6,7 +6,7 @@ class ConsultationCard extends StatelessWidget {
   final ConsultationModel consultation;
   final bool isPast; // Whether this is a past consultation
   final VoidCallback?
-      onActionPressed; // For upcoming: join/call, for past: view prescription
+  onActionPressed; // For upcoming: join/call, for past: view prescription
   final VoidCallback? onReschedule;
   final VoidCallback? onCancel;
 
@@ -54,11 +54,11 @@ class ConsultationCard extends StatelessWidget {
     return Container(
       // White card with rounded corners and shadow
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(13),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -81,10 +81,10 @@ class ConsultationCard extends StatelessWidget {
                     // Doctor name
                     Text(
                       consultation.doctorName,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1F2937),
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -92,10 +92,7 @@ class ConsultationCard extends StatelessWidget {
                     // Specialization
                     Text(
                       consultation.specialization,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodyMedium?.color),
                     ),
                     const SizedBox(height: 8),
 
@@ -105,14 +102,14 @@ class ConsultationCard extends StatelessWidget {
                         Icon(
                           Icons.calendar_today,
                           size: 14,
-                          color: Colors.grey[600],
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
                         ),
                         const SizedBox(width: 6),
                         Text(
                           consultation.date,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[600],
+                            color: Theme.of(context).textTheme.bodyMedium?.color,
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -120,7 +117,7 @@ class ConsultationCard extends StatelessWidget {
                           consultation.time,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey[600],
+                            color: Theme.of(context).textTheme.bodyMedium?.color,
                           ),
                         ),
                       ],
@@ -155,10 +152,7 @@ class ConsultationCard extends StatelessWidget {
           const SizedBox(height: 12),
 
           // Divider
-          Container(
-            height: 1,
-            color: Colors.grey[200],
-          ),
+          Container(height: 1, color: Theme.of(context).dividerColor),
 
           const SizedBox(height: 12),
 
@@ -206,18 +200,14 @@ class ConsultationCard extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              _getTypeIcon(),
-                              size: 16,
-                              color: Colors.white,
-                            ),
+                            Icon(_getTypeIcon(), size: 16, color: Colors.white),
                             const SizedBox(width: 6),
                             Text(
                               consultation.isVideoCall
                                   ? 'Join Call'
                                   : consultation.isChat
-                                      ? 'Join Chat'
-                                      : 'Call Now',
+                                  ? 'Join Chat'
+                                  : 'Call Now',
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -239,18 +229,12 @@ class ConsultationCard extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          side: BorderSide(
-                            color: Colors.grey[300]!,
-                          ),
+                          side: BorderSide(color: Theme.of(context).dividerColor),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.edit,
-                              size: 16,
-                              color: Colors.grey[600],
-                            ),
+                            Icon(Icons.edit, size: 16, color: Colors.grey[600]),
                             const SizedBox(width: 6),
                             Text(
                               'Reschedule',
@@ -276,11 +260,7 @@ class ConsultationCard extends StatelessWidget {
                 // Consultation type with icon
                 Row(
                   children: [
-                    Icon(
-                      _getTypeIcon(),
-                      size: 16,
-                      color: Colors.grey[600],
-                    ),
+                    Icon(_getTypeIcon(), size: 16, color: Colors.grey[600]),
                     const SizedBox(width: 6),
                     Text(
                       consultation.type,

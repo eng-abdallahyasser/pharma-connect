@@ -7,10 +7,10 @@ class MedicalProfileModal extends StatelessWidget {
   final VoidCallback onClose;
 
   const MedicalProfileModal({
-    Key? key,
+    super.key,
     required this.user,
     required this.onClose,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -11,6 +11,8 @@ class AppTheme {
   static const Color textColor = Color(0xFF1F2937);
   static const Color mutedTextColor = Color(0xFF6B7280);
   static const Color borderColor = Color(0xFFE5E7EB);
+  static const Color purpleColor = Color(0xFF906398);
+  static const Color orangeColor = Colors.orange;
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -18,6 +20,20 @@ class AppTheme {
       brightness: Brightness.light,
       primaryColor: primaryColor,
       scaffoldBackgroundColor: backgroundColor,
+      colorScheme: const ColorScheme.light(
+        primary: primaryColor,
+        secondary: secondaryColor,
+        tertiary: purpleColor,
+        surface: cardColor,
+        background: backgroundColor,
+        error: accentColor,
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onSurface: textColor,
+        onBackground: textColor,
+        onError: Colors.white,
+        outline: borderColor,
+      ),
       appBarTheme: const AppBarTheme(
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
@@ -112,37 +128,49 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      primaryColor:
-          primaryColorDark, // Use a darker variant of your primary color
-      scaffoldBackgroundColor: backgroundColorDark, // Dark background color
+      primaryColor: primaryColorDark,
+      scaffoldBackgroundColor: backgroundColorDark,
+      hintColor: Colors.grey[400],
+      dividerColor: Colors.grey[800],
+      shadowColor: Colors.black.withOpacity(0.3),
+      colorScheme: ColorScheme.dark(
+        primary: primaryColorDark,
+        secondary: secondaryColor,
+        tertiary: purpleColor,
+        surface: Colors.grey[900]!,
+        background: backgroundColorDark,
+        error: accentColor,
+        onPrimary: Colors.white,
+        onSecondary: Colors.white,
+        onSurface: Colors.white,
+        onBackground: Colors.white,
+        onError: Colors.white,
+        outline: Colors.grey.shade400,
+      ),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.grey[900], // Dark app bar background
-        foregroundColor:
-            Colors.white, // Keep white for contrast on dark background
+        backgroundColor: Colors.grey[900],
+        foregroundColor: Colors.white,
         elevation: 0,
       ),
       cardTheme: CardThemeData(
-        color: Colors.grey[900], // Dark card background
+        color: Colors.grey[900],
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: backgroundColorDark, // Dark fill for inputs
+        fillColor: backgroundColorDark,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.grey.shade400), // Darker border
+          borderSide: BorderSide(color: Colors.grey.shade400),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.grey.shade400), // Darker border
+          borderSide: BorderSide(color: Colors.grey.shade400),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(
-            color: primaryColorDark,
-            width: 2,
-          ), // Dark primary
+          borderSide: const BorderSide(color: primaryColorDark, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
@@ -151,8 +179,8 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColorDark, // Dark primary color
-          foregroundColor: Colors.white, // Keep white text
+          backgroundColor: primaryColorDark,
+          foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -161,8 +189,8 @@ class AppTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: primaryColorDark, // Dark primary color
-          side: BorderSide(color: Colors.grey.shade400), // Darker border
+          foregroundColor: primaryColorDark,
+          side: BorderSide(color: Colors.grey.shade400),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -173,43 +201,37 @@ class AppTheme {
         displayLarge: const TextStyle(
           fontSize: 32,
           fontWeight: FontWeight.bold,
-          color:
-              Colors.white, // White for better readability on dark background
+          color: Colors.white,
         ),
         displayMedium: const TextStyle(
           fontSize: 28,
           fontWeight: FontWeight.bold,
-          color:
-              Colors.white, // White for better readability on dark background
+          color: Colors.white,
         ),
         headlineSmall: const TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.w600,
-          color:
-              Colors.white, // White for better readability on dark background
+          color: Colors.white,
         ),
         titleLarge: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w600,
-          color:
-              Colors.white, // White for better readability on dark background
+          color: Colors.white,
         ),
         bodyLarge: const TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color:
-              Colors.white, // White for better readability on dark background
+          color: Colors.white,
         ),
         bodyMedium: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
-          color:
-              Colors.white, // White for better readability on dark background
+          color: Colors.white,
         ),
         labelSmall: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w500,
-          color: Colors.grey[400], // Lighter muted text for dark theme
+          color: Colors.grey[400],
         ),
       ),
     );

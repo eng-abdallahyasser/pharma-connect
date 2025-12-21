@@ -44,10 +44,10 @@ class QuickActionCard extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: Colors.black87,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

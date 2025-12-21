@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:pharma_connect/app/core/services/storage_service.dart';
 import 'package:pharma_connect/app/modules/home/widgets/addresses_bottom_sheet.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -477,30 +478,20 @@ class ProfileController extends GetxController {
         // Assuming the response structure based on typical API patterns
         // Modify this based on actual API response
         String? newImageUrl;
-        if (response is Map && response.containsKey('data')) {
+        if (response is Map && response.containsKey('photoUrl')) {
           // Adjust based on nesting: response['data']['profileImage'] or similar
           // For now, let's assume the API returns the updated user object or the URL string
-          if (response['data'] is Map &&
-              response['data']['profileImage'] != null) {
-            newImageUrl = response['data']['profileImage'];
-          } else if (response['data'] is String) {
-            // If returns just the url
-            newImageUrl = response['data'];
+          if (response['photoUrl'] != null && response['photoUrl'] is String) {
+            newImageUrl = response['photoUrl'];
+            currentUser = currentUser.copyWith(imageUrl: newImageUrl);
+            final storageService = Get.find<StorageService>();
+            final savedUser = storageService.getUser();
+            final updatedUser = savedUser?.copyWith(profileImage: newImageUrl);
+            storageService.saveUser(updatedUser!);
+           
+            update();
           }
         }
-
-        // If we got a new URL, update the local user
-        if (newImageUrl != null) {
-          currentUser = currentUser.copyWith(imageUrl: newImageUrl);
-          update(); // Update UI
-        } else {
-          // Fallback: If we can't parse the response, maybe reload the user profile
-          // _loadCurrentUser(); // This only loads from AuthService, so we might need to refresh AuthService
-          // For now, let's assume we update the image to the local path if API succeeds but doesn't return URL
-          // But `imageUrl` is String.
-          // Safe bet: Show success message.
-        }
-
         Get.snackbar('Success', 'Profile photo updated successfully');
       }
     } catch (e) {

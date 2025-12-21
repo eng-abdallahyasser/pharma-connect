@@ -48,7 +48,9 @@ class PrescriptionCard extends StatelessWidget {
                   height: 48,
                   decoration: BoxDecoration(
                     color: prescription.isVerified
-                        ? const Color(0xFF00C897).withOpacity(0.1)
+                        ? Theme.of(
+                            context,
+                          ).colorScheme.secondary.withOpacity(0.1)
                         : Colors.amber[100],
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -56,7 +58,7 @@ class PrescriptionCard extends StatelessWidget {
                     child: Icon(
                       prescription.isPdf ? Icons.picture_as_pdf : Icons.image,
                       color: prescription.isVerified
-                          ? const Color(0xFF00C897)
+                          ? Theme.of(context).colorScheme.secondary
                           : Colors.amber[700],
                       size: 24,
                     ),
@@ -73,10 +75,10 @@ class PrescriptionCard extends StatelessWidget {
                       // File name
                       Text(
                         prescription.fileName,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          color: Color(0xFF1F2937),
+                          color: Theme.of(context).textTheme.bodyLarge?.color,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -91,7 +93,7 @@ class PrescriptionCard extends StatelessWidget {
                             prescription.fileSize,
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey[600],
+                              color: Theme.of(context).hintColor,
                             ),
                           ),
                           const SizedBox(width: 8),
@@ -99,7 +101,7 @@ class PrescriptionCard extends StatelessWidget {
                             width: 4,
                             height: 4,
                             decoration: BoxDecoration(
-                              color: Colors.grey[400],
+                              color: Theme.of(context).dividerColor,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -108,7 +110,7 @@ class PrescriptionCard extends StatelessWidget {
                             prescription.uploadDate,
                             style: TextStyle(
                               fontSize: 12,
-                              color: Colors.grey[600],
+                              color: Theme.of(context).hintColor,
                             ),
                           ),
                         ],
@@ -125,7 +127,9 @@ class PrescriptionCard extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: prescription.isVerified
-                        ? const Color(0xFF00C897).withOpacity(0.1)
+                        ? Theme.of(
+                            context,
+                          ).colorScheme.secondary.withOpacity(0.1)
                         : Colors.amber[100],
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -134,7 +138,7 @@ class PrescriptionCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 11,
                       color: prescription.isVerified
-                          ? const Color(0xFF00C897)
+                          ? Theme.of(context).colorScheme.secondary
                           : Colors.amber[700],
                       fontWeight: FontWeight.w600,
                     ),
@@ -151,14 +155,14 @@ class PrescriptionCard extends StatelessWidget {
                 Icon(
                   Icons.person,
                   size: 16,
-                  color: Colors.grey[600],
+                  color: Theme.of(context).hintColor,
                 ),
                 const SizedBox(width: 8),
                 Text(
                   prescription.doctorName,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[700],
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                 ),
               ],
@@ -173,7 +177,7 @@ class PrescriptionCard extends StatelessWidget {
                   Icon(
                     Icons.note,
                     size: 16,
-                    color: Colors.grey[600],
+                    color: Theme.of(context).hintColor,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
@@ -181,7 +185,7 @@ class PrescriptionCard extends StatelessWidget {
                       prescription.notes!,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: Theme.of(context).hintColor,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -200,9 +204,9 @@ class PrescriptionCard extends StatelessWidget {
                 child: LinearProgressIndicator(
                   value: prescription.uploadProgress,
                   minHeight: 4,
-                  backgroundColor: Colors.grey[200],
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    Color(0xFF1A73E8),
+                  backgroundColor: Theme.of(context).dividerColor,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor,
                   ),
                 ),
               ),
@@ -256,12 +260,16 @@ class PrescriptionCard extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      side: BorderSide(color: Colors.red[300]!),
+                      side: BorderSide(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.error.withOpacity(0.5),
+                      ),
                     ),
                     child: Icon(
                       Icons.delete,
                       size: 16,
-                      color: Colors.red[600],
+                      color: Theme.of(context).colorScheme.error,
                     ),
                   ),
                 ),

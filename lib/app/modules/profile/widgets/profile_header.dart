@@ -52,7 +52,7 @@ class ProfileHeader extends StatelessWidget {
                         errorBuilder: (context, error, stackTrace) {
                           // Fallback avatar with initials
                           return Container(
-                            color: Colors.white.withAlpha(51),
+                            color: Theme.of(context).cardColor.withAlpha(51),
                             child: Center(
                               child: Text(
                                 user.name
@@ -62,8 +62,8 @@ class ProfileHeader extends StatelessWidget {
                                     )
                                     .join('')
                                     .toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style: TextStyle(
+                                  color: Theme.of(context).cardColor,
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -83,17 +83,17 @@ class ProfileHeader extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Theme.of(context).cardColor,
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: const Color(0xFF1A73E8),
+                              color: Theme.of(context).primaryColor,
                               width: 2,
                             ),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.camera_alt,
                             size: 16,
-                            color: Color(0xFF1A73E8),
+                            color: Theme.of(context).primaryColor,
                           ),
                         ),
                       ),
@@ -110,10 +110,10 @@ class ProfileHeader extends StatelessWidget {
                     // User name
                     Text(
                       user.name,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Theme.of(context).cardColor,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -123,7 +123,7 @@ class ProfileHeader extends StatelessWidget {
                       user.email,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withAlpha(204),
+                        color: Theme.of(context).cardColor.withAlpha(204),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -135,7 +135,7 @@ class ProfileHeader extends StatelessWidget {
                       user.phone,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withAlpha(204),
+                        color: Theme.of(context).cardColor.withAlpha(204),
                       ),
                     ),
                   ],
@@ -148,10 +148,10 @@ class ProfileHeader extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Colors.white.withAlpha(26),
+                    color: Theme.of(context).cardColor.withAlpha(26),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.edit, color: Colors.white, size: 20),
+                  child: Icon(Icons.edit, color: Theme.of(context).cardColor, size: 20),
                 ),
               ),
             ],

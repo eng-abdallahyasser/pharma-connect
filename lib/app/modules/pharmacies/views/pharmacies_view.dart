@@ -60,6 +60,12 @@ class PharmaciesView extends GetView<PharmaciesController> {
                           child: TextField(
                             onChanged: controller.updateSearchQuery,
                             decoration: InputDecoration(
+                              fillColor: Theme.of(context).colorScheme.surface,
+                              hintStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(color: Theme.of(context).hintColor),
+                              
                               hintText: 'pharmacies.search_placeholder'.tr,
                               border: InputBorder.none,
                               enabledBorder:

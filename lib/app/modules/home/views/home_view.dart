@@ -20,9 +20,9 @@ class HomeView extends GetView<HomeController> {
           children: [
             // Top Bar with Location and Notification
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF1A73E8),
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(24),
                   bottomRight: Radius.circular(24),
                 ),
@@ -99,8 +99,8 @@ class HomeView extends GetView<HomeController> {
                             child: Container(
                               width: 8,
                               height: 8,
-                              decoration: const BoxDecoration(
-                                color: Color(0xFFFF6B6B),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.error,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -119,17 +119,24 @@ class HomeView extends GetView<HomeController> {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.search,
-                          color: Color(0xFF6B7280),
+                          color: Theme.of(context).hintColor,
                           size: 20,
                         ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: TextField(
                             onChanged: controller.updateSearchQuery,
+                            style: Theme.of(context).textTheme.bodyMedium,
 
                             decoration: InputDecoration(
+                              fillColor: Theme.of(context).colorScheme.surface,
+                              hintStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(color: Theme.of(context).hintColor),
+                              
                               hintText: 'home.search_placeholder'.tr,
                               // For default border
                               enabledBorder:
@@ -145,9 +152,9 @@ class HomeView extends GetView<HomeController> {
                             ),
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.mic,
-                          color: Color(0xFF6B7280),
+                          color: Theme.of(context).hintColor,
                           size: 20,
                         ),
                       ],
@@ -171,6 +178,7 @@ class HomeView extends GetView<HomeController> {
                   GridView.count(
                     crossAxisCount: 2,
                     crossAxisSpacing: 12,
+                    childAspectRatio: 1.4,
                     mainAxisSpacing: 12,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -178,20 +186,24 @@ class HomeView extends GetView<HomeController> {
                       QuickActionCard(
                         icon: Icons.camera_alt,
                         title: 'home.upload_prescription'.tr,
-                        bgColor: const Color(0xFF1A73E8).withAlpha(26),
-                        iconColor: const Color(0xFF1A73E8),
+                        bgColor: Theme.of(context).primaryColor.withAlpha(26),
+                        iconColor: Theme.of(context).primaryColor,
                       ),
                       QuickActionCard(
                         icon: FontAwesomeIcons.stethoscope,
                         title: 'home.consult_doctor'.tr,
-                        bgColor: const Color(0xFF00C897).withAlpha(26),
-                        iconColor: const Color(0xFF00C897),
+                        bgColor: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withAlpha(26),
+                        iconColor: Theme.of(context).colorScheme.secondary,
                       ),
                       QuickActionCard(
                         icon: Icons.medication,
                         title: 'home.my_medicine'.tr,
-                        bgColor: const Color(0xFF906398).withAlpha(26),
-                        iconColor: const Color(0xFF906398),
+                        bgColor: Theme.of(
+                          context,
+                        ).colorScheme.tertiary.withAlpha(26),
+                        iconColor: Theme.of(context).colorScheme.tertiary,
                         onTap: controller.onNavigateToMedicines,
                       ),
                       QuickActionCard(
@@ -215,8 +227,8 @@ class HomeView extends GetView<HomeController> {
                         onPressed: () {},
                         child: Text(
                           'home.see_all'.tr,
-                          style: const TextStyle(
-                            color: Color(0xFF1A73E8),
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
                             fontSize: 14,
                           ),
                         ),
@@ -258,8 +270,8 @@ class HomeView extends GetView<HomeController> {
                         onPressed: () {},
                         child: Text(
                           'home.view_map'.tr,
-                          style: const TextStyle(
-                            color: Color(0xFF1A73E8),
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
                             fontSize: 14,
                           ),
                         ),
@@ -297,8 +309,8 @@ class HomeView extends GetView<HomeController> {
                         onPressed: () {},
                         child: Text(
                           'home.view_all'.tr,
-                          style: const TextStyle(
-                            color: Color(0xFF1A73E8),
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
                             fontSize: 14,
                           ),
                         ),

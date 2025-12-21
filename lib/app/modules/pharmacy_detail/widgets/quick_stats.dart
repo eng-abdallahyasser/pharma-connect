@@ -22,7 +22,7 @@ class QuickStats extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1A73E8).withOpacity(0.1),
+              color: Theme.of(context).primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
@@ -30,23 +30,23 @@ class QuickStats extends StatelessWidget {
                 Icon(
                   Icons.people,
                   size: 24,
-                  color: const Color(0xFF1A73E8),
+                  color: Theme.of(context).primaryColor,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Doctors',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: Theme.of(context).hintColor,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '$doctorsCount',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF1F2937),
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ],
@@ -61,7 +61,7 @@ class QuickStats extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF00C897).withOpacity(0.1),
+              color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
@@ -69,23 +69,23 @@ class QuickStats extends StatelessWidget {
                 Icon(
                   Icons.medical_services,
                   size: 24,
-                  color: const Color(0xFF00C897),
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Available',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: Theme.of(context).hintColor,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '$availableCount',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF1F2937),
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ],
@@ -105,26 +105,22 @@ class QuickStats extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Icon(
-                  Icons.star,
-                  size: 24,
-                  color: Colors.amber[600],
-                ),
+                Icon(Icons.star, size: 24, color: Colors.amber[600]),
                 const SizedBox(height: 8),
                 Text(
                   'Rating',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey[600],
+                    color: Theme.of(context).hintColor,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   '$rating',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF1F2937),
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ],

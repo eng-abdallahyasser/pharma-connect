@@ -65,11 +65,13 @@ class ConsultationsView extends GetView<ConsultationsController> {
                           child: TextField(
                             onChanged: controller.updateSearchQuery,
                             decoration: InputDecoration(
+                              fillColor: Theme.of(context).colorScheme.surface,
+                              hintStyle: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(color: Theme.of(context).hintColor),
+                              
                               hintText: 'consultations.search_placeholder'.tr,
-                              hintStyle: TextStyle(
-                                color: Colors.grey[500],
-                                fontSize: 14,
-                              ),
                               enabledBorder:
                                   InputBorder.none, // For enabled state
                               focusedBorder:
@@ -135,7 +137,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                                       controller.bookConsultation(doctor),
                                 ),
                               );
-                            }).toList(),
+                            }),
 
                             // Empty state if no doctors match search
                             if (controller.getFilteredDoctors().isEmpty)
@@ -241,7 +243,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                                     },
                                   ),
                                 );
-                              }).toList(),
+                              }),
                           ],
                         );
                       }
@@ -302,7 +304,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                                     },
                                   ),
                                 );
-                              }).toList(),
+                              }),
                           ],
                         );
                       }
