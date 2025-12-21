@@ -45,9 +45,7 @@ class PharmaciesView extends GetView<PharmaciesController> {
                       color: Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(24),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       children: [
                         const Icon(
@@ -61,11 +59,11 @@ class PharmaciesView extends GetView<PharmaciesController> {
                             onChanged: controller.updateSearchQuery,
                             decoration: InputDecoration(
                               fillColor: Theme.of(context).colorScheme.surface,
-                              hintStyle: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(color: Theme.of(context).hintColor),
-                              
+                              hintStyle: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(context).hintColor,
+                                  ),
+
                               hintText: 'pharmacies.search_placeholder'.tr,
                               border: InputBorder.none,
                               enabledBorder:
@@ -247,7 +245,7 @@ class PharmaciesView extends GetView<PharmaciesController> {
 
           // Results Count
           Obx(() {
-            final filtered = controller.getFilteredPharmacies();
+            final filtered = controller.pharmacies;
             return Text(
               'pharmacies.found_count'.trParams({
                 'count': '${filtered.length}',
@@ -259,6 +257,15 @@ class PharmaciesView extends GetView<PharmaciesController> {
 
           // Pharmacy List
           Obx(() {
+            if (controller.isLoading.value) {
+              return const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(32.0),
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }
+
             final filtered = controller.getFilteredPharmacies();
             if (filtered.isEmpty) {
               return Center(
@@ -318,6 +325,8 @@ class PharmaciesView extends GetView<PharmaciesController> {
         borderRadius: BorderRadius.circular(16),
         child: PharmacyMapView(
           pharmacies: controller.pharmacies,
+          pharmacyLocations: controller.pharmacyLocations,
+          userLocation: controller.userLocation,
           onSelectPharmacy: (pharmacy) {
             controller.selectPharmacy(pharmacy.id);
           },

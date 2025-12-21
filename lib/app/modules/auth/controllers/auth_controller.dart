@@ -129,7 +129,21 @@ class AuthController extends GetxController {
       if (response != null) {
         if (response.user != null) {
           successMessage.value = 'registration.success';
-          Get.offAllNamed('/home');
+          // registion is success then login
+          
+          final success = await authService.login(
+              loginEmailController.text.trim(),
+              loginPasswordController.text,
+            );
+
+          if (success) {
+              successMessage.value = 'login.success';
+
+              Get.offAllNamed('/home');
+          } else {
+              errorMessage.value = 'login.error';
+          }
+          
         } else {
           String errorMessage = '';
           for (var error in response.errors ?? []) {
@@ -137,7 +151,7 @@ class AuthController extends GetxController {
           }
           this.errorMessage.value = errorMessage;
         }
-      }else {
+      } else {
         errorMessage.value = 'registration.error';
       }
     } catch (e) {

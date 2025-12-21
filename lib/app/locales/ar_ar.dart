@@ -177,7 +177,7 @@ const Map<String, String> arAR = {
   'pharmacies.filter_open_now': 'مفتوحة الآن',
   'pharmacies.filter_within_5km': 'في حدود 5 كم',
   'pharmacies.filter_24_7': '24/7',
-  'pharmacies.found_count': 'تم العثور على {count} صيدلية بالقرب منك',
+  'pharmacies.found_count': 'تم العثور على @count صيدلية بالقرب منك',
   'pharmacies.no_pharmacies_found': 'لم يتم العثور على صيدليات',
   'pharmacies.near_me': 'بالقرب مني',
   'pharmacies.open_now': 'مفتوحة الآن',

@@ -7,8 +7,8 @@ class ApiConstants {
   static const String sendOtp = '/api/auth/otp';
   static const String changeProfilePhoto = '/api/profile/photo';
   static const String getBranches = '/api/branches';
+  static const String getNearbyBranches = '/api/branches/nearby';
   static const String getProviders = '/api/providers';
-
 
   // Headers
   static const Map<String, String> headers = {

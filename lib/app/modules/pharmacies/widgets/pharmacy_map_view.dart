@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import '../../home/models/pharmacy_model.dart';
 
 class PharmacyMapView extends StatefulWidget {
   final List<PharmacyModel> pharmacies;
+  final Map<int, LatLng>? pharmacyLocations;
   final Function(PharmacyModel)? onSelectPharmacy;
+  final LatLng? userLocation;
 
   const PharmacyMapView({
-    Key? key,
+    super.key,
     required this.pharmacies,
+    this.pharmacyLocations,
     this.onSelectPharmacy,
-  }) : super(key: key);
+    this.userLocation,
+  });
 
   @override
   State<PharmacyMapView> createState() => _PharmacyMapViewState();
@@ -17,232 +23,81 @@ class PharmacyMapView extends StatefulWidget {
 
 class _PharmacyMapViewState extends State<PharmacyMapView> {
   PharmacyModel? selectedPharmacy;
+  final MapController _mapController = MapController();
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Map Background with Grid Pattern
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Colors.blue[50]!,
-                Colors.green[50]!,
-                Colors.blue[100]!,
-              ],
+        FlutterMap(
+          mapController: _mapController,
+          options: MapOptions(
+            initialCenter:
+                widget.userLocation ??
+                (widget.pharmacyLocations?.isNotEmpty == true
+                    ? widget.pharmacyLocations!.values.first
+                    : const LatLng(30.0444, 31.2357)), // Default to Cairo
+            initialZoom: 13.0,
+          ),
+          children: [
+            TileLayer(
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              userAgentPackageName: 'com.pharma_connect.app',
             ),
-          ),
-          child: CustomPaint(
-            painter: GridPatternPainter(),
-            child: Container(),
-          ),
-        ),
+            MarkerLayer(
+              markers: widget.pharmacies
+                  .map((pharmacy) {
+                    final latlng = widget.pharmacyLocations?[pharmacy.id];
+                    if (latlng == null) return null;
 
-        // Map Details - Roads and landmarks
-        Positioned.fill(
-          child: Stack(
-            children: [
-              // Horizontal roads
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.25,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 8,
-                  color: Colors.grey.withOpacity(0.3),
-                ),
-              ),
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.5,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 12,
-                  color: Colors.grey.withOpacity(0.4),
-                ),
-              ),
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.75,
-                left: 0,
-                right: 0,
-                child: Container(
-                  height: 8,
-                  color: Colors.grey.withOpacity(0.3),
-                ),
-              ),
-
-              // Vertical roads
-              Positioned(
-                top: 0,
-                bottom: 0,
-                left: MediaQuery.of(context).size.width * 0.33,
-                child: Container(
-                  width: 8,
-                  color: Colors.grey.withOpacity(0.3),
-                ),
-              ),
-              Positioned(
-                top: 0,
-                bottom: 0,
-                left: MediaQuery.of(context).size.width * 0.67,
-                child: Container(
-                  width: 8,
-                  color: Colors.grey.withOpacity(0.3),
-                ),
-              ),
-
-              // Park area
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.2,
-                left: MediaQuery.of(context).size.width * 0.1,
-                child: Container(
-                  width: 96,
-                  height: 96,
-                  decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-
-              // Building blocks
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.35,
-                left: MediaQuery.of(context).size.width * 0.45,
-                child: Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ),
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.6,
-                left: MediaQuery.of(context).size.width * 0.7,
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.3),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        // User Location (Center)
-        Center(
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 16,
-                height: 16,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A73E8),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 4),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 8,
-                      spreadRadius: 2,
-                    ),
-                  ],
-                ),
-              ),
-              // Pulse animation
-              Container(
-                width: 16,
-                height: 16,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: const Color(0xFF1A73E8).withOpacity(0.5),
-                    width: 8,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        // Pharmacy Pins
-        ...widget.pharmacies.map((pharmacy) {
-          final positions = _getPharmacyPosition(pharmacy.id);
-          return Positioned(
-            top: positions['top'] as double,
-            left: positions['left'] as double,
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedPharmacy = pharmacy;
-                });
-                widget.onSelectPharmacy?.call(pharmacy);
-              },
-              child: AnimatedScale(
-                scale: selectedPharmacy?.id == pharmacy.id ? 1.25 : 1.0,
-                duration: const Duration(milliseconds: 200),
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Pin circle
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: pharmacy.isOpen
-                            ? const Color(0xFF00C897)
-                            : Colors.grey[400],
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 8,
-                            spreadRadius: 2,
+                    return Marker(
+                      point: latlng,
+                      width: 50,
+                      height: 50,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedPharmacy = pharmacy;
+                          });
+                          widget.onSelectPharmacy?.call(pharmacy);
+                        },
+                        child: AnimatedScale(
+                          scale: selectedPharmacy?.id == pharmacy.id
+                              ? 1.25
+                              : 1.0,
+                          duration: const Duration(milliseconds: 200),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                size: 40,
+                                color: pharmacy.isOpen
+                                    ? const Color(0xFF00C897)
+                                    : Colors.grey[400],
+                              ),
+                              if (selectedPharmacy?.id == pharmacy.id)
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: const Color(
+                                      0xFF00C897,
+                                    ).withAlpha(75),
+                                  ),
+                                ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: Icon(
-                        Icons.location_on,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                    // Pin pointer
-                    Positioned(
-                      top: 32,
-                      child: CustomPaint(
-                        painter: PinPointerPainter(
-                          color: pharmacy.isOpen
-                              ? const Color(0xFF00C897)
-                              : Colors.grey[400]!,
                         ),
                       ),
-                    ),
-                    // Pulse for selected
-                    if (selectedPharmacy?.id == pharmacy.id)
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: const Color(0xFF00C897).withOpacity(0.5),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
+                    );
+                  })
+                  .whereType<Marker>()
+                  .toList(),
             ),
-          );
-        }).toList(),
+          ],
+        ),
 
         // Map Controls (Top Right)
         Positioned(
@@ -251,33 +106,29 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
           child: Column(
             children: [
               FloatingActionButton(
+                heroTag: 'zoom_in',
                 mini: true,
                 backgroundColor: Colors.white,
-                onPressed: () {},
-                child: const Icon(
-                  Icons.navigation,
-                  color: Color(0xFF1A73E8),
-                ),
+                onPressed: () {
+                  _mapController.move(
+                    _mapController.camera.center,
+                    _mapController.camera.zoom + 1,
+                  );
+                },
+                child: const Icon(Icons.add, color: Colors.black87),
               ),
               const SizedBox(height: 8),
               FloatingActionButton(
+                heroTag: 'zoom_out',
                 mini: true,
                 backgroundColor: Colors.white,
-                onPressed: () {},
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.black87,
-                ),
-              ),
-              const SizedBox(height: 8),
-              FloatingActionButton(
-                mini: true,
-                backgroundColor: Colors.white,
-                onPressed: () {},
-                child: const Icon(
-                  Icons.remove,
-                  color: Colors.black87,
-                ),
+                onPressed: () {
+                  _mapController.move(
+                    _mapController.camera.center,
+                    _mapController.camera.zoom - 1,
+                  );
+                },
+                child: const Icon(Icons.remove, color: Colors.black87),
               ),
             ],
           ),
@@ -344,25 +195,15 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
     return Row(
       children: [
         if (isPin)
-          Icon(
-            Icons.location_on,
-            size: 16,
-            color: color,
-          )
+          Icon(Icons.location_on, size: 16, color: color)
         else
           Container(
             width: 12,
             height: 12,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           ),
         const SizedBox(width: 8),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 12),
-        ),
+        Text(label, style: const TextStyle(fontSize: 12)),
       ],
     );
   }
@@ -441,11 +282,7 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
                           ),
                         ),
                         const SizedBox(width: 16),
-                        Icon(
-                          Icons.star,
-                          size: 14,
-                          color: Colors.amber,
-                        ),
+                        Icon(Icons.star, size: 14, color: Colors.amber),
                         const SizedBox(width: 4),
                         Text(
                           pharmacy.rating.toString(),
@@ -500,7 +337,7 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
                     ),
                   ),
                   child: const Text(
-                    'Get Directions',
+                    'Call Now',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -514,7 +351,7 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text('Call Now'),
+                  child: const Text('View Details'),
                 ),
               ),
             ],
@@ -523,63 +360,4 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
       ),
     );
   }
-
-  Map<String, double> _getPharmacyPosition(int pharmacyId) {
-    final screenSize = MediaQuery.of(context).size;
-    final positions = {
-      1: {'top': screenSize.height * 0.35, 'left': screenSize.width * 0.55},
-      2: {'top': screenSize.height * 0.60, 'left': screenSize.width * 0.30},
-      3: {'top': screenSize.height * 0.45, 'left': screenSize.width * 0.70},
-      4: {'top': screenSize.height * 0.70, 'left': screenSize.width * 0.65},
-      5: {'top': screenSize.height * 0.45, 'left': screenSize.width * 0.20},
-    };
-    return positions[pharmacyId] ?? {'top': 0.0, 'left': 0.0};
-  }
-}
-
-class GridPatternPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.grey.withOpacity(0.2)
-      ..strokeWidth = 0.5;
-
-    const gridSize = 40.0;
-
-    // Vertical lines
-    for (double x = 0; x < size.width; x += gridSize) {
-      canvas.drawLine(Offset(x, 0), Offset(x, size.height), paint);
-    }
-
-    // Horizontal lines
-    for (double y = 0; y < size.height; y += gridSize) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(GridPatternPainter oldDelegate) => false;
-}
-
-class PinPointerPainter extends CustomPainter {
-  final Color color;
-
-  PinPointerPainter({required this.color});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color;
-
-    final path = Path();
-    path.moveTo(0, 0);
-    path.lineTo(-6, 8);
-    path.lineTo(6, 8);
-    path.close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(PinPointerPainter oldDelegate) =>
-      oldDelegate.color != color;
 }

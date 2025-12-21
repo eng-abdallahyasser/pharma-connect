@@ -1,90 +1,127 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:pharma_connect/app/core/services/storage_service.dart';
+import 'package:pharma_connect/app/modules/home/models/address_model.dart';
 import '../models/pharmacy_filter_model.dart';
 import '../../home/models/pharmacy_model.dart';
+import 'package:pharma_connect/app/data/providers/pharmacies_provider.dart';
+import 'dart:async';
 
 class PharmaciesController extends GetxController {
   // Observable properties
   final searchQuery = ''.obs;
   final viewMode = 'list'.obs; // 'list' or 'map'
   final selectedPharmacyId = (-1).obs;
+  final isLoading = false.obs;
 
   // Pharmacy data
-  late List<PharmacyModel> pharmacies;
+  final pharmacies = <PharmacyModel>[].obs;
+  final pharmacyLocations = <int, LatLng>{}.obs;
+
+  LatLng? get userLocation => _selectedAddress != null
+      ? LatLng(_selectedAddress!.latitude, _selectedAddress!.longitude)
+      : null;
 
   // Filters
   final filters = <PharmacyFilterModel>[].obs;
   final activeFilters = <String>[].obs;
 
+  Timer? _debounce;
+  late final PharmaciesProvider _provider;
+  AddressModel? _selectedAddress;
+
   @override
   void onInit() {
     super.onInit();
-    _initializePharmacies();
+    _provider = Get.find<PharmaciesProvider>();
+    _loadSelectedAddress();
+    if (_selectedAddress != null) {
+      fetchNearbyPharmacies();
+    } else {
+      fetchPharmacies();
+    }
     _initializeFilters();
   }
 
-  void _initializePharmacies() {
-    pharmacies = [
-      PharmacyModel(
-        id: 1,
-        name: 'HealthCare Pharmacy',
-        distance: '0.5 km',
-        rating: 4.6,
-        workingHours: '8:00 AM - 10:00 PM',
-        imageUrl:
-            'https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?w=600',
-        isOpen: true,
-        totalDoctors: 4,
-        availableDoctors: 3,
-      ),
-      PharmacyModel(
-        id: 2,
-        name: 'MediPlus 24/7',
-        distance: '1.2 km',
-        rating: 4.8,
-        workingHours: 'Open 24 Hours',
-        imageUrl:
-            'https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?w=600',
-        isOpen: true,
-        totalDoctors: 6,
-        availableDoctors: 4,
-      ),
-      PharmacyModel(
-        id: 3,
-        name: 'City Pharmacy',
-        distance: '2.0 km',
-        rating: 4.5,
-        workingHours: '9:00 AM - 9:00 PM',
-        imageUrl:
-            'https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?w=600',
-        isOpen: false,
-        totalDoctors: 3,
-        availableDoctors: 0,
-      ),
-      PharmacyModel(
-        id: 4,
-        name: 'Quick Care Pharmacy',
-        distance: '2.5 km',
-        rating: 4.7,
-        workingHours: '7:00 AM - 11:00 PM',
-        imageUrl:
-            'https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?w=600',
-        isOpen: true,
-        totalDoctors: 5,
-        availableDoctors: 2,
-      ),
-      PharmacyModel(
-        id: 5,
-        name: 'Wellness Pharmacy',
-        distance: '3.0 km',
-        rating: 4.4,
-        workingHours: '8:00 AM - 8:00 PM',
-        imageUrl:
-            'https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?w=600',
-        isOpen: true,
-        totalDoctors: 2,
-        availableDoctors: 1,
-      ),
-    ];
+  void _loadSelectedAddress() {
+    final storageService = Get.find<StorageService>();
+    final addresses = storageService.getAddresses();
+    if (addresses != null) {
+      final addressList = addresses
+          .map((e) => AddressModel.fromJson(e))
+          .toList();
+      _selectedAddress = addressList.firstWhereOrNull(
+        (element) => element.isSelected,
+      );
+    }
+  }
+
+  Future<void> fetchPharmacies({String? query}) async {
+    isLoading.value = true;
+    try {
+      final response = await _provider.searchBranches(search: query);
+      final data = response['data'] as List;
+      _processPharmacyData(data);
+    } catch (e) {
+      log('Error fetching pharmacies: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> fetchNearbyPharmacies() async {
+    if (_selectedAddress == null) return;
+
+    isLoading.value = true;
+    try {
+      final response = await _provider.getNearbyBranches(
+        lat: _selectedAddress!.latitude,
+        lng: _selectedAddress!.longitude,
+      );
+      final data = response['data'] as List;
+      _processPharmacyData(data);
+    } catch (e) {
+      log('Error fetching nearby pharmacies: $e');
+      fetchPharmacies(); // Fallback
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void _processPharmacyData(List data) {
+    pharmacyLocations.clear();
+    pharmacies.assignAll(
+      data.map((item) {
+        final localizedName = item['localizedName'] as Map<String, dynamic>?;
+        final isAlwaysOpen = item['isAlwaysOpen'] == true;
+
+        final lat = (item['latitude'] as num?)?.toDouble();
+        final lng = (item['longitude'] as num?)?.toDouble();
+        String? distance = (item['distance'] as num?)?.toStringAsFixed(2);
+        distance ??= _calculateDistance(lat, lng);
+
+        final id = (item['id'] as String).hashCode;
+
+        if (lat != null && lng != null) {
+          pharmacyLocations[id] = LatLng(lat, lng);
+        }
+
+        return PharmacyModel(
+          id: id,
+          name: localizedName?['en'] ?? 'Pharmacy',
+          distance: "$distance km",
+          rating: (item['ratingCount'] as num?)?.toDouble() ?? 0.0,
+          workingHours: isAlwaysOpen ? '24 Hours' : 'Open',
+          imageUrl:
+              'https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?w=600',
+          isOpen: item['isActive'] == true, // Check logic on nearby vs search
+          totalDoctors: 5,
+          availableDoctors: 3,
+        );
+      }).toList(),
+    );
   }
 
   void _initializeFilters() {
@@ -103,6 +140,15 @@ class PharmaciesController extends GetxController {
 
   void updateSearchQuery(String query) {
     searchQuery.value = query;
+
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (query.isEmpty && _selectedAddress != null) {
+        fetchNearbyPharmacies();
+      } else {
+        fetchPharmacies(query: query);
+      }
+    });
   }
 
   void toggleViewMode() {
@@ -146,14 +192,15 @@ class PharmaciesController extends GetxController {
     List<PharmacyModel> filtered = pharmacies;
 
     // Apply search filter
-    if (searchQuery.value.isNotEmpty) {
+    // Search is handled by API now
+    /* if (searchQuery.value.isNotEmpty) {
       filtered = filtered
           .where(
             (p) =>
                 p.name.toLowerCase().contains(searchQuery.value.toLowerCase()),
           )
           .toList();
-    }
+    } */
 
     // Apply active filters
     if (activeFilters.isNotEmpty) {
@@ -183,5 +230,25 @@ class PharmaciesController extends GetxController {
     }
 
     return filtered;
+  }
+
+  String _calculateDistance(double? lat, double? long) {
+    if (lat == null || long == null || _selectedAddress == null) {
+      return 'calculation error';
+    }
+
+    try {
+      final Distance distance = const Distance();
+      final double km = distance.as(
+        LengthUnit.Kilometer,
+        LatLng(_selectedAddress!.latitude, _selectedAddress!.longitude),
+        LatLng(lat, long),
+      );
+
+      return km.toStringAsFixed(1);
+    } catch (e) {
+      log('Error calculating distance: $e');
+      return 'calculation error';
+    }
   }
 }

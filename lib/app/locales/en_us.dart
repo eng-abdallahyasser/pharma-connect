@@ -178,7 +178,7 @@ const Map<String, String> enUS = {
   'pharmacies.filter_open_now': 'Open Now',
   'pharmacies.filter_within_5km': 'Within 5km',
   'pharmacies.filter_24_7': '24/7',
-  'pharmacies.found_count': 'Found {count} pharmacies near you',
+  'pharmacies.found_count': 'Found @count pharmacies near you',
   'pharmacies.no_pharmacies_found': 'No pharmacies found',
   'pharmacies.near_me': 'Near Me',
   'pharmacies.open_now': 'Open Now',
