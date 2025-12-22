@@ -6,6 +6,7 @@ import 'package:pharma_connect/app/modules/auth/models/signup_response.dart';
 import '../models/user_model.dart';
 import '../models/signup_request.dart';
 import '../models/login_request.dart';
+import '../models/login_response.dart';
 import 'auth_repository.dart';
 
 class AuthService extends GetxService {
@@ -54,7 +55,7 @@ class AuthService extends GetxService {
   }
 
   // Login with email and password
-  Future<bool> login(String email, String password) async {
+  Future<LoginResponse> login(String email, String password) async {
     _isLoading.value = true;
     try {
       final loginRequest = LoginRequest(
@@ -74,31 +75,34 @@ class AuthService extends GetxService {
       log('Login Request: ${loginRequest.toJson()}');
       final response = await _authRepository.login(loginRequest);
 
-      // Create user model from response
-      final user = UserModel(
-        id: response.user.id,
-        email: response.user.email,
-        firstName: response.user.firstName,
-        lastName: response.user.lastName,
-        phoneNumber: response.user.mobile ?? '',
-        createdAt: response.user.metadata?.createdAt ?? DateTime.now(),
-        isEmailVerified: response.user.emailVerified,
-      );
+      // Check if user exists in response
+      if (response.user != null) {
+        // Create user model from response
+        final user = UserModel(
+          id: response.user!.id,
+          email: response.user!.email,
+          firstName: response.user!.firstName,
+          lastName: response.user!.lastName,
+          phoneNumber: response.user!.mobile ?? '',
+          createdAt: response.user!.metadata?.createdAt ?? DateTime.now(),
+          isEmailVerified: response.user!.emailVerified,
+        );
 
-      // Store token and user data if provided
-      if (response.accessToken != null) {
-        final storageService = Get.find<StorageService>();
-        await storageService.saveToken(response.accessToken!);
-        await storageService.saveUser(user);
+        // Store token and user data if provided
+        if (response.accessToken != null) {
+          final storageService = Get.find<StorageService>();
+          await storageService.saveToken(response.accessToken!);
+          await storageService.saveUser(user);
+        }
+
+        _currentUser.value = user;
+        _isAuthenticated.value = true;
       }
 
-      _currentUser.value = user;
-      _isAuthenticated.value = true;
-
-      return true;
+      return response;
     } catch (e) {
-      log('Login error: $e');
-      return false;
+      log('Login Error Auth Service: $e');
+      return LoginResponse(user: null, message: e.toString());
     } finally {
       _isLoading.value = false;
     }
@@ -110,28 +114,31 @@ class AuthService extends GetxService {
     try {
       final response = await _authRepository.loginWithOtp(otpLoginRequest);
 
-      // Create user model from response
-      final user = UserModel(
-        id: response.user.id,
-        email: response.user.email,
-        firstName: response.user.firstName,
-        lastName: response.user.lastName,
-        phoneNumber: response.user.mobile ?? otpLoginRequest.mobile,
-        createdAt: response.user.metadata?.createdAt ?? DateTime.now(),
-        isEmailVerified: response.user.emailVerified,
-      );
+      if (response.user != null) {
+        // Create user model from response
+        final user = UserModel(
+          id: response.user!.id,
+          email: response.user!.email,
+          firstName: response.user!.firstName,
+          lastName: response.user!.lastName,
+          phoneNumber: response.user!.mobile ?? otpLoginRequest.mobile,
+          createdAt: response.user!.metadata?.createdAt ?? DateTime.now(),
+          isEmailVerified: response.user!.emailVerified,
+        );
 
-      // Store token and user data if provided
-      if (response.accessToken != null) {
-        final storageService = Get.find<StorageService>();
-        await storageService.saveToken(response.accessToken!);
-        await storageService.saveUser(user);
+        // Store token and user data if provided
+        if (response.accessToken != null) {
+          final storageService = Get.find<StorageService>();
+          await storageService.saveToken(response.accessToken!);
+          await storageService.saveUser(user);
+        }
+
+        _currentUser.value = user;
+        _isAuthenticated.value = true;
+
+        return true;
       }
-
-      _currentUser.value = user;
-      _isAuthenticated.value = true;
-
-      return true;
+      return false;
     } catch (e) {
       log('Login with OTP error: $e');
       return false;
@@ -203,7 +210,7 @@ class AuthService extends GetxService {
 
       if (phoneNumber.startsWith('0')) {
         phoneNumber = phoneNumber.substring(1);
-      }else if (phoneNumber.startsWith('+20')) {
+      } else if (phoneNumber.startsWith('+20')) {
         phoneNumber = phoneNumber.substring(3);
       }
       final body = {
@@ -217,7 +224,7 @@ class AuthService extends GetxService {
         "gender": gender ?? "male",
         "birthDate": birthDate ?? "1999-02-14",
         "countryCode": "eg",
-      };  
+      };
 
       final response = await _authRepository.signup(
         SignupRequest.fromJson(body),

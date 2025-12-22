@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:pharma_connect/app/core/network/api_client.dart';
 import 'package:pharma_connect/app/core/network/api_constants.dart';
 import '../models/signup_request.dart';
@@ -40,6 +42,10 @@ class AuthRepository {
 
       return LoginResponse.fromJson(response);
     } catch (e) {
+      log("Login Error Auth Repository: $e");
+      if (e is ApiException) {
+        return LoginResponse.fromJson(e.response!.data as Map<String, dynamic>);
+      }
       rethrow;
     }
   }
@@ -51,6 +57,7 @@ class AuthRepository {
         ApiConstants.login,
         otpLoginRequest.toJson(),
       );
+
 
       return LoginResponse.fromJson(response);
     } catch (e) {

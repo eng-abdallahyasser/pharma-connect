@@ -190,13 +190,15 @@ class LoginResponse {
   final String? accessToken;
   final String? refreshToken;
   final DateTime? expireAt;
-  final User user;
+  final User? user;
+  final String? message;
 
   LoginResponse({
     this.accessToken,
     this.refreshToken,
     this.expireAt,
-    required this.user,
+    this.user,
+    this.message,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
@@ -206,7 +208,10 @@ class LoginResponse {
       expireAt: json['expireAt'] != null
           ? DateTime.parse(json['expireAt'] as String)
           : null,
-      user: User.fromJson(json['user'] as Map<String, dynamic>),
+      user: json['user'] != null
+          ? User.fromJson(json['user'] as Map<String, dynamic>)
+          : null,
+      message: json['message'] as String?,
     );
   }
 
@@ -214,8 +219,9 @@ class LoginResponse {
     return {
       if (accessToken != null) 'access_token': accessToken,
       if (refreshToken != null) 'refresh_token': refreshToken,
-      'expireAt': expireAt,
-      'user': user.toJson(),
+      if (expireAt != null) 'expireAt': expireAt?.toIso8601String(),
+      if (user != null) 'user': user?.toJson(),
+      if (message != null) 'message': message,
     };
   }
 }

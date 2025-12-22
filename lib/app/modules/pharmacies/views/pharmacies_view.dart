@@ -327,6 +327,7 @@ class PharmaciesView extends GetView<PharmaciesController> {
           pharmacies: controller.pharmacies,
           pharmacyLocations: controller.pharmacyLocations,
           userLocation: controller.userLocation,
+          savedAddresses: controller.savedAddressesList,
           onSelectPharmacy: (pharmacy) {
             controller.selectPharmacy(pharmacy.id);
           },

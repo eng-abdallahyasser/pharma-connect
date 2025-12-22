@@ -24,6 +24,8 @@ class PharmaciesController extends GetxController {
       ? LatLng(_selectedAddress!.latitude, _selectedAddress!.longitude)
       : null;
 
+  final savedAddressesList = <LatLng>[].obs;
+
   // Filters
   final filters = <PharmacyFilterModel>[].obs;
   final activeFilters = <String>[].obs;
@@ -55,6 +57,13 @@ class PharmaciesController extends GetxController {
       _selectedAddress = addressList.firstWhereOrNull(
         (element) => element.isSelected,
       );
+      savedAddressesList.assignAll(
+        addressList
+            .where((element) => !element.isSelected)
+            .map((e) => LatLng(e.latitude, e.longitude))
+            .toList(),
+      );
+      log("Selected Address pharmacies_controller: ${_selectedAddress?.toJson()}""  Saved Addresses: ${savedAddressesList.length}");
     }
   }
 

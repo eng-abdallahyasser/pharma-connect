@@ -8,6 +8,7 @@ class PharmacyMapView extends StatefulWidget {
   final Map<int, LatLng>? pharmacyLocations;
   final Function(PharmacyModel)? onSelectPharmacy;
   final LatLng? userLocation;
+  final List<LatLng>? savedAddresses;
 
   const PharmacyMapView({
     super.key,
@@ -15,6 +16,7 @@ class PharmacyMapView extends StatefulWidget {
     this.pharmacyLocations,
     this.onSelectPharmacy,
     this.userLocation,
+    this.savedAddresses,
   });
 
   @override
@@ -45,56 +47,79 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
               userAgentPackageName: 'com.pharma_connect.app',
             ),
             MarkerLayer(
-              markers: widget.pharmacies
-                  .map((pharmacy) {
-                    final latlng = widget.pharmacyLocations?[pharmacy.id];
-                    if (latlng == null) return null;
+              markers: [
+                // User Location Marker
+                if (widget.userLocation != null)
+                  Marker(
+                    point: widget.userLocation!,
+                    width: 50,
+                    height: 50,
+                    child: const Icon(
+                      Icons.location_history,
+                      size: 30,
+                      color: Color(0xFF1A73E8),
+                    ),
+                  ),
 
-                    return Marker(
+                // Saved Addresses Markers
+                if (widget.savedAddresses != null)
+                  ...widget.savedAddresses!.map(
+                    (latlng) => Marker(
                       point: latlng,
                       width: 50,
                       height: 50,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedPharmacy = pharmacy;
-                          });
-                          widget.onSelectPharmacy?.call(pharmacy);
-                        },
-                        child: AnimatedScale(
-                          scale: selectedPharmacy?.id == pharmacy.id
-                              ? 1.25
-                              : 1.0,
-                          duration: const Duration(milliseconds: 200),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Icon(
-                                Icons.location_on,
-                                size: 40,
-                                color: pharmacy.isOpen
-                                    ? const Color(0xFF00C897)
-                                    : Colors.grey[400],
-                              ),
-                              if (selectedPharmacy?.id == pharmacy.id)
-                                Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: const Color(
-                                      0xFF00C897,
-                                    ).withAlpha(75),
+                      child: const Icon(
+                        Icons.home_rounded,
+                        size: 30,
+                        color: Color(0xFF8088f7),
+                      ),
+                    ),
+                  ),
+
+                // Pharmacy Markers
+                ...widget.pharmacies.map((pharmacy) {
+                  final latlng = widget.pharmacyLocations?[pharmacy.id];
+                  if (latlng == null) return null;
+
+                  return Marker(
+                    point: latlng,
+                    width: 50,
+                    height: 50,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedPharmacy = pharmacy;
+                        });
+                        widget.onSelectPharmacy?.call(pharmacy);
+                      },
+                      child: AnimatedScale(
+                        scale: selectedPharmacy?.id == pharmacy.id ? 1.5 : 1.0,
+                        duration: const Duration(milliseconds: 200),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              size: 30,
+                              color: pharmacy.isOpen
+                                  ? const Color(0xFF00C897)
+                                  : Colors.grey[400],
+                              shadows: [
+                                if (selectedPharmacy?.id == pharmacy.id)
+                                  BoxShadow(
+                                    color: Theme.of(context).primaryColor,
+                                    blurRadius: 16,
+                                    offset: const Offset(0, 0),
                                   ),
-                                ),
-                            ],
-                          ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  })
-                  .whereType<Marker>()
-                  .toList(),
+                    ),
+                  );
+                }).whereType<Marker>(),
+              ],
             ),
           ],
         ),
@@ -150,25 +175,32 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
                 ),
               ],
             ),
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildLegendItem(
                   color: const Color(0xFF1A73E8),
                   label: 'Your Location',
+                  icon: Icons.location_history,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
+                _buildLegendItem(
+                  color: const Color(0xFF8088f7),
+                  label: "Your Saved Address",
+                  icon: Icons.home_rounded,
+                ),
+                const SizedBox(height: 4),
                 _buildLegendItem(
                   color: const Color(0xFF00C897),
                   label: 'Open Pharmacy',
-                  isPin: true,
+                  icon: Icons.location_on,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
                 _buildLegendItem(
                   color: Colors.grey[400]!,
                   label: 'Closed Pharmacy',
-                  isPin: true,
+                  icon: Icons.location_on,
                 ),
               ],
             ),
@@ -190,18 +222,11 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
   Widget _buildLegendItem({
     required Color color,
     required String label,
-    bool isPin = false,
+    required IconData icon,
   }) {
     return Row(
       children: [
-        if (isPin)
-          Icon(Icons.location_on, size: 16, color: color)
-        else
-          Container(
-            width: 12,
-            height: 12,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-          ),
+        Icon(icon, size: 16, color: color),
         const SizedBox(width: 8),
         Text(label, style: const TextStyle(fontSize: 12)),
       ],

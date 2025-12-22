@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pharma_connect/app/modules/auth/models/login_response.dart';
 import 'package:pharma_connect/app/modules/auth/services/auth_service.dart';
 import '../utils/validators.dart';
 
@@ -73,20 +74,25 @@ class AuthController extends GetxController {
     successMessage.value = '';
 
     try {
-      final success = await authService.login(
+      final LoginResponse response = await authService.login(
         loginEmailController.text.trim(),
         loginPasswordController.text,
       );
 
-      if (success) {
+      if (response.user != null) {
         successMessage.value = 'login.success';
 
         Get.offAllNamed('/home');
       } else {
-        errorMessage.value = 'login.error';
+        if (response.message != null) {
+          log("Login Error Auth Controller: ${response.message}");
+          errorMessage.value = response.message!;
+        } else {
+          errorMessage.value = 'login.error';
+        }
       }
     } catch (e) {
-      log("Login Error: ${e.toString()}");
+      log("Login Error Auth Controller: ${e.toString()}");
     } finally {
       isLoading.value = false;
     }
@@ -130,20 +136,19 @@ class AuthController extends GetxController {
         if (response.user != null) {
           successMessage.value = 'registration.success';
           // registion is success then login
-          
-          final success = await authService.login(
-              loginEmailController.text.trim(),
-              loginPasswordController.text,
-            );
 
-          if (success) {
-              successMessage.value = 'login.success';
+          final response = await authService.login(
+            loginEmailController.text.trim(),
+            loginPasswordController.text,
+          );
 
-              Get.offAllNamed('/home');
+          if (response.user != null) {
+            successMessage.value = 'login.success';
+
+            Get.offAllNamed('/home');
           } else {
-              errorMessage.value = 'login.error';
+            errorMessage.value = 'login.error';
           }
-          
         } else {
           String errorMessage = '';
           for (var error in response.errors ?? []) {
@@ -181,11 +186,13 @@ class AuthController extends GetxController {
 
   void clearForm(String type) {
     if (type == 'login') {
+      clearErrors();
       loginFormKey.currentState?.reset();
       loginEmailController.clear();
       loginPasswordController.clear();
       isLoginPasswordVisible.value = false;
     } else if (type == 'register') {
+      clearErrors();
       registerFormKey.currentState?.reset();
       registerFirstNameController.clear();
       registerLastNameController.clear();

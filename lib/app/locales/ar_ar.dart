@@ -327,4 +327,13 @@ const Map<String, String> arAR = {
   'auth.password.uppercase': 'حرف واحد كبير (A-Z)',
   'auth.password.digit': 'رقم واحد (0-9)',
   'auth.password.special.char': 'حرف خاص واحد (!@#\$%^&*)',
+
+  'auth.birth.date.minimum_age': 'يجب أن يكون عمرك 18 عامًا على الأقل',
+  'auth.birth.date.invalid': 'تاريخ ميلاد غير صالح',
+
+  'auth.gender.required': 'الجنس مطلوب',
+  'auth.gender.invalid': 'جنس غير صالح',
+
+  'auth.country.code.required': 'رمز البلد مطلوب',
+  'auth.country.code.invalid': 'رمز بلد غير صالح',
 };

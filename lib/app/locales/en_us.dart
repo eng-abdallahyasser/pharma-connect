@@ -329,4 +329,13 @@ const Map<String, String> enUS = {
   'auth.password.uppercase': '1 uppercase letter (A-Z)',
   'auth.password.digit': '1 digit (0-9)',
   'auth.password.special.char': '1 special character (!@#\$%^&*)',
+
+  'auth.birth.date.minimum_age': 'You must be at least 18 years old',
+  'auth.birth.date.invalid': 'Invalid birth date',
+
+  'auth.gender.required': 'Gender is required',
+  'auth.gender.invalid': 'Invalid gender',
+
+  'auth.country.code.required': 'Country code is required',
+  'auth.country.code.invalid': 'Invalid country code',
 };
