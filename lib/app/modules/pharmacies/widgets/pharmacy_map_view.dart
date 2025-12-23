@@ -310,7 +310,9 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
                         Icon(Icons.star, size: 14, color: Colors.amber),
                         const SizedBox(width: 4),
                         Text(
-                          pharmacy.rating.toString(),
+                          pharmacy.rating == 0.0
+                              ? 'Be the first to rate'
+                              : pharmacy.rating.toString(),
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey[600],

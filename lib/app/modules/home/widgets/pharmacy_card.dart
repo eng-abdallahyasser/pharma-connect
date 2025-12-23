@@ -141,7 +141,9 @@ class PharmacyCard extends StatelessWidget {
                                 Icon(Icons.star, size: 14, color: Colors.amber),
                                 const SizedBox(width: 4),
                                 Text(
-                                  pharmacy.rating.toString(),
+                                  pharmacy.rating == 0.0
+                                      ? 'Be the first to rate'
+                                      : pharmacy.rating.toString(),
                                   style: Theme.of(context).textTheme.labelSmall,
                                 ),
                               ],
