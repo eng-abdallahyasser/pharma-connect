@@ -125,200 +125,197 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 500, maxHeight: 700),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Column(
-          children: [
-            // Header
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Row(
-                children: [
-                  const Text(
-                    'Edit Medical Profile',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF1F2937),
-                    ),
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 500),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        children: [
+          // Header
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                const Text(
+                  'Edit Medical Profile',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1F2937),
                   ),
-                  const Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Get.back(),
-                  ),
-                ],
-              ),
+                ),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Get.back(),
+                ),
+              ],
             ),
-            const Divider(height: 1),
-
-            // Form
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Blood Type
-                      DropdownButtonFormField<String>(
-                        value: _bloodTypes.contains(_bloodTypeController.text)
-                            ? _bloodTypeController.text
-                            : null,
-                        decoration: _inputDecoration('Blood Type'),
-                        items: _bloodTypes.map((type) {
-                          return DropdownMenuItem(
-                            value: type,
-                            child: Text(type),
-                          );
-                        }).toList(),
-                        onChanged: (value) {
-                          if (value != null) {
-                            _bloodTypeController.text = value;
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Height & Weight
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: _heightController,
-                              decoration: _inputDecoration('Height (cm)'),
-                              keyboardType: TextInputType.number,
-                            ),
+          ),
+          const Divider(height: 1),
+    
+          // Form
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Blood Type
+                    DropdownButtonFormField<String>(
+                      initialValue: _bloodTypes.contains(_bloodTypeController.text)
+                          ? _bloodTypeController.text
+                          : null,
+                      decoration: _inputDecoration('Blood Type'),
+                      items: _bloodTypes.map((type) {
+                        return DropdownMenuItem(
+                          value: type,
+                          child: Text(type),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          _bloodTypeController.text = value;
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 16),
+    
+                    // Height & Weight
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _heightController,
+                            decoration: _inputDecoration('Height (cm)'),
+                            keyboardType: TextInputType.number,
                           ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: TextFormField(
-                              controller: _weightController,
-                              decoration: _inputDecoration('Weight (kg)'),
-                              keyboardType: TextInputType.number,
-                            ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _weightController,
+                            decoration: _inputDecoration('Weight (kg)'),
+                            keyboardType: TextInputType.number,
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Allergies
-                      _buildListSection(
-                        'Allergies',
-                        _allergies,
-                        _allergyController,
-                        (item) =>
-                            _addItem(_allergies, _allergyController, item),
-                        (item) => _removeItem(_allergies, item),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Chronic Conditions
-                      _buildListSection(
-                        'Chronic Conditions',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+    
+                    // Allergies
+                    _buildListSection(
+                      'Allergies',
+                      _allergies,
+                      _allergyController,
+                      (item) =>
+                          _addItem(_allergies, _allergyController, item),
+                      (item) => _removeItem(_allergies, item),
+                    ),
+                    const SizedBox(height: 16),
+    
+                    // Chronic Conditions
+                    _buildListSection(
+                      'Chronic Conditions',
+                      _chronicConditions,
+                      _conditionController,
+                      (item) => _addItem(
                         _chronicConditions,
                         _conditionController,
-                        (item) => _addItem(
-                          _chronicConditions,
-                          _conditionController,
-                          item,
-                        ),
-                        (item) => _removeItem(_chronicConditions, item),
+                        item,
                       ),
-                      const SizedBox(height: 16),
-
-                      // Current Medications
-                      _buildListSection(
-                        'Current Medications',
+                      (item) => _removeItem(_chronicConditions, item),
+                    ),
+                    const SizedBox(height: 16),
+    
+                    // Current Medications
+                    _buildListSection(
+                      'Current Medications',
+                      _currentMedications,
+                      _medicationController,
+                      (item) => _addItem(
                         _currentMedications,
                         _medicationController,
-                        (item) => _addItem(
-                          _currentMedications,
-                          _medicationController,
-                          item,
-                        ),
-                        (item) => _removeItem(_currentMedications, item),
+                        item,
                       ),
-                      const SizedBox(height: 16),
-
-                      // Insurance
-                      TextFormField(
-                        controller: _insuranceProviderController,
-                        decoration: _inputDecoration('Insurance Provider'),
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _insurancePolicyNumberController,
-                        decoration: _inputDecoration('Insurance Policy Number'),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // Notes
-                      TextFormField(
-                        controller: _notesController,
-                        decoration: _inputDecoration('Notes'),
-                        maxLines: 3,
-                      ),
-                    ],
-                  ),
+                      (item) => _removeItem(_currentMedications, item),
+                    ),
+                    const SizedBox(height: 16),
+    
+                    // Insurance
+                    TextFormField(
+                      controller: _insuranceProviderController,
+                      decoration: _inputDecoration('Insurance Provider'),
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: _insurancePolicyNumberController,
+                      decoration: _inputDecoration('Insurance Policy Number'),
+                    ),
+                    const SizedBox(height: 16),
+    
+                    // Notes
+                    TextFormField(
+                      controller: _notesController,
+                      decoration: _inputDecoration('Notes'),
+                      maxLines: 3,
+                    ),
+                  ],
                 ),
               ),
             ),
-            const Divider(height: 1),
-
-            // Footer
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => Get.back(),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        side: BorderSide(color: Colors.grey[300]!),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+          ),
+          const Divider(height: 1),
+    
+          // Footer
+          Padding(
+            padding: const EdgeInsets.all(24),
+            child: Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Get.back(),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      side: BorderSide(color: Colors.grey[300]!),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(color: Colors.grey[700]),
+                    ),
+                    child: Text(
+                      'Cancel',
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _save,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1A73E8),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      'Save Changes',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _save,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF1A73E8),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: const Text(
-                        'Save Changes',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:pharma_connect/app/core/network/api_exceptions.dart';
 import 'package:pharma_connect/app/core/services/storage_service.dart';
 import 'package:pharma_connect/app/modules/home/widgets/addresses_bottom_sheet.dart';
 
@@ -15,6 +16,7 @@ import 'package:pharma_connect/app/core/services/localization_service.dart';
 import 'package:pharma_connect/app/core/services/theme_service.dart';
 import 'package:pharma_connect/app/core/services/settings_service.dart';
 import 'package:pharma_connect/app/modules/auth/services/auth_service.dart';
+import 'package:pharma_connect/app/modules/profile/widgets/edit_profile_modal.dart';
 import 'package:pharma_connect/app/modules/profile/widgets/family_members_modal.dart';
 import 'package:pharma_connect/app/modules/profile/widgets/medical_profile_modal.dart';
 import 'package:pharma_connect/app/modules/profile/widgets/prescriptions_modal.dart';
@@ -54,6 +56,7 @@ class ProfileController extends GetxController {
   late List<FamilyMemberModel> familyMembers;
   late List<MenuItemModel> menuItems;
   late List<SettingsItemModel> settingsItems;
+  final screenHeight = MediaQuery.of(Get.context!).size.height;
 
   @override
   void onInit() {
@@ -214,7 +217,18 @@ class ProfileController extends GetxController {
         icon: Icons.person,
         iconColor: const Color(0xFF1A73E8),
         onTap: () {
-          // TODO: Navigate to edit profile
+          Get.bottomSheet(
+            SizedBox(
+              height: screenHeight * 0.85,
+              child: EditProfileModal(
+                user: currentUser,
+                notificationsEnabled: notificationsEnabled.value,
+                onSave: (data) => updateUserProfile(data),
+              ),
+            ),
+            isScrollControlled: true,
+            enableDrag: true,
+          );
         },
       ),
       MenuItemModel(
@@ -226,15 +240,19 @@ class ProfileController extends GetxController {
         onTap: () {
           fetchMedicalProfile();
           Get.bottomSheet(
-            Obx(
-              () => MedicalProfileModal(
-                user: currentUser,
-                medicalProfile: medicalProfile.value,
-                isLoading: isLoadingMedicalProfile.value,
-                onClose: Get.back,
+            SizedBox(
+              height: screenHeight * 0.85,
+              child: Obx(
+                () => MedicalProfileModal(
+                  user: currentUser,
+                  medicalProfile: medicalProfile.value,
+                  isLoading: isLoadingMedicalProfile.value,
+                  onClose: Get.back,
+                ),
               ),
             ),
             isScrollControlled: true,
+            enableDrag: true,
           );
         },
       ),
@@ -247,14 +265,18 @@ class ProfileController extends GetxController {
         badge: familyMembers.length,
         onTap: () {
           Get.bottomSheet(
-            FamilyMembersModal(
-              familyMembers: getAllFamilyMembers(),
-              onClose: Get.back,
-              onAddPressed: () {
-                // TODO: Navigate to add family member screen
-              },
+            SizedBox(
+              height: screenHeight * 0.85,
+              child: FamilyMembersModal(
+                familyMembers: getAllFamilyMembers(),
+                onClose: Get.back,
+                onAddPressed: () {
+                  // TODO: Navigate to add family member screen
+                },
+              ),
             ),
             isScrollControlled: true,
+            enableDrag: true,
           );
         },
       ),
@@ -267,14 +289,18 @@ class ProfileController extends GetxController {
         badge: prescriptions.where((p) => p.isActive).length,
         onTap: () {
           Get.bottomSheet(
-            PrescriptionsModal(
-              prescriptions: getAllPrescriptions(),
-              onClose: Get.back,
-              onDownload: (prescription) {
-                downloadPrescription(prescription);
-              },
+            SizedBox(
+              height: screenHeight * 0.85,
+              child: PrescriptionsModal(
+                prescriptions: getAllPrescriptions(),
+                onClose: Get.back,
+                onDownload: (prescription) {
+                  downloadPrescription(prescription);
+                },
+              ),
             ),
             isScrollControlled: true,
+            enableDrag: true,
           );
         },
       ),
@@ -457,14 +483,70 @@ class ProfileController extends GetxController {
     return familyMembers;
   }
 
-  // Update user profile (placeholder for API call)
-  Future<void> updateUserProfile(UserModel updatedUser) async {
+  // Update user profile
+  Future<void> updateUserProfile(Map<String, dynamic> data) async {
     try {
-      // TODO: Make API call to update user profile
-      currentUser = updatedUser;
-      Get.snackbar('Success', 'Profile updated successfully');
+      // Show loading
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+
+      final response = await _profileRepository.updateUserProfile(data);
+
+      // Close loading
+      if (Get.isDialogOpen ?? false) Get.back();
+
+      // Close modal
+      if (Get.isBottomSheetOpen ?? false) Get.back();
+
+      if (response != null) {
+        // Update local user model if needed
+        // Assuming response contains specific fields or success message
+        // For now, we update the local currentUser with the specific fields we changed
+        // Note: Ideally the backend returns the full updated user object.
+
+        // Example: Update local fields
+        String fullName =
+            "${data['firstName']} ${data['middleName']} ${data['lastName']}"
+                .trim();
+        currentUser = currentUser.copyWith(
+          name: fullName,
+          email: data['email'],
+          // Add other fields to UserModel if they exist
+        );
+
+        // Also update storage if necessary
+        final storageService = Get.find<StorageService>();
+        final storageUser = storageService.getUser();
+        if (storageUser != null) {
+          final updatedStorageUser = storageUser.copyWith(
+            firstName: data['firstName'],
+            lastName: data['lastName'],
+            email: data['email'],
+          );
+          if (updatedStorageUser != null) {
+            storageService.saveUser(updatedStorageUser);
+          }
+        }
+
+        if (data.containsKey('notificationsEnabled')) {
+          _settingsService.setNotifications(data['notificationsEnabled']);
+        }
+
+        Get.snackbar('Success', 'Profile updated successfully');
+        update(); // Refresh UI
+      }
     } catch (e) {
-      Get.snackbar('Error', 'Failed to update profile: $e');
+      if (Get.isDialogOpen ?? false) Get.back();
+      if (e is ApiException) {
+        Get.snackbar(
+          'Error',
+          'Failed to update profile: ${e.response!.data['message']}',
+        );
+      } else {
+        Get.snackbar('Error', 'Failed to update profile: $e');
+      }
     }
   }
 
@@ -552,12 +634,27 @@ class ProfileController extends GetxController {
     try {
       isLoadingMedicalProfile.value = true;
       final response = await _profileRepository.getMedicalProfile();
-      if (response != null && response is Map<String, dynamic>) {
-        medicalProfile.value = MedicalProfile.fromJson(response);
+      log('Runtime type of response: ${response.runtimeType}');
+      log('Response content: $response');
+
+      if (response != null) {
+        if (response is Map) {
+          final mapData = Map<String, dynamic>.from(response);
+          // Check if it's wrapped in 'data' dictionary
+          if (mapData.containsKey('data') && mapData['data'] is Map) {
+            medicalProfile.value = MedicalProfile.fromJson(
+              Map<String, dynamic>.from(mapData['data']),
+            );
+          } else {
+            medicalProfile.value = MedicalProfile.fromJson(mapData);
+          }
+        }
+      } else {
+        log('Response is null');
       }
     } catch (e) {
       log('Error fetching medical profile: $e');
-      // Optional: Show error
+    } finally {
       isLoadingMedicalProfile.value = false;
     }
   }

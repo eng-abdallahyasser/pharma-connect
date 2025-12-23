@@ -12,19 +12,19 @@ class ApiException implements Exception {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
-        return ApiException(message: 'Connection timeout. Please try again.');
+        return ApiException(message: 'Connection timeout. Please try again.',response: error.response);
         
       case DioExceptionType.badResponse:
         return _handleBadResponse(error.response!);
         
       case DioExceptionType.cancel:
-        return ApiException(message: 'Request cancelled');
+        return ApiException(message: 'Request cancelled',response: error.response);
         
       case DioExceptionType.connectionError:
-        return ApiException(message: 'No internet connection');
+        return ApiException(message: 'No internet connection',response: error.response);
         
       default:
-        return ApiException(message: 'Something went wrong');
+        return ApiException(message: 'Something went wrong',response: error.response);
     }
   }
   
