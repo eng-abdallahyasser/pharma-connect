@@ -8,6 +8,7 @@ class ApiConstants {
   static const String changeProfilePhoto = '/api/profile/photo';
   static const String getBranches = '/api/branches';
   static const String getNearbyBranches = '/api/branches/nearby';
+  static const String getBranchDetails = '/api/branches/';
   static const String getProviders = '/api/providers';
 
   // Headers

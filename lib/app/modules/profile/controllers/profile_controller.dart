@@ -82,7 +82,7 @@ class ProfileController extends GetxController {
   void _loadCurrentUser() {
     try {
       // Safe way using null-aware operator
-      final user = Get.find<AuthService>().currentUser;
+      final user = Get.find<StorageService>().getUser();
 
       // Or with null check
       if (user != null) {
@@ -218,7 +218,7 @@ class ProfileController extends GetxController {
           Get.bottomSheet(
             MedicalProfileModal(
                       user: currentUser,
-                      onClose: toggleMedicalProfile,
+                      onClose:Get.back,
                     ),
             isScrollControlled: true,
           );
@@ -235,7 +235,7 @@ class ProfileController extends GetxController {
           Get.bottomSheet(
             FamilyMembersModal(
             familyMembers: getAllFamilyMembers(),
-            onClose: toggleFamilyMembers,
+            onClose:Get.back,
             onAddPressed: () {
               // TODO: Navigate to add family member screen
             },
@@ -255,7 +255,7 @@ class ProfileController extends GetxController {
           Get.bottomSheet(
             PrescriptionsModal(
               prescriptions: getAllPrescriptions(),
-              onClose: togglePrescriptions,
+              onClose: Get.back,
               onDownload: (prescription) {
                 downloadPrescription(prescription);
               },

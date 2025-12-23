@@ -90,7 +90,9 @@ class PharmaciesView extends GetView<PharmaciesController> {
                       // Filter Button
                       Expanded(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            controller.onFilterPressed();
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.white.withAlpha(52),
@@ -177,6 +179,51 @@ class PharmaciesView extends GetView<PharmaciesController> {
                 ],
               ),
             ),
+            // Active Filters
+            Obx(
+              () => controller.isFiltersShown.value
+                  ? SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: controller.filters.map((filter) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8, top: 8),
+                            child: GestureDetector(
+                              onTap: () => controller.toggleFilter(filter.id),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: filter.isActive
+                                      ? const Color(0xFF1A73E8).withAlpha(26)
+                                      : Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: filter.isActive
+                                        ? const Color(0xFF1A73E8)
+                                        : Colors.transparent,
+                                  ),
+                                ),
+                                child: Text(
+                                  filter.label,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: filter.isActive
+                                        ? const Color(0xFF1A73E8)
+                                        : Colors.grey[600],
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
 
             // Content Area
             Obx(
@@ -196,53 +243,6 @@ class PharmaciesView extends GetView<PharmaciesController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Active Filters
-          Obx(
-            () => controller.filters.isNotEmpty
-                ? SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: controller.filters.map((filter) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: GestureDetector(
-                            onTap: () => controller.toggleFilter(filter.id),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: filter.isActive
-                                    ? const Color(0xFF1A73E8).withAlpha(26)
-                                    : Colors.grey[200],
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: filter.isActive
-                                      ? const Color(0xFF1A73E8)
-                                      : Colors.transparent,
-                                ),
-                              ),
-                              child: Text(
-                                filter.label,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: filter.isActive
-                                      ? const Color(0xFF1A73E8)
-                                      : Colors.grey[600],
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  )
-                : const SizedBox.shrink(),
-          ),
-          const SizedBox(height: 12),
-
           // Results Count
           Obx(() {
             final filtered = controller.pharmacies;
@@ -309,7 +309,9 @@ class PharmaciesView extends GetView<PharmaciesController> {
 
   Widget _buildMapView(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height - 280,
+      height: controller.isFiltersShown.value
+          ? MediaQuery.of(context).size.height - 319
+          : MediaQuery.of(context).size.height - 280,
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -329,7 +331,7 @@ class PharmaciesView extends GetView<PharmaciesController> {
           userLocation: controller.userLocation,
           savedAddresses: controller.savedAddressesList,
           onSelectPharmacy: (pharmacy) {
-            controller.selectPharmacy(pharmacy.id);
+            controller.selectPharmacy(pharmacy.id.hashCode);
           },
         ),
       ),

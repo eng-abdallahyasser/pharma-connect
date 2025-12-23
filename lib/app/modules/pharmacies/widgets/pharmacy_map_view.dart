@@ -78,7 +78,7 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
 
                 // Pharmacy Markers
                 ...widget.pharmacies.map((pharmacy) {
-                  final latlng = widget.pharmacyLocations?[pharmacy.id];
+                  final latlng = widget.pharmacyLocations?[pharmacy.id.hashCode];
                   if (latlng == null) return null;
 
                   return Marker(
@@ -98,6 +98,13 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
+                            if (selectedPharmacy?.id == pharmacy.id)
+                            Icon(
+                              Icons.location_on,
+                              size: 34,
+                              color:Colors.teal,
+                             
+                            ),
                             Icon(
                               Icons.location_on,
                               size: 30,
@@ -105,14 +112,14 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
                                   ? const Color(0xFF00C897)
                                   : Colors.grey[400],
                               shadows: [
-                                if (selectedPharmacy?.id == pharmacy.id)
                                   BoxShadow(
                                     color: Theme.of(context).primaryColor,
-                                    blurRadius: 16,
+                                    blurRadius: 8,
                                     offset: const Offset(0, 0),
                                   ),
                               ],
                             ),
+                            
                           ],
                         ),
                       ),

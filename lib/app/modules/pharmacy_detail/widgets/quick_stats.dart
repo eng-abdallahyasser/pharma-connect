@@ -7,11 +7,11 @@ class QuickStats extends StatelessWidget {
   final double rating;
 
   const QuickStats({
-    Key? key,
+    super.key,
     required this.doctorsCount,
     required this.availableCount,
     required this.rating,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

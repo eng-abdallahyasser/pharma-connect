@@ -8,7 +8,7 @@ import '../widgets/doctor_card.dart';
 
 // Pharmacy detail view - main screen for pharmacy details
 class PharmacyDetailView extends GetView<PharmacyDetailController> {
-  const PharmacyDetailView({Key? key}) : super(key: key);
+  const PharmacyDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {

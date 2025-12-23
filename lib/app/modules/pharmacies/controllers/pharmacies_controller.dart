@@ -15,6 +15,8 @@ class PharmaciesController extends GetxController {
   final viewMode = 'list'.obs; // 'list' or 'map'
   final selectedPharmacyId = (-1).obs;
   final isLoading = false.obs;
+  final isFiltersShown = false.obs;
+  final distanceFilters = {'within_5km', 'within_2km'};
 
   // Pharmacy data
   final pharmacies = <PharmacyModel>[].obs;
@@ -118,7 +120,7 @@ class PharmaciesController extends GetxController {
         }
 
         return PharmacyModel(
-          id: id,
+          id: item['id'],
           name: localizedName?['en'] ?? 'Pharmacy',
           distance: "$distance km",
           rating: (item['ratingCount'] as num?)?.toDouble() ?? 0.0,
@@ -142,6 +144,10 @@ class PharmaciesController extends GetxController {
       PharmacyFilterModel(
         id: 'within_5km',
         label: 'pharmacies.filter_within_5km'.tr,
+      ),
+      PharmacyFilterModel(
+        id: 'within_2km',
+        label: 'pharmacies.filter_within_2km'.tr,
       ),
       PharmacyFilterModel(id: '24_7', label: 'pharmacies.filter_24_7'.tr),
     ]);
@@ -169,21 +175,55 @@ class PharmaciesController extends GetxController {
   }
 
   void toggleFilter(String filterId) {
+  // Define mutually exclusive distance filters
+  const distanceFilters = {'within_5km', 'within_2km'};
+  
+  // Check if it's a distance filter
+  final isDistanceFilter = distanceFilters.contains(filterId);
+  
+  if (isDistanceFilter) {
+    // For distance filters: they should work like radio buttons
+    final wasActive = activeFilters.contains(filterId);
+    
+    // Clear all distance filters first
+    activeFilters.removeWhere((id) => distanceFilters.contains(id));
+    
+    // Set all distance filters to inactive in UI
+    for (int i = 0; i < filters.length; i++) {
+      if (distanceFilters.contains(filters[i].id)) {
+        filters[i] = filters[i].copyWith(isActive: false);
+      }
+    }
+    
+    // If it wasn't active before, activate it now
+    if (!wasActive) {
+      activeFilters.add(filterId);
+      
+      // Update the specific filter to active
+      for (int i = 0; i < filters.length; i++) {
+        if (filters[i].id == filterId) {
+          filters[i] = filters[i].copyWith(isActive: true);
+          break;
+        }
+      }
+    }
+  } else {
+    // For non-distance filters: normal toggle behavior
     if (activeFilters.contains(filterId)) {
       activeFilters.remove(filterId);
     } else {
       activeFilters.add(filterId);
     }
-    // Update filters UI
-    filters.assignAll(
-      filters.map((filter) {
-        if (filter.id == filterId) {
-          return filter.copyWith(isActive: !filter.isActive);
-        }
-        return filter;
-      }).toList(),
-    );
+    
+    // Update UI for the specific filter
+    for (int i = 0; i < filters.length; i++) {
+      if (filters[i].id == filterId) {
+        filters[i] = filters[i].copyWith(isActive: !filters[i].isActive);
+        break;
+      }
+    }
   }
+}
 
   void selectPharmacy(int pharmacyId) {
     selectedPharmacyId.value = pharmacyId;
@@ -227,6 +267,13 @@ class PharmaciesController extends GetxController {
             matches = false;
           }
         }
+        if (activeFilters.contains('within_2km')) {
+          final distance =
+              double.tryParse(pharmacy.distance.split(' ')[0]) ?? 0;
+          if (distance > 2) {
+            matches = false;
+          }
+        }
 
         if (activeFilters.contains('24_7')) {
           if (!pharmacy.workingHours.contains('24')) {
@@ -259,5 +306,9 @@ class PharmaciesController extends GetxController {
       log('Error calculating distance: $e');
       return 'calculation error';
     }
+  }
+
+  void onFilterPressed() {
+    isFiltersShown.value = !isFiltersShown.value;
   }
 }

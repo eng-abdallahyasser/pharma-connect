@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
+import 'package:pharma_connect/app/modules/home/models/pharmacy_model.dart';
 import '../models/pharmacy_detail_model.dart';
 import '../models/doctor_detail_model.dart';
+import '../services/pharmacy_detail_repository.dart';
 
 // Pharmacy detail controller manages pharmacy details and doctors
 class PharmacyDetailController extends GetxController {
+  final PharmacyDetailRepository _repository = PharmacyDetailRepository();
+
   // Observable properties for reactive UI updates
   final pharmacy = Rxn<PharmacyDetailModel>();
   final doctors = <DoctorDetailModel>[].obs;
@@ -12,67 +16,36 @@ class PharmacyDetailController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Get pharmacy from arguments - can be any object with pharmacy data
+    // Get pharmacy from arguments - expecting ID or object with ID
     final args = Get.arguments;
-    if (args != null) {
-      // Convert any pharmacy-like object to PharmacyDetailModel
-      pharmacy.value = _convertToPharmacyDetail(args);
+    String? pharmacyId;
+    final PharmacyModel pharmacy = Get.arguments;
+
+    if (args is String) {
+      pharmacyId = args;
+    } else if (args is Map && args['id'] != null) {
+      pharmacyId = args['id'].toString();
     } else {
-      // Create a default pharmacy if no arguments provided (for UI preview)
-      pharmacy.value = PharmacyDetailModel(
-        id: 1,
-        name: 'HealthCare Pharmacy',
-        distance: '0.5 km',
-        rating: 4.6,
-        workingHours: '8:00 AM - 10:00 PM',
-        imageUrl:
-            'https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?w=600',
-        isOpen: true,
-        address: '123 Main Street, Downtown, City',
-        phone: '+1 (555) 123-4567',
-        totalDoctors: 4,
-      );
+      // Default ID if no arguments provided (for testing as per user request)
+      pharmacyId = pharmacy.id;
     }
+
+    fetchPharmacyDetail(pharmacyId);
+
     // Initialize doctors for this pharmacy
-    _initializeDoctors();
+    // _initializeDoctors();
   }
 
-  // Convert any pharmacy-like object to PharmacyDetailModel
-  PharmacyDetailModel _convertToPharmacyDetail(dynamic args) {
-    if (args is PharmacyDetailModel) {
-      return args;
-    }
-
-    // Handle dynamic object with pharmacy properties
+  Future<void> fetchPharmacyDetail(String id) async {
     try {
-      return PharmacyDetailModel(
-        id: args.id ?? 1,
-        name: args.name ?? 'Pharmacy',
-        distance: args.distance ?? '0 km',
-        rating: (args.rating ?? 4.5).toDouble(),
-        workingHours: args.workingHours ?? '9:00 AM - 9:00 PM',
-        imageUrl: args.imageUrl ?? '',
-        isOpen: args.isOpen ?? true,
-        address: args.address,
-        phone: args.phone,
-        totalDoctors: args.totalDoctors ?? 0,
-      );
+      final result = await _repository.getPharmacyDetail(id);
+      pharmacy.value = result;
     } catch (e) {
-      // Fallback to default pharmacy
-      return PharmacyDetailModel(
-        id: 1,
-        name: 'Pharmacy',
-        distance: '0 km',
-        rating: 4.5,
-        workingHours: '9:00 AM - 9:00 PM',
-        imageUrl: '',
-        isOpen: true,
-        totalDoctors: 0,
-      );
+      Get.snackbar('Error', 'Failed to load pharmacy details: $e');
     }
   }
 
-  // Initialize doctors with sample data
+  // Initialize doctors with sample data (Preserved for UI structure as API doesn't return doctors yet)
   void _initializeDoctors() {
     doctors.value = [
       DoctorDetailModel(
@@ -201,8 +174,16 @@ class PharmacyDetailController extends GetxController {
   // Get directions
   Future<void> getDirections() async {
     try {
-      // TODO: Implement directions
-      Get.snackbar('Directions', 'Opening directions...');
+      // Using data from pharmacy model if available
+      if (pharmacy.value != null) {
+        Get.snackbar(
+          'Directions',
+          'Opening directions to ${pharmacy.value!.name}...',
+        );
+        // here we could use latitude/longitude from pharmacy.value
+      } else {
+        Get.snackbar('Directions', 'Opening directions...');
+      }
     } catch (e) {
       Get.snackbar('Error', 'Failed to get directions: $e');
     }
@@ -211,8 +192,11 @@ class PharmacyDetailController extends GetxController {
   // Call pharmacy
   Future<void> callPharmacy() async {
     try {
-      // TODO: Implement phone call
-      Get.snackbar('Call', 'Calling pharmacy...');
+      if (pharmacy.value?.phone != null) {
+        Get.snackbar('Call', 'Calling ${pharmacy.value!.phone}...');
+      } else {
+        Get.snackbar('Call', 'Calling pharmacy...');
+      }
     } catch (e) {
       Get.snackbar('Error', 'Failed to call: $e');
     }

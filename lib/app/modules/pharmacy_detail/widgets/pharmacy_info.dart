@@ -6,9 +6,9 @@ class PharmacyInfo extends StatelessWidget {
   final PharmacyDetailModel pharmacy;
 
   const PharmacyInfo({
-    Key? key,
+    super.key,
     required this.pharmacy,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -39,4 +39,8 @@ class PharmaciesProvider {
       queryParams: query,
     );
   }
+
+  Future<dynamic> getBranchDetails(String id) async {
+    return await ApiClient().get('${ApiConstants.getBranchDetails}$id');
+  }
 }

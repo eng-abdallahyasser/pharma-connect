@@ -55,7 +55,7 @@ class HomeController extends GetxController {
   void _initializePharmacies() {
     pharmacies = [
       PharmacyModel(
-        id: 1,
+        id: "1",
         name: 'HealthCare Pharmacy',
         distance: '0.5 km',
         rating: 4.7,
@@ -67,7 +67,7 @@ class HomeController extends GetxController {
         availableDoctors: 3,
       ),
       PharmacyModel(
-        id: 2,
+        id: "2",
         name: 'MediPlus 24/7',
         distance: '1.2 km',
         rating: 4.8,
@@ -79,7 +79,7 @@ class HomeController extends GetxController {
         availableDoctors: 4,
       ),
       PharmacyModel(
-        id: 3,
+        id: "3",
         name: 'City Pharmacy',
         distance: '2.0 km',
         rating: 4.5,
