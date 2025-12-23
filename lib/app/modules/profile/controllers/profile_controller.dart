@@ -22,6 +22,8 @@ import '../models/user_model.dart';
 import '../models/prescription_model.dart';
 import '../models/family_member_model.dart';
 import '../models/menu_item_model.dart';
+import '../models/medical_profile_model.dart';
+import '../services/profile_repository.dart';
 
 // Profile controller manages user profile data and state
 class ProfileController extends GetxController {
@@ -38,6 +40,13 @@ class ProfileController extends GetxController {
   // Use settings service observables for notifications and dark mode
   late RxBool notificationsEnabled;
   late RxBool darkModeEnabled;
+
+  // Repositories
+  final ProfileRepository _profileRepository = ProfileRepository();
+
+  // Medical Profile
+  final Rx<MedicalProfile?> medicalProfile = Rx<MedicalProfile?>(null);
+  final RxBool isLoadingMedicalProfile = false.obs;
 
   // User data
   late UserModel currentUser;
@@ -215,11 +224,16 @@ class ProfileController extends GetxController {
         icon: Icons.favorite,
         iconColor: const Color(0xFFEF4444),
         onTap: () {
+          fetchMedicalProfile();
           Get.bottomSheet(
-            MedicalProfileModal(
-                      user: currentUser,
-                      onClose:Get.back,
-                    ),
+            Obx(
+              () => MedicalProfileModal(
+                user: currentUser,
+                medicalProfile: medicalProfile.value,
+                isLoading: isLoadingMedicalProfile.value,
+                onClose: Get.back,
+              ),
+            ),
             isScrollControlled: true,
           );
         },
@@ -234,12 +248,12 @@ class ProfileController extends GetxController {
         onTap: () {
           Get.bottomSheet(
             FamilyMembersModal(
-            familyMembers: getAllFamilyMembers(),
-            onClose:Get.back,
-            onAddPressed: () {
-              // TODO: Navigate to add family member screen
-            },
-          ),
+              familyMembers: getAllFamilyMembers(),
+              onClose: Get.back,
+              onAddPressed: () {
+                // TODO: Navigate to add family member screen
+              },
+            ),
             isScrollControlled: true,
           );
         },
@@ -531,6 +545,51 @@ class ProfileController extends GetxController {
       if (Get.isDialogOpen ?? false) Get.back();
       log('Error updating profile photo: $e');
       Get.snackbar('Error', 'Failed to update profile photo');
+    }
+  }
+
+  Future<void> fetchMedicalProfile() async {
+    try {
+      isLoadingMedicalProfile.value = true;
+      final response = await _profileRepository.getMedicalProfile();
+      if (response != null && response is Map<String, dynamic>) {
+        medicalProfile.value = MedicalProfile.fromJson(response);
+      }
+    } catch (e) {
+      log('Error fetching medical profile: $e');
+      // Optional: Show error
+      isLoadingMedicalProfile.value = false;
+    }
+  }
+
+  Future<void> updateMedicalProfile(MedicalProfile updatedProfile) async {
+    try {
+      // Show loading
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+
+      final response = await _profileRepository.updateMedicalProfile(
+        updatedProfile.toJson(),
+      );
+
+      // Close loading
+      if (Get.isDialogOpen ?? false) Get.back();
+
+      if (response != null && response is Map<String, dynamic>) {
+        // Update local state with returned data (assuming API returns updated profile)
+        // If API returns partial or no data, we might need to rely on the `updatedProfile` passed in,
+        // but typically we want the server response including potentially updated metadata.
+        // The user prompt said the body is the structure. Usually PATCH returns the updated resource.
+        medicalProfile.value = MedicalProfile.fromJson(response);
+        Get.back(); // Close Edit Modal
+        Get.snackbar('Success', 'Medical profile updated successfully');
+      }
+    } catch (e) {
+      if (Get.isDialogOpen ?? false) Get.back();
+      log('Error updating medical profile: $e');
+      Get.snackbar('Error', 'Failed to update medical profile');
     }
   }
 }
