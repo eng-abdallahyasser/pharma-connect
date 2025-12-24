@@ -1,8 +1,14 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
+import 'package:pharma_connect/app/core/services/storage_service.dart';
+import 'package:pharma_connect/app/modules/home/models/address_model.dart';
 import 'package:pharma_connect/app/modules/home/models/pharmacy_model.dart';
 import '../models/pharmacy_detail_model.dart';
 import '../models/doctor_detail_model.dart';
 import '../services/pharmacy_detail_repository.dart';
+import '../widgets/rating_dialog.dart';
+import 'package:flutter/material.dart';
 
 // Pharmacy detail controller manages pharmacy details and doctors
 class PharmacyDetailController extends GetxController {
@@ -12,14 +18,15 @@ class PharmacyDetailController extends GetxController {
   final pharmacy = Rxn<PharmacyDetailModel>();
   final doctors = <DoctorDetailModel>[].obs;
   final selectedTab = 'overview'.obs;
+    AddressModel? _selectedAddress;
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
     // Get pharmacy from arguments - expecting ID or object with ID
     final args = Get.arguments;
     String? pharmacyId;
-    final PharmacyModel pharmacy = Get.arguments;
+    final PharmacyModel ph = Get.arguments;
 
     if (args is String) {
       pharmacyId = args;
@@ -27,21 +34,40 @@ class PharmacyDetailController extends GetxController {
       pharmacyId = args['id'].toString();
     } else {
       // Default ID if no arguments provided (for testing as per user request)
-      pharmacyId = pharmacy.id;
+      pharmacyId = ph.id;
     }
+    _loadSelectedAddress();
 
-    fetchPharmacyDetail(pharmacyId);
-
-    // Initialize doctors for this pharmacy
-    // _initializeDoctors();
+    final pharmacyDetail = await fetchPharmacyDetail(pharmacyId);
+    if (pharmacyDetail != null) {
+      pharmacyDetail.calculateDistance(_selectedAddress!);
+      pharmacy.value = pharmacyDetail;
+    }
   }
 
-  Future<void> fetchPharmacyDetail(String id) async {
+  void _loadSelectedAddress() {
+    final storageService = Get.find<StorageService>();
+    final addresses = storageService.getAddresses();
+    if (addresses != null) {
+      final addressList = addresses
+          .map((e) => AddressModel.fromJson(e))
+          .toList();
+      _selectedAddress = addressList.firstWhereOrNull(
+        (element) => element.isSelected,
+      );
+      log("Selected Address pharmacies_controller: ${_selectedAddress?.toJson()}");
+    }
+  }
+
+  Future<PharmacyDetailModel?> fetchPharmacyDetail(String id) async {
     try {
-      final result = await _repository.getPharmacyDetail(id);
-      pharmacy.value = result;
+      _initializeDoctors();
+      return await _repository.getPharmacyDetail(id);
+      
+
     } catch (e) {
       Get.snackbar('Error', 'Failed to load pharmacy details: $e');
+      return null;
     }
   }
 
@@ -211,4 +237,46 @@ class PharmacyDetailController extends GetxController {
       Get.snackbar('Error', 'Failed to share: $e');
     }
   }
+
+  // Open rating dialog
+  void openRatingDialog() {
+    Get.dialog(
+      RatingDialog(onSubmit: (rating, notes) => _submitRating(rating, notes)),
+    );
+  }
+
+  // Submit rating
+  Future<void> _submitRating(double rating, String? notes) async {
+    try {
+      if (pharmacy.value?.id == null) return;
+
+      // Show loading
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+
+      await _repository.ratePharmacy(pharmacy.value!.id, rating, notes);
+
+      if (Get.isDialogOpen == true) Get.back(); // Close loading
+
+      Get.snackbar(
+        'Success',
+        'Thank you for your rating!',
+
+      );
+
+      // Refresh details
+      fetchPharmacyDetail(pharmacy.value!.id);
+    } catch (e) {
+      if (Get.isDialogOpen == true) Get.back(); // Close loading if open
+
+      Get.snackbar(
+        'Error',
+        'Failed to submit rating: $e',
+      );
+    }
+  }
+
+  
 }

@@ -8,11 +8,11 @@ class PharmacyHeader extends StatelessWidget {
   final VoidCallback onSharePressed;
 
   const PharmacyHeader({
-    Key? key,
+    super.key,
     required this.pharmacy,
     required this.onBackPressed,
     required this.onSharePressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class PharmacyHeader extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Colors.transparent,
-                Colors.black.withOpacity(0.6),
+                Colors.black.withAlpha(128),
               ],
             ),
           ),
@@ -66,11 +66,11 @@ class PharmacyHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withAlpha(220),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withAlpha(51),
                     blurRadius: 8,
                     spreadRadius: 0,
                   ),
@@ -94,11 +94,11 @@ class PharmacyHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.9),
+                color: Colors.white.withAlpha(220),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withAlpha(51),
                     blurRadius: 8,
                     spreadRadius: 0,
                   ),

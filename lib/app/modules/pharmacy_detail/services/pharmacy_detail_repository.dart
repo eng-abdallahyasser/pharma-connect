@@ -17,4 +17,18 @@ class PharmacyDetailRepository {
       rethrow;
     }
   }
+
+  Future<void> ratePharmacy(String id, double rating, String? notes) async {
+    try {
+      final body = {
+        'rating': rating,
+        if (notes != null && notes.isNotEmpty) 'notes': notes,
+      };
+
+      await _apiClient.post('${ApiConstants.getBranchDetails}$id/rating', body);
+    } catch (e) {
+      log("Error rating pharmacy: $e");
+      rethrow;
+    }
+  }
 }

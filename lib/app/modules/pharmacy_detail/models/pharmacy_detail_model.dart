@@ -1,4 +1,9 @@
 // Pharmacy detail model representing detailed pharmacy information
+import 'dart:developer';
+
+import 'package:latlong2/latlong.dart';
+import 'package:pharma_connect/app/modules/home/models/address_model.dart';
+
 class PharmacyDetailModel {
   final String id;
   final List<String> telephones;
@@ -6,6 +11,7 @@ class PharmacyDetailModel {
   final int ratingCount;
   final double latitude;
   final double longitude;
+  String? distance;
   final bool isActive;
   final bool isAlwaysOpen;
   final Map<String, dynamic> localizedName;
@@ -60,7 +66,38 @@ class PharmacyDetailModel {
 
   // Distance is not in the API response, so we return a placeholder or calculate if we had user location.
   // Returning empty or a static string for now as per "display only matched fetched data"
-  String get distance => 'N/A'; // or calculate if user location is known
+
+  void calculateDistance(AddressModel selectedAddress) {
+    try {
+      final Distance d = const Distance();
+      final double m = d.as(
+        LengthUnit.Meter,
+        LatLng(selectedAddress.latitude, selectedAddress.longitude),
+        LatLng(latitude, longitude),
+      );
+
+      // Check if distance is less than 1 km, display in meters
+      if (m < 1000) {
+        // Convert to meters
+        final double meters = m;
+
+        // If meters is less than 10, show one decimal place
+        if (meters < 10) {
+          distance = '${meters.toStringAsFixed(1)} m';
+        } else {
+          // Round to nearest whole number for larger meter values
+          distance = '${meters.round()} m';
+        }
+      } else {
+        final double km = m / 1000;
+        // Display with one decimal place for km
+        distance = '${km.toStringAsFixed(2)} Km';
+      }
+    } catch (e) {
+      log('Error calculating distance: $e');
+      distance = 'calculation error: $e';
+    }
+  } // or calculate if user location is known
 
   double get rating => ratingCount
       .toDouble(); // The API only gives ratingCount, assume it's the score or 0.

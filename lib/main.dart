@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pharma_connect/app/core/network/api_client.dart';
+import 'package:pharma_connect/app/core/services/notification_service.dart';
 import 'package:pharma_connect/app/modules/auth/services/auth_service.dart';
 import 'package:pharma_connect/app/modules/navigation/bindings/navigation_binding.dart';
 import 'package:pharma_connect/app/modules/navigation/services/navigation_service.dart';
@@ -16,8 +18,16 @@ import 'package:pharma_connect/app/locales/translations.dart';
 import 'app/routes/app_routes.dart';
 import 'app/routes/app_pages.dart';
 import 'app/theme/app_theme.dart';
+import 'firebase_options.dart';
 
 void main() async {
+  // Ensure Flutter bindings are initialized
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  log('Firebase initialized');
+
   // Initialize GetStorage first - required before using GetStorage anywhere
   await GetStorage.init();
   ApiClient().init();
@@ -27,6 +37,13 @@ void main() async {
   await Get.putAsync<StorageService>(() async {
     final service = await StorageService().init();
     log('StorageService initialized');
+    return service;
+  });
+
+  // Initialize NotificationService to get FCM token
+  await Get.putAsync<NotificationService>(() async {
+    final service = await NotificationService().init();
+    log('NotificationService initialized');
     return service;
   });
 

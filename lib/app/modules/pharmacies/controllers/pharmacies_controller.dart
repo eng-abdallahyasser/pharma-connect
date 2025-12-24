@@ -128,8 +128,8 @@ class PharmaciesController extends GetxController {
           imageUrl:
               'https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?w=600',
           isOpen: item['isActive'] == true, // Check logic on nearby vs search
-          totalDoctors: 5,
-          availableDoctors: 3,
+          totalDoctors: (item['doctorsCount'] != null && item['doctorsCount'] != 0) ? item['doctorsCount'] : 7,
+          availableDoctors: (item['onlineDoctors'] != null && item['onlineDoctors'] != 0) ? item['onlineDoctors'] : 7,
         );
       }).toList(),
     );
@@ -290,7 +290,7 @@ class PharmaciesController extends GetxController {
 
   String _calculateDistance(double? lat, double? long) {
     if (lat == null || long == null || _selectedAddress == null) {
-      return 'calculation error';
+      return 'location not found';
     }
 
     try {
@@ -304,7 +304,7 @@ class PharmaciesController extends GetxController {
       return km.toStringAsFixed(1);
     } catch (e) {
       log('Error calculating distance: $e');
-      return 'calculation error';
+      return 'calculation error: $e';
     }
   }
 

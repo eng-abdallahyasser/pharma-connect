@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:pharma_connect/app/core/services/notification_service.dart';
 import 'package:pharma_connect/app/core/services/storage_service.dart';
 import 'package:pharma_connect/app/modules/auth/models/signup_response.dart';
 import '../models/user_model.dart';
@@ -58,13 +59,28 @@ class AuthService extends GetxService {
   Future<LoginResponse> login(String email, String password) async {
     _isLoading.value = true;
     try {
+      // Get FCM token from NotificationService
+      String fcmToken = 'default_token'; // Fallback if FCM not available
+      try {
+        if (Get.isRegistered<NotificationService>()) {
+          final notificationService = Get.find<NotificationService>();
+          final token = await notificationService.getToken();
+          if (token != null && token.isNotEmpty) {
+            fcmToken = token;
+            log('Using FCM token for login: $fcmToken');
+          }
+        }
+      } catch (e) {
+        log('Could not get FCM token, using default: $e');
+      }
+
       final loginRequest = LoginRequest(
         grantType: 'password',
         email: email,
         password: password,
         otp: '999999',
         clientId: 'mobile_app',
-        deviceToken: 'ExponentPushToken[8qSTYvDW3NpPuqqCCqAHTS]',
+        deviceToken: fcmToken, // Use real FCM token
         deviceInfo: DeviceInfo(
           brand: 'google',
           deviceType: 'mobile',
