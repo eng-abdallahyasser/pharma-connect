@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../models/doctor_model.dart';
 import '../models/consultation_model.dart';
+import '../services/doctors_service.dart';
 
 // Consultations controller manages doctor consultations and scheduling
 class ConsultationsController extends GetxController {
@@ -8,70 +9,51 @@ class ConsultationsController extends GetxController {
   final currentTabIndex = 0.obs; // 0: Available, 1: Upcoming, 2: History
   final searchQuery = ''.obs;
   final selectedDoctor = Rxn<DoctorModel>();
+  final isLoadingDoctors = false.obs;
 
   // Lists of doctors and consultations
-  late List<DoctorModel> availableDoctors;
+  final availableDoctors = <DoctorModel>[].obs;
   late List<ConsultationModel> upcomingConsultations;
   late List<ConsultationModel> pastConsultations;
+
+  // Services
+  late DoctorsService _doctorsService;
 
   @override
   void onInit() {
     super.onInit();
+    // Initialize services
+    _doctorsService = Get.put(DoctorsService());
+
     // Initialize all data when controller is created
     _initializeAvailableDoctors();
     _initializeUpcomingConsultations();
     _initializePastConsultations();
   }
 
-  // Initialize available doctors with sample data
-  void _initializeAvailableDoctors() {
-    availableDoctors = [
-      DoctorModel(
-        id: 1,
-        name: 'Dr. Sarah Johnson',
-        specialization: 'General Physician',
-        imageUrl:
-            'https://images.unsplash.com/photo-1659353888906-adb3e0041693?w=400',
-        rating: 4.8,
-        status: 'available',
-      ),
-      DoctorModel(
-        id: 2,
-        name: 'Dr. Michael Chen',
-        specialization: 'Cardiologist',
-        imageUrl:
-            'https://images.unsplash.com/photo-1712215544003-af10130f8eb3?w=400',
-        rating: 4.9,
-        status: 'available',
-      ),
-      DoctorModel(
-        id: 3,
-        name: 'Dr. Emily Roberts',
-        specialization: 'Dermatologist',
-        imageUrl:
-            'https://images.unsplash.com/photo-1758691463626-0ab959babe00?w=400',
-        rating: 4.7,
-        status: 'busy',
-      ),
-      DoctorModel(
-        id: 4,
-        name: 'Dr. James Wilson',
-        specialization: 'Orthopedic Surgeon',
-        imageUrl:
-            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
-        rating: 4.6,
-        status: 'available',
-      ),
-      DoctorModel(
-        id: 5,
-        name: 'Dr. Lisa Anderson',
-        specialization: 'Pediatrician',
-        imageUrl:
-            'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400',
-        rating: 4.9,
-        status: 'offline',
-      ),
-    ];
+  // Fetch available doctors from API
+  Future<void> _initializeAvailableDoctors() async {
+    isLoadingDoctors.value = true;
+    try {
+      // TODO: Get user's actual location
+      // For now, using the coordinates from the API example
+      final doctors = await _doctorsService.fetchNearbyDoctors(
+        lat: 30.0583958,
+        lng: 31.25982,
+        radius: 5.0,
+      );
+
+      availableDoctors.value = doctors;
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to load doctors: $e');
+    } finally {
+      isLoadingDoctors.value = false;
+    }
+  }
+
+  // Public method to refresh doctors list
+  Future<void> refreshDoctors() async {
+    await _initializeAvailableDoctors();
   }
 
   // Initialize upcoming consultations with sample data
@@ -157,7 +139,7 @@ class ConsultationsController extends GetxController {
     final query = searchQuery.value.toLowerCase();
     return availableDoctors.where((doctor) {
       return doctor.name.toLowerCase().contains(query) ||
-          doctor.specialization.toLowerCase().contains(query);
+          (doctor.specialization?.toLowerCase().contains(query) ?? false);
     }).toList();
   }
 
@@ -214,7 +196,9 @@ class ConsultationsController extends GetxController {
     try {
       // TODO: Implement video call functionality
       Get.snackbar(
-          'Video Call', 'Starting call with ${consultation.doctorName}');
+        'Video Call',
+        'Starting call with ${consultation.doctorName}',
+      );
     } catch (e) {
       Get.snackbar('Error', 'Failed to start call: $e');
     }
@@ -234,8 +218,10 @@ class ConsultationsController extends GetxController {
   Future<void> viewPrescription(ConsultationModel consultation) async {
     try {
       // TODO: Navigate to prescription view
-      Get.snackbar('Prescription',
-          'Viewing prescription from ${consultation.doctorName}');
+      Get.snackbar(
+        'Prescription',
+        'Viewing prescription from ${consultation.doctorName}',
+      );
     } catch (e) {
       Get.snackbar('Error', 'Failed to view prescription: $e');
     }
@@ -257,7 +243,9 @@ class ConsultationsController extends GetxController {
     try {
       // TODO: Navigate to rescheduling screen
       Get.snackbar(
-          'Reschedule', 'Opening reschedule for ${consultation.doctorName}');
+        'Reschedule',
+        'Opening reschedule for ${consultation.doctorName}',
+      );
     } catch (e) {
       Get.snackbar('Error', 'Failed to reschedule: $e');
     }

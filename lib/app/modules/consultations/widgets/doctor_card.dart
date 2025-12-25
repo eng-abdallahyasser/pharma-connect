@@ -76,33 +76,44 @@ class DoctorCard extends StatelessWidget {
                     height: 64,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.grey[300]!,
-                        width: 2,
-                      ),
+                      border: Border.all(color: Colors.grey[300]!, width: 2),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(32),
-                      child: Image.network(
-                        doctor.imageUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Fallback avatar with initials
-                          return Container(
-                            color: Colors.grey[300],
-                            child: Center(
-                              child: Text(
-                                doctor.initials,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                      child: doctor.imageUrl != null
+                          ? Image.network(
+                              doctor.imageUrl!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                // Fallback avatar with initials
+                                return Container(
+                                  color: Colors.grey[300],
+                                  child: Center(
+                                    child: Text(
+                                      doctor.initials,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            )
+                          : Container(
+                              color: Colors.grey[300],
+                              child: Center(
+                                child: Text(
+                                  doctor.initials,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ),
 
@@ -116,10 +127,7 @@ class DoctorCard extends StatelessWidget {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: _getStatusColor(),
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 2,
-                        ),
+                        border: Border.all(color: Colors.white, width: 2),
                       ),
                     ),
                   ),
@@ -138,18 +146,14 @@ class DoctorCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        
                       ),
                     ),
                     const SizedBox(height: 4),
 
                     // Specialization
                     Text(
-                      doctor.specialization,
-                      style: TextStyle(
-                        fontSize: 12,
-                        
-                      ),
+                      doctor.specialization ?? 'General Physician',
+                      style: TextStyle(fontSize: 12),
                     ),
                     const SizedBox(height: 8),
 
@@ -191,11 +195,15 @@ class DoctorCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              doctor.rating.toString(),
-                              style: const TextStyle(
+                              doctor.rating != null
+                                  ? doctor.rating.toString()
+                                  : 'Be first to rate',
+                              style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                
+                                color: doctor.rating != null
+                                    ? Colors.black
+                                    : Colors.grey,
                               ),
                             ),
                           ],

@@ -10,6 +10,7 @@ class ApiConstants {
   static const String getNearbyBranches = '/api/branches/nearby';
   static const String getBranchDetails = '/api/branches/';
   static const String getProviders = '/api/providers';
+  static const String getNearbyDoctors = '/api/doctors/nearby';
 
   // Headers
   static const Map<String, String> headers = {
