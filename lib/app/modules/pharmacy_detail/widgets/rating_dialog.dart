@@ -3,8 +3,13 @@ import 'package:get/get.dart';
 
 class RatingDialog extends StatefulWidget {
   final Function(double rating, String? notes) onSubmit;
+  final String title;
 
-  const RatingDialog({super.key, required this.onSubmit});
+  const RatingDialog({
+    super.key,
+    required this.onSubmit,
+    this.title = 'Rate Pharmacy',
+  });
 
   @override
   State<RatingDialog> createState() => _RatingDialogState();
@@ -64,9 +69,9 @@ class _RatingDialogState extends State<RatingDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Rate Pharmacy',
-              style: TextStyle(
+            Text(
+              widget.title,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Color(0xFF1F2937),

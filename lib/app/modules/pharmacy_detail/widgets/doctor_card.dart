@@ -9,12 +9,12 @@ class DoctorCard extends StatelessWidget {
   final bool isPreview;
 
   const DoctorCard({
-    Key? key,
+    super.key,
     required this.doctor,
     required this.onBookPressed,
     required this.onChatPressed,
     this.isPreview = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

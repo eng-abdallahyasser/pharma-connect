@@ -24,14 +24,32 @@ class DoctorsRepository {
         queryParams: queryParams,
       );
 
-      if (response is List) {
-        return response.map((json) => DoctorModel.fromJson(json)).toList();
+      if (response is Map<String, dynamic> && response['data'] is List) {
+        final List<dynamic> dataList = response['data'];
+        return dataList
+            .map((json) => DoctorModel.fromJson(json as Map<String, dynamic>))
+            .toList();
       }
 
       log('Unexpected response format: $response');
       return [];
     } catch (e) {
       log('Error fetching nearby doctors: $e');
+      rethrow;
+    }
+  }
+
+  /// Rate a doctor
+  Future<void> rateDoctor(String id, double rating, String? notes) async {
+    try {
+      final body = {
+        'rating': rating.toInt(), // API expects integer rating
+        if (notes != null && notes.isNotEmpty) 'notes': notes,
+      };
+
+      await _apiClient.post('/api/doctors/$id/rating', body);
+    } catch (e) {
+      log('Error rating doctor: $e');
       rethrow;
     }
   }

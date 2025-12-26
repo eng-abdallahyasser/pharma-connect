@@ -6,6 +6,8 @@ import 'package:pharma_connect/app/modules/chat/bindings/chat_binding.dart';
 import 'package:pharma_connect/app/modules/chat/views/chat_view.dart';
 import 'package:pharma_connect/app/modules/consultations/bindings/consultations_binding.dart';
 import 'package:pharma_connect/app/modules/consultations/views/consultations_view.dart';
+import 'package:pharma_connect/app/modules/doctor_detail/bindings/doctor_detail_binding.dart';
+import 'package:pharma_connect/app/modules/doctor_detail/views/doctor_detail_view.dart';
 import 'package:pharma_connect/app/modules/home/bindings/home_binding.dart';
 import 'package:pharma_connect/app/modules/home/views/home_view.dart';
 import 'package:pharma_connect/app/modules/medicines/bindings/medicines_binding.dart';
@@ -75,6 +77,11 @@ abstract class AppPages {
       name: AppRoutes.pharmacyDetail,
       page: () => const PharmacyDetailView(),
       binding: PharmacyDetailBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.doctorDetail,
+      page: () => const DoctorDetailView(),
+      binding: DoctorDetailBinding(),
     ),
   ];
 }

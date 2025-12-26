@@ -10,4 +10,5 @@ abstract class AppRoutes {
   static const String medicines = '/medicines';
   static const String notifications = '/notifications';
   static const String pharmacyDetail = '/pharmacy-detail';
+  static const String doctorDetail = '/doctor-detail';
 }

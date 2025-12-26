@@ -9,7 +9,7 @@ import '../widgets/chat_input_field.dart';
 
 // Chat view - main screen for doctor-patient communication
 class ChatView extends GetView<ChatController> {
-  const ChatView({Key? key}) : super(key: key);
+  const ChatView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class ChatView extends GetView<ChatController> {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFF1A73E8).withOpacity(0.1),
+              color: const Color(0xFF1A73E8).withAlpha(26),
             ),
             child: Center(
               child: Text(

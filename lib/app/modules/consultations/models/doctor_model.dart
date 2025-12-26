@@ -74,11 +74,12 @@ class DoctorModel {
   final bool isOnline;
   final Branch branch;
   final double distance;
+  final double averageRating;
+  final int totalRaters;
 
   // Legacy fields for backward compatibility with existing UI
   final String? specialization;
   final String? imageUrl;
-  final double? rating;
 
   DoctorModel({
     required this.id,
@@ -88,12 +89,23 @@ class DoctorModel {
     required this.isOnline,
     required this.branch,
     required this.distance,
+    this.averageRating = 0.0,
+    this.totalRaters = 0,
     this.specialization,
     this.imageUrl,
-    this.rating,
   });
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) {
+    // Parse averageRating - it comes as a string from API
+    double avgRating = 0.0;
+    if (json['averageRating'] != null) {
+      if (json['averageRating'] is String) {
+        avgRating = double.tryParse(json['averageRating']) ?? 0.0;
+      } else {
+        avgRating = (json['averageRating'] as num).toDouble();
+      }
+    }
+
     return DoctorModel(
       id: json['id'] ?? '',
       firstName: json['firstName'] ?? '',
@@ -102,9 +114,10 @@ class DoctorModel {
       isOnline: json['isOnline'] ?? false,
       branch: Branch.fromJson(json['branch'] ?? {}),
       distance: (json['distance'] ?? 0).toDouble(),
+      averageRating: avgRating,
+      totalRaters: json['totalRaters'] ?? 0,
       specialization: json['specialization'],
       imageUrl: json['imageUrl'],
-      rating: json['rating']?.toDouble(),
     );
   }
 
@@ -117,11 +130,15 @@ class DoctorModel {
       'isOnline': isOnline,
       'branch': branch.toJson(),
       'distance': distance,
+      'averageRating': averageRating.toString(),
+      'totalRaters': totalRaters,
       if (specialization != null) 'specialization': specialization,
       if (imageUrl != null) 'imageUrl': imageUrl,
-      if (rating != null) 'rating': rating,
     };
   }
+
+  // Rating getter for backward compatibility with UI
+  double? get rating => averageRating;
 
   // Get full name
   String get name => '$firstName $lastName';
@@ -151,9 +168,10 @@ class DoctorModel {
     bool? isOnline,
     Branch? branch,
     double? distance,
+    double? averageRating,
+    int? totalRaters,
     String? specialization,
     String? imageUrl,
-    double? rating,
   }) {
     return DoctorModel(
       id: id ?? this.id,
@@ -163,9 +181,10 @@ class DoctorModel {
       isOnline: isOnline ?? this.isOnline,
       branch: branch ?? this.branch,
       distance: distance ?? this.distance,
+      averageRating: averageRating ?? this.averageRating,
+      totalRaters: totalRaters ?? this.totalRaters,
       specialization: specialization ?? this.specialization,
       imageUrl: imageUrl ?? this.imageUrl,
-      rating: rating ?? this.rating,
     );
   }
 }

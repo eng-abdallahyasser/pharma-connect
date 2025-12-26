@@ -123,7 +123,7 @@ class PharmaciesController extends GetxController {
           id: item['id'],
           name: localizedName?['en'] ?? 'Pharmacy',
           distance: "$distance km",
-          rating: (item['ratingCount'] as num?)?.toDouble() ?? 0.0,
+          rating: (item['averageRating'] as num?)?.toDouble() ?? 0.0,
           workingHours: isAlwaysOpen ? '24 Hours' : 'Open',
           imageUrl:
               'https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?w=600',
