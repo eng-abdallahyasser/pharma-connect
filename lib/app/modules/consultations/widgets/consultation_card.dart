@@ -58,7 +58,7 @@ class ConsultationCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withAlpha(26),
             blurRadius: 4,
             spreadRadius: 0,
           ),

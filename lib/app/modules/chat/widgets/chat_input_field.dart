@@ -9,12 +9,12 @@ class ChatInputField extends StatefulWidget {
   final bool showAttachmentMenu;
 
   const ChatInputField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.onSendPressed,
     required this.onAttachmentPressed,
     this.showAttachmentMenu = false,
-  }) : super(key: key);
+  });
 
   @override
   State<ChatInputField> createState() => _ChatInputFieldState();

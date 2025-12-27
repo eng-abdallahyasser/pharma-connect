@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 /// Localization Service to manage app languages and translations
 /// 
@@ -68,7 +69,7 @@ class LocalizationService extends GetxService {
     Get.updateLocale(Locale(languageCode));
 
     // Persist language preference
-    _saveLanguagePreference(languageCode);
+    _saveLanguageGetStorage(languageCode);
   }
 
   /// Toggle between English and Arabic
@@ -123,10 +124,9 @@ class LocalizationService extends GetxService {
     return ltrAlignment;
   }
 
-  /// Save language preference to local storage
-  void _saveLanguagePreference(String languageCode) {
-    // TODO: Save to SharedPreferences
-    // await _prefs.setString('language', languageCode);
+  /// Save language getx storage to local storage
+  void _saveLanguageGetStorage(String languageCode) {
+    GetStorage().write('language', languageCode);
   }
 
   /// Get supported languages list

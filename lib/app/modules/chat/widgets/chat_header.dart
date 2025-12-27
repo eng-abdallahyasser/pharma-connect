@@ -10,13 +10,13 @@ class ChatHeader extends StatelessWidget {
   final VoidCallback onMorePressed;
 
   const ChatHeader({
-    Key? key,
+    super.key,
     required this.session,
     required this.onBackPressed,
     required this.onVideoCallPressed,
     required this.onVoiceCallPressed,
     required this.onMorePressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

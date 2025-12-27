@@ -16,7 +16,7 @@ class AppTranslations extends Translations {
 /// Extension on String to easily translate text
 /// Usage: 'profile.title'.tr
 extension TranslationExtension on String {
-  String get translate => this.tr;
+  String get translate => tr;
 }
 
 /// Get translation by key

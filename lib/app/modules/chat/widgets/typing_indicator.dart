@@ -6,10 +6,10 @@ class TypingIndicator extends StatefulWidget {
   final String doctorInitials;
 
   const TypingIndicator({
-    Key? key,
+    super.key,
     required this.doctorImageUrl,
     required this.doctorInitials,
-  }) : super(key: key);
+  });
 
   @override
   State<TypingIndicator> createState() => _TypingIndicatorState();

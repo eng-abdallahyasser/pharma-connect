@@ -745,7 +745,7 @@ class ProfileController extends GetxController {
 
       Get.snackbar('Success', 'Family member added successfully');
 
-      if (Get.isBottomSheetOpen ?? false) Get.back(); // Close add modal if open
+      Get.back();
       fetchFamilyMembers();
     } catch (e) {
       if (Get.isDialogOpen ?? false) Get.back();

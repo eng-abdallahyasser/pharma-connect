@@ -8,7 +8,6 @@ import 'package:pharma_connect/app/modules/auth/widgets/custom_text_field.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/language_selector.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/primary_button.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/social_login_button.dart';
-import 'package:pharma_connect/app/theme/app_colors.dart';
 import 'package:pharma_connect/app/theme/app_spacing.dart';
 
 class LoginView extends StatefulWidget {
@@ -130,7 +129,7 @@ class _LoginViewState extends State<LoginView> {
                         child: Text(
                           getTranslation('auth.forgot.password'),
                           style: TextStyle(
-                            color: Color(AppColors.primary),
+                            color: Theme.of(context).primaryColor,
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                           ),
@@ -201,7 +200,7 @@ class _LoginViewState extends State<LoginView> {
                     child: Text(
                       getTranslation('auth.register.now'),
                       style: TextStyle(
-                        color: Color(AppColors.primary),
+                        color: Theme.of(context).primaryColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),

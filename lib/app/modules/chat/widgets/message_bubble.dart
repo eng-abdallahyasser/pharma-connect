@@ -9,12 +9,12 @@ class MessageBubble extends StatelessWidget {
   final bool showTimestamp;
 
   const MessageBubble({
-    Key? key,
+    super.key,
     required this.message,
     required this.doctorImageUrl,
     required this.doctorInitials,
     this.showTimestamp = true,
-  }) : super(key: key);
+  });
 
   // Get status icon based on message status
   Widget _getStatusIcon() {

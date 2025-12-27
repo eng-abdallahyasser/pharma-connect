@@ -8,11 +8,11 @@ class AttachmentMenu extends StatelessWidget {
   final VoidCallback onMedicalReportPressed;
 
   const AttachmentMenu({
-    Key? key,
+    super.key,
     required this.onPhotoPressed,
     required this.onDocumentPressed,
     required this.onMedicalReportPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +84,7 @@ class AttachmentMenu extends StatelessWidget {
             height: 48,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: backgroundColor.withOpacity(0.1),
+              color: backgroundColor.withAlpha(26),
             ),
             child: Center(child: Icon(icon, color: backgroundColor, size: 24)),
           ),

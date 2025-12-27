@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pharma_connect/app/theme/app_colors.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -31,7 +30,7 @@ class PrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? Color(AppColors.primary),
+          backgroundColor: backgroundColor ?? Theme.of(context).colorScheme.primary,
           disabledBackgroundColor: Colors.grey[300],
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),

@@ -32,7 +32,7 @@ class DoctorDetailView extends GetView<DoctorDetailController> {
                 Text(
                   'Loading doctor details...',
                   style: TextStyle(
-                    color: colorScheme.onSurface.withOpacity(0.6),
+                    color: colorScheme.onSurface.withAlpha(154),
                   ),
                 ),
               ],
@@ -54,7 +54,7 @@ class DoctorDetailView extends GetView<DoctorDetailController> {
                     icon: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withAlpha(52),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
@@ -81,7 +81,7 @@ class DoctorDetailView extends GetView<DoctorDetailController> {
                       icon: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withAlpha(52),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: const Icon(
@@ -101,7 +101,7 @@ class DoctorDetailView extends GetView<DoctorDetailController> {
                           end: Alignment.bottomRight,
                           colors: [
                             colorScheme.primary,
-                            colorScheme.primary.withOpacity(0.8),
+                            colorScheme.primary.withAlpha(204),
                           ],
                         ),
                       ),

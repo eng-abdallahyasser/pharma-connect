@@ -5,7 +5,6 @@ import 'package:pharma_connect/app/modules/auth/controllers/auth_controller.dart
 import 'package:pharma_connect/app/modules/auth/widgets/custom_text_field.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/language_selector.dart';
 import 'package:pharma_connect/app/modules/auth/widgets/primary_button.dart';
-import 'package:pharma_connect/app/theme/app_colors.dart';
 import 'package:pharma_connect/app/theme/app_spacing.dart';
 
 class RegisterView extends StatefulWidget {
@@ -261,7 +260,7 @@ class _RegisterViewState extends State<RegisterView> {
                             onChanged: (value) {
                               authController.toggleTermsAcceptance();
                             },
-                            activeColor: Color(AppColors.primary),
+                            activeColor: Theme.of(context).primaryColor,
                           ),
                           Expanded(
                             child: Padding(
@@ -282,7 +281,7 @@ class _RegisterViewState extends State<RegisterView> {
                                         'auth.terms.conditions',
                                       ),
                                       style: TextStyle(
-                                        color: Color(AppColors.primary),
+                                        color: Theme.of(context).primaryColor,
                                         fontWeight: FontWeight.w600,
                                         decoration: TextDecoration.underline,
                                       ),
@@ -298,7 +297,7 @@ class _RegisterViewState extends State<RegisterView> {
                                         'auth.privacy.policy',
                                       ),
                                       style: TextStyle(
-                                        color: Color(AppColors.primary),
+                                        color: Theme.of(context).primaryColor,
                                         fontWeight: FontWeight.w600,
                                         decoration: TextDecoration.underline,
                                       ),
@@ -340,7 +339,7 @@ class _RegisterViewState extends State<RegisterView> {
                           child: Text(
                             getTranslation('auth.login.now'),
                             style: TextStyle(
-                              color: Color(AppColors.primary),
+                              color: Theme.of(context).primaryColor,
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                             ),
@@ -375,18 +374,18 @@ class _RegisterViewState extends State<RegisterView> {
         ),
         decoration: BoxDecoration(
           border: Border.all(
-            color: isSelected ? Color(AppColors.primary) : Colors.grey[300]!,
+            color: isSelected ? Theme.of(context).primaryColor : Colors.grey[300]!,
             width: isSelected ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(8),
-          color: isSelected ? Color(AppColors.primary).withAlpha(26) : null,
+          color: isSelected ? Theme.of(context).primaryColor.withAlpha(26) : null,
         ),
         child: Text(
           label,
           style: TextStyle(
             fontSize: 14,
             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-            color: isSelected ? Color(AppColors.primary) : Colors.black,
+            color: isSelected ? Theme.of(context).primaryColor : Colors.black,
           ),
         ),
       ),

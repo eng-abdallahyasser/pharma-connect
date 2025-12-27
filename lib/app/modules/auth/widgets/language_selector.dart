@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/services/localization_service.dart';
-import '../../../theme/app_colors.dart';
 
 class LanguageSelector extends StatelessWidget {
   const LanguageSelector({super.key});
@@ -20,22 +19,22 @@ class LanguageSelector extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              border: Border.all(color: const Color(AppColors.border)),
+              border: Border.all(color: Theme.of(context).colorScheme.outline),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
+                Icon(
                   Icons.language,
                   size: 20,
-                  color: Color(AppColors.textSecondary),
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 const SizedBox(width: 8),
                 Text(
                   isArabic ? 'English' : 'العربية',
-                  style: const TextStyle(
-                    color: Color(AppColors.textPrimary),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

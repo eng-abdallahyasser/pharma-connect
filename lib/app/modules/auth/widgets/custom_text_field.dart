@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pharma_connect/app/theme/app_colors.dart';
 import 'package:pharma_connect/app/theme/app_spacing.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -87,7 +86,7 @@ class CustomTextField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: Color(AppColors.primary), width: 2),
+              borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),

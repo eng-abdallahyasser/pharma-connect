@@ -19,7 +19,7 @@ class ConsultationTabs extends StatelessWidget {
     return Container(
       // White background with shadow
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+        color: Theme.of(context).colorScheme.onSurface.withAlpha(26),
         borderRadius: BorderRadius.circular(50),
         boxShadow: [
           BoxShadow(
