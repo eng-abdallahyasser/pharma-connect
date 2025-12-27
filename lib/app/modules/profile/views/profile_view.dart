@@ -22,7 +22,6 @@ class ProfileView extends GetView<ProfileController> {
                 return ProfileHeader(
                   user: controller.currentUser,
                   onEditPressed: () {
-                    // TODO: Navigate to edit profile screen
                   },
                   onPhotoEditPressed: controller.updateProfilePhoto,
                 );

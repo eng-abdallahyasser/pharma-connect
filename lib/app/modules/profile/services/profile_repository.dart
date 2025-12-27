@@ -20,4 +20,25 @@ class ProfileRepository {
     log("Update Profile Data : $data");
     return await _apiClient.patch('/api/profile', data);
   }
+
+  Future<dynamic> getFamilyMembers() async {
+    final response = await _apiClient.get('/api/family-members');
+    log("Get Family Members Response : $response");
+    return response;
+  }
+
+  Future<dynamic> addFamilyMember(dynamic data) async {
+    log("Add Family Member Data : $data");
+    return await _apiClient.post('/api/family-members', data);
+  }
+
+  Future<dynamic> deleteFamilyMember(String id) async {
+    log("Delete Family Member ID : $id");
+    return await _apiClient.delete('/api/family-members/$id');
+  }
+
+  Future<dynamic> updateFamilyMember(String id, dynamic data) async {
+    log("Update Family Member ID : $id, Data : $data");
+    return await _apiClient.patch('/api/family-members/$id', data);
+  }
 }

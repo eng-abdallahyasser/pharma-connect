@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:developer';
 import 'package:pharma_connect/app/core/network/api_exceptions.dart';
 import 'package:pharma_connect/app/core/services/storage_service.dart';
@@ -20,6 +21,7 @@ import 'package:pharma_connect/app/modules/profile/widgets/edit_profile_modal.da
 import 'package:pharma_connect/app/modules/profile/widgets/family_members_modal.dart';
 import 'package:pharma_connect/app/modules/profile/widgets/medical_profile_modal.dart';
 import 'package:pharma_connect/app/modules/profile/widgets/prescriptions_modal.dart';
+import 'package:pharma_connect/app/modules/profile/widgets/add_edit_family_member_modal.dart';
 import '../models/user_model.dart';
 import '../models/prescription_model.dart';
 import '../models/family_member_model.dart';
@@ -53,7 +55,12 @@ class ProfileController extends GetxController {
   // User data
   late UserModel currentUser;
   late List<PrescriptionModel> prescriptions;
-  late List<FamilyMemberModel> familyMembers;
+
+  // Family Members
+  RxList<FamilyMemberModel> familyMembers = <FamilyMemberModel>[].obs;
+  final RxBool isLoadingFamilyMembers = false.obs;
+
+  // Menu items
   late List<MenuItemModel> menuItems;
   late List<SettingsItemModel> settingsItems;
   final screenHeight = MediaQuery.of(Get.context!).size.height;
@@ -171,42 +178,6 @@ class ProfileController extends GetxController {
     ];
   }
 
-  // Initialize family members with sample data
-  void _initializeFamilyMembers() {
-    familyMembers = [
-      FamilyMemberModel(
-        id: 1,
-        name: 'Sarah Johnson',
-        relation: 'Mother',
-        age: 58,
-        bloodType: 'A+',
-        imageUrl:
-            'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200',
-        conditions: ['Hypertension'],
-      ),
-      FamilyMemberModel(
-        id: 2,
-        name: 'Emma Johnson',
-        relation: 'Daughter',
-        age: 12,
-        bloodType: 'O+',
-        imageUrl:
-            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=200',
-        conditions: [],
-      ),
-      FamilyMemberModel(
-        id: 3,
-        name: 'Robert Johnson',
-        relation: 'Father',
-        age: 62,
-        bloodType: 'B+',
-        imageUrl:
-            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
-        conditions: ['Type 2 Diabetes', 'High Cholesterol'],
-      ),
-    ];
-  }
-
   // Initialize menu items with callbacks
   void _initializeMenuItems() {
     menuItems = [
@@ -265,16 +236,42 @@ class ProfileController extends GetxController {
         badge: familyMembers.length,
         onTap: () {
           Get.bottomSheet(
-            SizedBox(
-              height: screenHeight * 0.85,
-              child: FamilyMembersModal(
-                familyMembers: getAllFamilyMembers(),
-                onClose: Get.back,
-                onAddPressed: () {
-                  // TODO: Navigate to add family member screen
-                },
-              ),
-            ),
+            Obx(() {
+              return SizedBox(
+                height: screenHeight * 0.85,
+                child: FamilyMembersModal(
+                  familyMembers: familyMembers,
+                  isLoading: isLoadingFamilyMembers.value,
+                  onClose: Get.back,
+                  onAddPressed: () {
+                    Get.bottomSheet(
+                      const AddEditFamilyMemberModal(),
+                      isScrollControlled: true,
+                    );
+                  },
+                  onEditPressed: (member) {
+                    Get.bottomSheet(
+                      AddEditFamilyMemberModal(member: member),
+                      isScrollControlled: true,
+                    );
+                  },
+                  onDeletePressed: (member) {
+                    Get.defaultDialog(
+                      title: 'Confirm Delete',
+                      middleText:
+                          'Are you sure you want to delete ${member.displayName}?',
+                      textConfirm: 'Delete',
+                      textCancel: 'Cancel',
+                      confirmTextColor: Colors.white,
+                      onConfirm: () {
+                        Get.back(); // Close dialog
+                        deleteFamilyMember(member.id!);
+                      },
+                    );
+                  },
+                ),
+              );
+            }),
             isScrollControlled: true,
             enableDrag: true,
           );
@@ -675,10 +672,6 @@ class ProfileController extends GetxController {
       if (Get.isDialogOpen ?? false) Get.back();
 
       if (response != null && response is Map<String, dynamic>) {
-        // Update local state with returned data (assuming API returns updated profile)
-        // If API returns partial or no data, we might need to rely on the `updatedProfile` passed in,
-        // but typically we want the server response including potentially updated metadata.
-        // The user prompt said the body is the structure. Usually PATCH returns the updated resource.
         medicalProfile.value = MedicalProfile.fromJson(response);
         Get.back(); // Close Edit Modal
         Get.snackbar('Success', 'Medical profile updated successfully');
@@ -687,6 +680,149 @@ class ProfileController extends GetxController {
       if (Get.isDialogOpen ?? false) Get.back();
       log('Error updating medical profile: $e');
       Get.snackbar('Error', 'Failed to update medical profile');
+    }
+  }
+
+  // Initialize family members
+  void _initializeFamilyMembers() {
+    familyMembers = RxList<FamilyMemberModel>.empty();
+    fetchFamilyMembers();
+  }
+
+  // Fetch family members from API
+  Future<void> fetchFamilyMembers() async {
+    try {
+      isLoadingFamilyMembers.value = true;
+      final response = await _profileRepository.getFamilyMembers();
+      if (response != null && response['data'] is List) {
+        familyMembers.assignAll(
+          (response['data'] as List)
+              .map((item) => FamilyMemberModel.fromJson(item))
+              .toList(),
+        );
+        update(); // Build UI with new data
+      }
+    } catch (e) {
+      log('Error fetching family members: $e');
+    } finally {
+      isLoadingFamilyMembers.value = false;
+    }
+  }
+
+  // Create family member
+  Future<void> createFamilyMember(
+    FamilyMemberModel member, {
+    File? imageFile,
+  }) async {
+    try {
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+
+      dynamic data;
+      if (imageFile != null) {
+        final Map<String, dynamic> memberJson = member.toJson();
+        // Dio FormData requires String values for text fields usually, but standard JSON types often work if API handles it.
+        // Safer to keep them as is or ensure they are primitives.
+        // MultipartFile needs to be added.
+
+        data = dio.FormData.fromMap({
+          ...memberJson,
+          "image": await dio.MultipartFile.fromFile(
+            imageFile.path,
+            filename: imageFile.path.split('/').last,
+          ),
+        });
+      } else {
+        data = member.toJson();
+      }
+
+      await _profileRepository.addFamilyMember(data);
+
+      // Close loading
+      if (Get.isDialogOpen ?? false) Get.back();
+
+      Get.snackbar('Success', 'Family member added successfully');
+
+      if (Get.isBottomSheetOpen ?? false) Get.back(); // Close add modal if open
+      fetchFamilyMembers();
+    } catch (e) {
+      if (Get.isDialogOpen ?? false) Get.back();
+      if (e is ApiException && e.response != null) {
+        log('Error adding family member: ${e.response!.data}');
+        Get.snackbar('Error', e.response!.data['errors'].toString());
+      } else {
+        Get.snackbar('Error', 'Failed to add family member: $e');
+      }
+    }
+  }
+
+  // Update family member
+  Future<void> updateFamilyMemberDetails(
+    String id,
+    FamilyMemberModel member, {
+    File? imageFile,
+  }) async {
+    try {
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+
+      dynamic data;
+      if (imageFile != null) {
+        final Map<String, dynamic> memberJson = member.toJson();
+        data = dio.FormData.fromMap({
+          ...memberJson,
+          "photo": await dio.MultipartFile.fromFile(
+            imageFile.path,
+            filename: imageFile.path.split('/').last,
+          ),
+        });
+      } else {
+        // We only send fields that are not null/modified.
+        // For now, sending toJson() which filters nulls mostly.
+        data = member.toJson();
+      }
+
+      await _profileRepository.updateFamilyMember(id, data);
+
+      // Close loading
+      if (Get.isDialogOpen ?? false) Get.back();
+
+      Get.snackbar('Success', 'Family member updated successfully');
+
+      if (Get.isBottomSheetOpen ?? false) Get.back(); // Close edit modal
+      fetchFamilyMembers();
+    } catch (e) {
+      if (Get.isDialogOpen ?? false) Get.back();
+      if (e is ApiException) {
+        Get.snackbar('Error', e.response!.data['message']);
+      } else {
+        Get.snackbar('Error', 'Failed to update family member: $e');
+      }
+    }
+  }
+
+  // Delete family member
+  Future<void> deleteFamilyMember(String id) async {
+    try {
+      Get.dialog(
+        const Center(child: CircularProgressIndicator()),
+        barrierDismissible: false,
+      );
+
+      await _profileRepository.deleteFamilyMember(id);
+
+      // Close loading
+      if (Get.isDialogOpen ?? false) Get.back();
+
+      Get.snackbar('Success', 'Family member deleted successfully');
+      fetchFamilyMembers();
+    } catch (e) {
+      if (Get.isDialogOpen ?? false) Get.back();
+      Get.snackbar('Error', 'Failed to delete family member: $e');
     }
   }
 }
