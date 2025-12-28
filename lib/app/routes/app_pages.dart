@@ -21,6 +21,12 @@ import 'package:pharma_connect/app/modules/pharmacy_detail/bindings/pharmacy_det
 import 'package:pharma_connect/app/modules/pharmacy_detail/views/pharmacy_detail_view.dart';
 import 'package:pharma_connect/app/modules/profile/bindings/profile_binding.dart';
 import 'package:pharma_connect/app/modules/profile/views/profile_view.dart';
+import 'package:pharma_connect/app/modules/pharmacy_request/bindings/pharmacy_request_binding.dart';
+import 'package:pharma_connect/app/modules/pharmacy_request/views/pharmacy_request_view.dart';
+import 'package:pharma_connect/app/modules/pharmacy_request/views/pharmacy_request_status_view.dart';
+import 'package:pharma_connect/app/modules/pharmacy_request/controllers/pharmacy_request_status_controller.dart';
+import 'package:pharma_connect/app/modules/doctor_request/bindings/doctor_request_binding.dart';
+import 'package:pharma_connect/app/modules/doctor_request/views/doctor_request_view.dart';
 
 import 'app_routes.dart';
 
@@ -82,6 +88,25 @@ abstract class AppPages {
       name: AppRoutes.doctorDetail,
       page: () => const DoctorDetailView(),
       binding: DoctorDetailBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.pharmacyRequest,
+      page: () => const PharmacyRequestView(),
+      binding: PharmacyRequestBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.pharmacyRequestStatus,
+      page: () => const PharmacyRequestStatusView(),
+      // We don't need a separate binding if we put the controller in the view or reuse one,
+      // but let's use a simple bind or BindingsBuilder
+      binding: BindingsBuilder(() {
+        Get.put(PharmacyRequestStatusController());
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.doctorRequest,
+      page: () => const DoctorRequestView(),
+      binding: DoctorRequestBinding(),
     ),
   ];
 }

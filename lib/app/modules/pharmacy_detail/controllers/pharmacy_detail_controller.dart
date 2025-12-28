@@ -18,7 +18,7 @@ class PharmacyDetailController extends GetxController {
   final pharmacy = Rxn<PharmacyDetailModel>();
   final doctors = <DoctorDetailModel>[].obs;
   final selectedTab = 'overview'.obs;
-    AddressModel? _selectedAddress;
+  AddressModel? _selectedAddress;
 
   @override
   Future<void> onInit() async {
@@ -55,7 +55,9 @@ class PharmacyDetailController extends GetxController {
       _selectedAddress = addressList.firstWhereOrNull(
         (element) => element.isSelected,
       );
-      log("Selected Address pharmacies_controller: ${_selectedAddress?.toJson()}");
+      log(
+        "Selected Address pharmacies_controller: ${_selectedAddress?.toJson()}",
+      );
     }
   }
 
@@ -63,8 +65,6 @@ class PharmacyDetailController extends GetxController {
     try {
       _initializeDoctors();
       return await _repository.getPharmacyDetail(id);
-      
-
     } catch (e) {
       Get.snackbar('Error', 'Failed to load pharmacy details: $e');
       return null;
@@ -190,10 +190,10 @@ class PharmacyDetailController extends GetxController {
   // Order medicines
   Future<void> orderMedicines() async {
     try {
-      // TODO: Implement medicine ordering
-      Get.snackbar('Order', 'Medicine ordering coming soon');
+      if (pharmacy.value == null) return;
+      Get.toNamed('/pharmacy-request', arguments: pharmacy.value);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to order medicines: $e');
+      Get.snackbar('Error', 'Failed to navigate: $e');
     }
   }
 
@@ -260,23 +260,14 @@ class PharmacyDetailController extends GetxController {
 
       if (Get.isDialogOpen == true) Get.back(); // Close loading
 
-      Get.snackbar(
-        'Success',
-        'Thank you for your rating!',
-
-      );
+      Get.snackbar('Success', 'Thank you for your rating!');
 
       // Refresh details
       fetchPharmacyDetail(pharmacy.value!.id);
     } catch (e) {
       if (Get.isDialogOpen == true) Get.back(); // Close loading if open
 
-      Get.snackbar(
-        'Error',
-        'Failed to submit rating: $e',
-      );
+      Get.snackbar('Error', 'Failed to submit rating: $e');
     }
   }
-
-  
 }

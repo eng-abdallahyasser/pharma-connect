@@ -296,7 +296,7 @@ class PharmaciesView extends GetView<PharmaciesController> {
                   child: PharmacyCard(
                     pharmacy: pharmacy,
                     onSelect: () => controller.onPharmacySelect(pharmacy),
-                    onOrder: () {},
+                    onOrder: () => controller.orderMedicines(pharmacy),
                   ),
                 );
               }).toList(),

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pharma_connect/app/core/services/storage_service.dart';
 import 'package:pharma_connect/app/modules/home/models/address_model.dart';
+import 'package:pharma_connect/app/modules/pharmacy_detail/models/pharmacy_detail_model.dart'; // Import this
 import '../models/pharmacy_filter_model.dart';
 import '../../home/models/pharmacy_model.dart';
 import 'package:pharma_connect/app/data/providers/pharmacies_provider.dart';
@@ -43,8 +44,6 @@ class PharmaciesController extends GetxController {
     _loadSelectedAddress();
     if (_selectedAddress != null) {
       fetchNearbyPharmacies();
-    } else {
-      fetchPharmacies();
     }
     _initializeFilters();
   }
@@ -65,7 +64,10 @@ class PharmaciesController extends GetxController {
             .map((e) => LatLng(e.latitude, e.longitude))
             .toList(),
       );
-      log("Selected Address pharmacies_controller: ${_selectedAddress?.toJson()}""  Saved Addresses: ${savedAddressesList.length}");
+      log(
+        "Selected Address pharmacies_controller: ${_selectedAddress?.toJson()}"
+        "  Saved Addresses: ${savedAddressesList.length}",
+      );
     }
   }
 
@@ -92,10 +94,10 @@ class PharmaciesController extends GetxController {
         lng: _selectedAddress!.longitude,
       );
       final data = response['data'] as List;
+      log("Nearby Pharmacies: $data");
       _processPharmacyData(data);
     } catch (e) {
       log('Error fetching nearby pharmacies: $e');
-      fetchPharmacies(); // Fallback
     } finally {
       isLoading.value = false;
     }
@@ -128,8 +130,14 @@ class PharmaciesController extends GetxController {
           imageUrl:
               'https://images.unsplash.com/photo-1596522016734-8e6136fe5cfa?w=600',
           isOpen: item['isActive'] == true, // Check logic on nearby vs search
-          totalDoctors: (item['doctorsCount'] != null && item['doctorsCount'] != 0) ? item['doctorsCount'] : 7,
-          availableDoctors: (item['onlineDoctors'] != null && item['onlineDoctors'] != 0) ? item['onlineDoctors'] : 7,
+          totalDoctors:
+              (item['doctorsCount'] != null && item['doctorsCount'] != 0)
+              ? item['doctorsCount']
+              : 7,
+          availableDoctors:
+              (item['onlineDoctors'] != null && item['onlineDoctors'] != 0)
+              ? item['onlineDoctors']
+              : 7,
         );
       }).toList(),
     );
@@ -175,55 +183,55 @@ class PharmaciesController extends GetxController {
   }
 
   void toggleFilter(String filterId) {
-  // Define mutually exclusive distance filters
-  const distanceFilters = {'within_5km', 'within_2km'};
-  
-  // Check if it's a distance filter
-  final isDistanceFilter = distanceFilters.contains(filterId);
-  
-  if (isDistanceFilter) {
-    // For distance filters: they should work like radio buttons
-    final wasActive = activeFilters.contains(filterId);
-    
-    // Clear all distance filters first
-    activeFilters.removeWhere((id) => distanceFilters.contains(id));
-    
-    // Set all distance filters to inactive in UI
-    for (int i = 0; i < filters.length; i++) {
-      if (distanceFilters.contains(filters[i].id)) {
-        filters[i] = filters[i].copyWith(isActive: false);
+    // Define mutually exclusive distance filters
+    const distanceFilters = {'within_5km', 'within_2km'};
+
+    // Check if it's a distance filter
+    final isDistanceFilter = distanceFilters.contains(filterId);
+
+    if (isDistanceFilter) {
+      // For distance filters: they should work like radio buttons
+      final wasActive = activeFilters.contains(filterId);
+
+      // Clear all distance filters first
+      activeFilters.removeWhere((id) => distanceFilters.contains(id));
+
+      // Set all distance filters to inactive in UI
+      for (int i = 0; i < filters.length; i++) {
+        if (distanceFilters.contains(filters[i].id)) {
+          filters[i] = filters[i].copyWith(isActive: false);
+        }
       }
-    }
-    
-    // If it wasn't active before, activate it now
-    if (!wasActive) {
-      activeFilters.add(filterId);
-      
-      // Update the specific filter to active
+
+      // If it wasn't active before, activate it now
+      if (!wasActive) {
+        activeFilters.add(filterId);
+
+        // Update the specific filter to active
+        for (int i = 0; i < filters.length; i++) {
+          if (filters[i].id == filterId) {
+            filters[i] = filters[i].copyWith(isActive: true);
+            break;
+          }
+        }
+      }
+    } else {
+      // For non-distance filters: normal toggle behavior
+      if (activeFilters.contains(filterId)) {
+        activeFilters.remove(filterId);
+      } else {
+        activeFilters.add(filterId);
+      }
+
+      // Update UI for the specific filter
       for (int i = 0; i < filters.length; i++) {
         if (filters[i].id == filterId) {
-          filters[i] = filters[i].copyWith(isActive: true);
+          filters[i] = filters[i].copyWith(isActive: !filters[i].isActive);
           break;
         }
       }
     }
-  } else {
-    // For non-distance filters: normal toggle behavior
-    if (activeFilters.contains(filterId)) {
-      activeFilters.remove(filterId);
-    } else {
-      activeFilters.add(filterId);
-    }
-    
-    // Update UI for the specific filter
-    for (int i = 0; i < filters.length; i++) {
-      if (filters[i].id == filterId) {
-        filters[i] = filters[i].copyWith(isActive: !filters[i].isActive);
-        break;
-      }
-    }
   }
-}
 
   void selectPharmacy(int pharmacyId) {
     selectedPharmacyId.value = pharmacyId;
@@ -310,5 +318,25 @@ class PharmaciesController extends GetxController {
 
   void onFilterPressed() {
     isFiltersShown.value = !isFiltersShown.value;
+  }
+
+  void orderMedicines(PharmacyModel pharmacy) {
+    Get.toNamed(
+      '/pharmacy-request',
+      arguments: PharmacyDetailModel(
+        id: pharmacy.id,
+        telephones: [], // Placeholder
+        whatsAppTelephone: '', // Placeholder
+        ratingCount: pharmacy.rating.toInt(),
+        latitude: 0.0, // info not in PharmacyModel
+        longitude: 0.0, // info not in PharmacyModel
+        isActive: pharmacy.isOpen,
+        isAlwaysOpen: pharmacy.workingHours.contains('24'),
+        localizedName: {'en': pharmacy.name},
+        addressMap: {},
+        city: {},
+        provider: {},
+      ),
+    );
   }
 }
