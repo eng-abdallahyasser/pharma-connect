@@ -137,12 +137,12 @@ class AuthController extends GetxController {
           successMessage.value = 'registration.success';
           // registion is success then login
 
-          final response = await authService.login(
-            loginEmailController.text.trim(),
-            loginPasswordController.text,
+          final loginResponse = await authService.login(
+            registerEmailController.text.trim(),
+            registerPasswordController.text,
           );
 
-          if (response.user != null) {
+          if (loginResponse.user != null) {
             successMessage.value = 'login.success';
 
             Get.offAllNamed('/home');

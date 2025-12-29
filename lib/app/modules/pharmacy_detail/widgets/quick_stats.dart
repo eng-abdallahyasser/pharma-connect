@@ -22,7 +22,7 @@ class QuickStats extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.1),
+              color: Theme.of(context).primaryColor.withAlpha(26),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
@@ -61,7 +61,7 @@ class QuickStats extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.secondary.withAlpha(26),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Column(

@@ -263,7 +263,7 @@ class MedicinesView extends GetView<MedicinesController> {
             // Backdrop
             GestureDetector(
               onTap: controller.clearSelectedMedicine,
-              child: Container(color: Colors.black.withOpacity(0.5)),
+              child: Container(color: Colors.black.withAlpha(128)),
             ),
 
             // Modal

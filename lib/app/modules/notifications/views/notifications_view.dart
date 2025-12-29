@@ -61,7 +61,7 @@ class NotificationsView extends GetView<NotificationsController> {
                                 fontSize: 12,
                                 color: Theme.of(
                                   context,
-                                ).colorScheme.onPrimary.withOpacity(0.9),
+                                ).colorScheme.onPrimary.withAlpha(234),
                               ),
                             );
                           }),
@@ -85,7 +85,7 @@ class NotificationsView extends GetView<NotificationsController> {
                             decoration: BoxDecoration(
                               color: Theme.of(
                                 context,
-                              ).colorScheme.onPrimary.withOpacity(0.2),
+                              ).colorScheme.onPrimary.withAlpha(51),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(

@@ -6,8 +6,7 @@ class HealthTipCard extends StatelessWidget {
   final HealthTipModel tip;
   final VoidCallback? onTap;
 
-  const HealthTipCard({Key? key, required this.tip, this.onTap})
-    : super(key: key);
+  const HealthTipCard({super.key, required this.tip, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +45,7 @@ class HealthTipCard extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
+                    colors: [Colors.transparent, Colors.black.withAlpha(170)],
                   ),
                 ),
               ),

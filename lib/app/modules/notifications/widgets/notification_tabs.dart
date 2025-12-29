@@ -10,13 +10,13 @@ class NotificationTabs extends StatelessWidget {
   final ValueChanged<String> onTabChanged;
 
   const NotificationTabs({
-    Key? key,
+    super.key,
     required this.selectedTab,
     required this.allCount,
     required this.medicineCount,
     required this.otherCount,
     required this.onTabChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class NotificationTabs extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).shadowColor.withOpacity(0.05),
+            color: Theme.of(context).shadowColor.withAlpha(13),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -108,7 +108,7 @@ class NotificationTabs extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 11,
                   color: isSelected
-                      ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.8)
+                      ? Theme.of(context).colorScheme.onPrimary.withAlpha(204)
                       : Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),

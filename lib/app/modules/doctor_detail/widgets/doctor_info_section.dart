@@ -51,7 +51,7 @@ class DoctorInfoSection extends StatelessWidget {
                 width: 80,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                  color: Theme.of(context).colorScheme.primary.withAlpha(26),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Stack(
@@ -62,7 +62,7 @@ class DoctorInfoSection extends StatelessWidget {
                       size: 36,
                       color: Theme.of(
                         context,
-                      ).colorScheme.primary.withOpacity(0.3),
+                      ).colorScheme.primary.withAlpha(84),
                     ),
                     Icon(
                       Icons.location_on,
@@ -168,7 +168,7 @@ class DoctorInfoSection extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.primary.withAlpha(26),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(

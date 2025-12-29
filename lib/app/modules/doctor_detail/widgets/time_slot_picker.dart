@@ -24,7 +24,7 @@ class TimeSlotPicker extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.secondary.withAlpha(26),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -67,7 +67,7 @@ class TimeSlotPicker extends StatelessWidget {
                             Theme.of(context).colorScheme.secondary,
                             Theme.of(
                               context,
-                            ).colorScheme.secondary.withOpacity(0.8),
+                            ).colorScheme.secondary.withAlpha(204),
                           ],
                         )
                       : null,
@@ -84,7 +84,7 @@ class TimeSlotPicker extends StatelessWidget {
                           BoxShadow(
                             color: Theme.of(
                               context,
-                            ).colorScheme.secondary.withOpacity(0.3),
+                            ).colorScheme.secondary.withAlpha(84),
                             blurRadius: 8,
                             offset: const Offset(0, 4),
                           ),

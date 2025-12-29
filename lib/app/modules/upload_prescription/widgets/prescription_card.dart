@@ -10,13 +10,13 @@ class PrescriptionCard extends StatelessWidget {
   final VoidCallback onDelete;
 
   const PrescriptionCard({
-    Key? key,
+    super.key,
     required this.prescription,
     required this.onTap,
     required this.onDownload,
     required this.onShare,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class PrescriptionCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withAlpha(26),
               blurRadius: 4,
               spreadRadius: 0,
             ),
@@ -50,7 +50,7 @@ class PrescriptionCard extends StatelessWidget {
                     color: prescription.isVerified
                         ? Theme.of(
                             context,
-                          ).colorScheme.secondary.withOpacity(0.1)
+                          ).colorScheme.secondary.withAlpha(26)
                         : Colors.amber[100],
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -129,7 +129,7 @@ class PrescriptionCard extends StatelessWidget {
                     color: prescription.isVerified
                         ? Theme.of(
                             context,
-                          ).colorScheme.secondary.withOpacity(0.1)
+                          ).colorScheme.secondary.withAlpha(26)
                         : Colors.amber[100],
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -263,7 +263,7 @@ class PrescriptionCard extends StatelessWidget {
                       side: BorderSide(
                         color: Theme.of(
                           context,
-                        ).colorScheme.error.withOpacity(0.5),
+                        ).colorScheme.error.withAlpha(128),
                       ),
                     ),
                     child: Icon(

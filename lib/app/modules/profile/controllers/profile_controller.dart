@@ -380,7 +380,7 @@ class ProfileController extends GetxController {
                           ),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Colors.blue.withOpacity(0.1)
+                                ? Colors.blue.withAlpha(26)
                                 : Colors.transparent,
                             border: Border(
                               bottom: BorderSide(color: Colors.grey.shade200),
@@ -742,6 +742,7 @@ class ProfileController extends GetxController {
 
       // Close loading
       if (Get.isDialogOpen ?? false) Get.back();
+      if (Get.isBottomSheetOpen ?? false) Get.back();
 
       Get.snackbar('Success', 'Family member added successfully');
 

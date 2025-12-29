@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../data/models/pharmacy_request_model.dart';
@@ -24,7 +26,7 @@ class PharmacyRequestStatusController extends GetxController {
           // Check for terminal states to maybe show a success message or stop polling?
           // For now, just update the UI.
         } catch (e) {
-          print('Error parsing update: $e');
+          log('Error parsing update: $e');
         }
       }
     });

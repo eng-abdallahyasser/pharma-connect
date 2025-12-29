@@ -37,7 +37,7 @@ class LanguageSelectionDialog extends StatelessWidget {
                   ),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? Theme.of(context).primaryColor.withOpacity(0.1)
+                        ? Theme.of(context).primaryColor.withAlpha(26)
                         : Colors.transparent,
                     border: Border(
                       bottom: BorderSide(color: Theme.of(context).dividerColor),

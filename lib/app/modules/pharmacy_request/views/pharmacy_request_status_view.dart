@@ -26,7 +26,7 @@ class PharmacyRequestStatusView
               () => Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: controller.getStatusColor().withOpacity(0.1),
+                  color: controller.getStatusColor().withAlpha(26),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -99,7 +99,7 @@ class PharmacyRequestStatusView
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(13),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),

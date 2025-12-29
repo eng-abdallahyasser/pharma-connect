@@ -12,14 +12,14 @@ class NotificationCard extends StatelessWidget {
   final IconData icon;
 
   const NotificationCard({
-    Key? key,
+    super.key,
     required this.notification,
     required this.onTap,
     this.onSkip,
     this.onTaken,
     required this.iconColor,
     required this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class NotificationCard extends StatelessWidget {
               : null,
           boxShadow: [
             BoxShadow(
-              color: Theme.of(context).shadowColor.withOpacity(0.05),
+              color: Theme.of(context).shadowColor.withAlpha(13),
               blurRadius: 4,
               spreadRadius: 0,
             ),

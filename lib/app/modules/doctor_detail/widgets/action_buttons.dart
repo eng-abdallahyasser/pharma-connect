@@ -33,7 +33,7 @@ class ActionButtons extends StatelessWidget {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withAlpha(26),
             blurRadius: 20,
             offset: const Offset(0, -5),
           ),
@@ -76,7 +76,7 @@ class ActionButtons extends StatelessWidget {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   disabledBackgroundColor: Theme.of(
                     context,
-                  ).colorScheme.primary.withOpacity(0.6),
+                  ).colorScheme.primary.withAlpha(154),
                   foregroundColor: Colors.white,
                   elevation: 0,
                   shape: RoundedRectangleBorder(

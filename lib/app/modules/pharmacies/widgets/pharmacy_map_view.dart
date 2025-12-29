@@ -172,11 +172,11 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
           left: 16,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withAlpha(204),
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withAlpha(26),
                   blurRadius: 8,
                   spreadRadius: 2,
                 ),
@@ -247,7 +247,7 @@ class _PharmacyMapViewState extends State<PharmacyMapView> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withAlpha(38),
             blurRadius: 12,
             spreadRadius: 2,
           ),

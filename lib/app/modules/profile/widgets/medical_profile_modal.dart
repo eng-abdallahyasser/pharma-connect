@@ -51,7 +51,7 @@ class MedicalProfileModal extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: const Color(
                                     0xFFEF4444,
-                                  ).withOpacity(0.1),
+                                  ).withAlpha(26),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: const Icon(

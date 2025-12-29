@@ -226,6 +226,7 @@ class _AddEditFamilyMemberModalState extends State<AddEditFamilyMemberModal> {
                     )
                     .toList(),
                 onChanged: (v) => setState(() => _gender = v),
+                validator: (v) => v == null ? 'Required' : null
               ),
               const SizedBox(height: 12),
 

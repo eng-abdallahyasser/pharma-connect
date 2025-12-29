@@ -28,7 +28,7 @@ class DateSelector extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.primary.withAlpha(26),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
@@ -82,7 +82,7 @@ class DateSelector extends StatelessWidget {
                               Theme.of(context).colorScheme.primary,
                               Theme.of(
                                 context,
-                              ).colorScheme.primary.withOpacity(0.8),
+                              ).colorScheme.primary.withAlpha(204),
                             ],
                           )
                         : null,
@@ -103,7 +103,7 @@ class DateSelector extends StatelessWidget {
                             BoxShadow(
                               color: Theme.of(
                                 context,
-                              ).colorScheme.primary.withOpacity(0.3),
+                              ).colorScheme.primary.withAlpha(84),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),

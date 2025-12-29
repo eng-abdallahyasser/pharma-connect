@@ -39,7 +39,7 @@ class PrescriptionsModal extends StatelessWidget {
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor.withOpacity(0.1),
+                            color: Theme.of(context).cardColor.withAlpha(26),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(
@@ -123,7 +123,7 @@ class PrescriptionsModal extends StatelessWidget {
                                       color: prescription.isActive
                                           ? const Color(
                                               0xFF00C897,
-                                            ).withOpacity(0.1)
+                                            ).withAlpha(26)
                                           : Colors.grey[300],
                                       borderRadius: BorderRadius.circular(12),
                                     ),

@@ -48,7 +48,7 @@ class UploadPrescriptionView extends GetView<UploadPrescriptionController> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
+                            color: Colors.white.withAlpha(26),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Column(
@@ -58,7 +58,7 @@ class UploadPrescriptionView extends GetView<UploadPrescriptionController> {
                                 'Total',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: Colors.white.withOpacity(0.8),
+                                  color: Colors.white.withAlpha(204),
                                 ),
                               ),
                               const SizedBox(height: 4),
@@ -84,7 +84,7 @@ class UploadPrescriptionView extends GetView<UploadPrescriptionController> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
+                            color: Colors.white.withAlpha(26),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Column(
@@ -94,7 +94,7 @@ class UploadPrescriptionView extends GetView<UploadPrescriptionController> {
                                 'Verified',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: Colors.white.withOpacity(0.8),
+                                  color: Colors.white.withAlpha(204),
                                 ),
                               ),
                               const SizedBox(height: 4),
@@ -120,7 +120,7 @@ class UploadPrescriptionView extends GetView<UploadPrescriptionController> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.15),
+                            color: Colors.white.withAlpha(26),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Column(
@@ -130,7 +130,7 @@ class UploadPrescriptionView extends GetView<UploadPrescriptionController> {
                                 'Pending',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: Colors.white.withOpacity(0.8),
+                                  color: Colors.white.withAlpha(204),
                                 ),
                               ),
                               const SizedBox(height: 4),

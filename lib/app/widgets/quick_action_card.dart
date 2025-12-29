@@ -8,13 +8,13 @@ class QuickActionCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   const QuickActionCard({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.backgroundColor,
     required this.iconColor,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class QuickActionCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.1),
+                  color: iconColor.withAlpha(26),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(icon, color: iconColor, size: 28),

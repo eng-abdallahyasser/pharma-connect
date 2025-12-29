@@ -11,7 +11,7 @@ class UploadForm extends StatelessWidget {
   final double uploadProgress;
 
   const UploadForm({
-    Key? key,
+    super.key,
     required this.doctorName,
     required this.notes,
     required this.onDoctorNameChanged,
@@ -19,7 +19,7 @@ class UploadForm extends StatelessWidget {
     required this.onUploadPressed,
     this.isUploading = false,
     this.uploadProgress = 0.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +172,7 @@ class UploadForm extends StatelessWidget {
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        Colors.white.withOpacity(0.8),
+                        Colors.white.withAlpha(204),
                       ),
                     ),
                   )

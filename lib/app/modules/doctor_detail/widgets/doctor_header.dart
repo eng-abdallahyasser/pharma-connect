@@ -17,7 +17,7 @@ class DoctorHeader extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withAlpha(26),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -116,7 +116,7 @@ class DoctorHeader extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
             decoration: BoxDecoration(
               color: doctor.isOnline
-                  ? const Color(0xFF00C897).withOpacity(0.1)
+                  ? const Color(0xFF00C897).withAlpha(26)
                   : Colors.grey[200],
               borderRadius: BorderRadius.circular(20),
             ),
@@ -154,7 +154,7 @@ class DoctorHeader extends StatelessWidget {
 
   Widget _buildAvatarFallback(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+      color: Theme.of(context).colorScheme.primary.withAlpha(26),
       child: Center(
         child: Text(
           doctor.initials,

@@ -13,7 +13,7 @@ class UploadModal extends StatelessWidget {
   final double uploadProgress;
 
   const UploadModal({
-    Key? key,
+    super.key,
     required this.doctorName,
     required this.notes,
     required this.onDoctorNameChanged,
@@ -22,7 +22,7 @@ class UploadModal extends StatelessWidget {
     required this.onClosePressed,
     this.isUploading = false,
     this.uploadProgress = 0.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class UploadModal extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: Colors.white.withAlpha(26),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
@@ -106,10 +106,10 @@ class UploadModal extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(24),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1A73E8).withOpacity(0.05),
+                        color: const Color(0xFF1A73E8).withAlpha(26),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: const Color(0xFF1A73E8).withOpacity(0.2),
+                          color: const Color(0xFF1A73E8).withAlpha(52),
                           width: 2,
                           strokeAlign: BorderSide.strokeAlignOutside,
                         ),
@@ -121,7 +121,7 @@ class UploadModal extends StatelessWidget {
                             width: 64,
                             height: 64,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF1A73E8).withOpacity(0.1),
+                              color: const Color(0xFF1A73E8).withAlpha(26),
                               shape: BoxShape.circle,
                             ),
                             child: const Icon(

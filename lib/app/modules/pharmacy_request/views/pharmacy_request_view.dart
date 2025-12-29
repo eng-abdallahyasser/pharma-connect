@@ -54,7 +54,7 @@ class PharmacyRequestView extends GetView<PharmacyRequestController> {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(13),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -133,7 +133,7 @@ class PharmacyRequestView extends GetView<PharmacyRequestController> {
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: colorScheme.primary.withOpacity(0.3),
+                    color: colorScheme.primary.withAlpha(84),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -383,7 +383,7 @@ class PharmacyRequestView extends GetView<PharmacyRequestController> {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withAlpha(13),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -526,7 +526,7 @@ class PharmacyRequestView extends GetView<PharmacyRequestController> {
       decoration: BoxDecoration(
         color: theme.cardTheme.color,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: theme.dividerColor.withOpacity(0.5)),
+        border: Border.all(color: theme.dividerColor.withAlpha(128)),
       ),
       child: Column(
         children: [
@@ -553,7 +553,7 @@ class PharmacyRequestView extends GetView<PharmacyRequestController> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withAlpha(13),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
