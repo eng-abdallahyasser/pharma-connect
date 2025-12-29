@@ -32,6 +32,8 @@ class _RatingDialogState extends State<RatingDialog> {
         'Error',
         'Please select a rating',
         snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Theme.of(context).colorScheme.error,
+        colorText: Theme.of(context).colorScheme.onError,
       );
       return;
     }
@@ -56,11 +58,11 @@ class _RatingDialogState extends State<RatingDialog> {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withAlpha(13),
+              color: Theme.of(context).shadowColor.withAlpha(13),
               blurRadius: 10,
               offset: const Offset(0, 10),
             ),
@@ -71,16 +73,17 @@ class _RatingDialogState extends State<RatingDialog> {
           children: [
             Text(
               widget.title,
-              style: const TextStyle(
-                fontSize: 20,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1F2937),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
+            Text(
               'How was your experience?',
-              style: TextStyle(fontSize: 14, color: Color(0xFF6B7280)),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).textTheme.labelSmall?.color,
+              ),
             ),
             const SizedBox(height: 20),
 
@@ -102,7 +105,7 @@ class _RatingDialogState extends State<RatingDialog> {
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                     child: Icon(
                       index < _rating ? Icons.star : Icons.star_border,
-                      color: const Color(0xFFFFB800),
+                      color: Colors.amber,
                       size: 36,
                     ),
                   ),
@@ -117,17 +120,26 @@ class _RatingDialogState extends State<RatingDialog> {
               controller: _notesController,
               decoration: InputDecoration(
                 hintText: 'Add a note (optional)',
+                filled: true,
+                fillColor: Theme.of(context).colorScheme.surface,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Color(0xFF1A73E8)),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2,
+                  ),
                 ),
                 errorText: _showError
                     ? 'Notes are required for ratings under 5'
@@ -160,12 +172,17 @@ class _RatingDialogState extends State<RatingDialog> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      side: const BorderSide(color: Color(0xFFE5E7EB)),
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.outline,
+                      ),
+                      foregroundColor: Theme.of(
+                        context,
+                      ).textTheme.labelSmall?.color,
                     ),
-                    child: const Text(
+                    child: Text(
                       'Cancel',
                       style: TextStyle(
-                        color: Color(0xFF6B7280),
+                        color: Theme.of(context).textTheme.labelSmall?.color,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -177,16 +194,16 @@ class _RatingDialogState extends State<RatingDialog> {
                     onPressed: _handleSubmit,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      backgroundColor: const Color(0xFF1A73E8),
+                      backgroundColor: Theme.of(context).colorScheme.primary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                       elevation: 0,
                     ),
-                    child: const Text(
+                    child: Text(
                       'Submit',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

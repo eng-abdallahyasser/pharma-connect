@@ -22,19 +22,19 @@ class PharmacyHeader extends StatelessWidget {
         Container(
           height: 256,
           decoration: BoxDecoration(
-            color: Colors.grey[300],
+            color: Theme.of(context).colorScheme.surfaceVariant,
           ),
           child: Image.network(
             pharmacy.imageUrl,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               return Container(
-                color: Colors.grey[300],
-                child: const Center(
+                color: Theme.of(context).colorScheme.surfaceVariant,
+                child: Center(
                   child: Icon(
                     Icons.image_not_supported,
                     size: 48,
-                    color: Colors.grey,
+                    color: Theme.of(context).disabledColor,
                   ),
                 ),
               );
@@ -51,7 +51,7 @@ class PharmacyHeader extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Colors.transparent,
-                Colors.black.withAlpha(128),
+                Theme.of(context).shadowColor.withAlpha(128),
               ],
             ),
           ),
@@ -66,11 +66,11 @@ class PharmacyHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withAlpha(220),
+                color: Theme.of(context).colorScheme.surface.withAlpha(220),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withAlpha(51),
+                    color: Theme.of(context).shadowColor.withAlpha(51),
                     blurRadius: 8,
                     spreadRadius: 0,
                   ),
@@ -78,7 +78,7 @@ class PharmacyHeader extends StatelessWidget {
               ),
               child: Icon(
                 Icons.arrow_back,
-                color: Colors.grey[800],
+                color: Theme.of(context).colorScheme.onSurface,
                 size: 20,
               ),
             ),
@@ -94,11 +94,11 @@ class PharmacyHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withAlpha(220),
+                color: Theme.of(context).colorScheme.surface.withAlpha(220),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withAlpha(51),
+                    color: Theme.of(context).shadowColor.withAlpha(51),
                     blurRadius: 8,
                     spreadRadius: 0,
                   ),
@@ -106,7 +106,7 @@ class PharmacyHeader extends StatelessWidget {
               ),
               child: Icon(
                 Icons.share,
-                color: Colors.grey[800],
+                color: Theme.of(context).colorScheme.onSurface,
                 size: 20,
               ),
             ),
@@ -120,21 +120,18 @@ class PharmacyHeader extends StatelessWidget {
           right: 0,
           child: Center(
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 6,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               decoration: BoxDecoration(
                 color: pharmacy.isOpen
-                    ? const Color(0xFF00C897)
-                    : const Color(0xFFEF4444),
+                    ? Theme.of(context).colorScheme.secondary
+                    : Theme.of(context).colorScheme.error,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
                 pharmacy.isOpen ? 'Open Now' : 'Closed',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSecondary,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -153,8 +150,7 @@ class PharmacyHeader extends StatelessWidget {
               // Pharmacy name
               Text(
                 pharmacy.name,
-                style: const TextStyle(
-                  fontSize: 20,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -166,15 +162,11 @@ class PharmacyHeader extends StatelessWidget {
               Row(
                 children: [
                   // Rating
-                  Icon(
-                    Icons.star,
-                    size: 16,
-                    color: Colors.amber[300],
-                  ),
+                  Icon(Icons.star, size: 16, color: Colors.amber[300]),
                   const SizedBox(width: 4),
                   Text(
                     '${pharmacy.rating}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -184,18 +176,11 @@ class PharmacyHeader extends StatelessWidget {
                   const SizedBox(width: 12),
 
                   // Distance
-                  Icon(
-                    Icons.location_on,
-                    size: 16,
-                    color: Colors.white,
-                  ),
+                  Icon(Icons.location_on, size: 16, color: Colors.white),
                   const SizedBox(width: 4),
                   Text(
                     '${pharmacy.distance} away',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.white,
-                    ),
+                    style: TextStyle(fontSize: 12, color: Colors.white),
                   ),
                 ],
               ),

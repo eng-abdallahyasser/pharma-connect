@@ -5,20 +5,17 @@ import '../models/pharmacy_detail_model.dart';
 class PharmacyInfo extends StatelessWidget {
   final PharmacyDetailModel pharmacy;
 
-  const PharmacyInfo({
-    super.key,
-    required this.pharmacy,
-  });
+  const PharmacyInfo({super.key, required this.pharmacy});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(13),
+            color: Theme.of(context).shadowColor.withAlpha(13),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -29,12 +26,11 @@ class PharmacyInfo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Title
-          const Text(
+          Text(
             'Information',
-            style: TextStyle(
-              fontSize: 16,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
-              color: Color(0xFF1F2937),
+              color: Theme.of(context).textTheme.titleLarge?.color,
             ),
           ),
 
@@ -47,7 +43,7 @@ class PharmacyInfo extends StatelessWidget {
               Icon(
                 Icons.location_on,
                 size: 20,
-                color: const Color(0xFF1A73E8),
+                color: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -56,19 +52,14 @@ class PharmacyInfo extends StatelessWidget {
                   children: [
                     Text(
                       'Address',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       pharmacy.displayAddress,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF1F2937),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w500,
+                        color: Theme.of(context).textTheme.titleLarge?.color,
                       ),
                     ),
                   ],
@@ -86,7 +77,7 @@ class PharmacyInfo extends StatelessWidget {
               Icon(
                 Icons.schedule,
                 size: 20,
-                color: const Color(0xFF1A73E8),
+                color: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -95,19 +86,14 @@ class PharmacyInfo extends StatelessWidget {
                   children: [
                     Text(
                       'Working Hours',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       pharmacy.workingHours,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF1F2937),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w500,
+                        color: Theme.of(context).textTheme.titleLarge?.color,
                       ),
                     ),
                   ],
@@ -125,7 +111,7 @@ class PharmacyInfo extends StatelessWidget {
               Icon(
                 Icons.phone,
                 size: 20,
-                color: const Color(0xFF1A73E8),
+                color: Theme.of(context).colorScheme.primary,
               ),
               const SizedBox(width: 12),
               Expanded(
@@ -134,19 +120,14 @@ class PharmacyInfo extends StatelessWidget {
                   children: [
                     Text(
                       'Contact',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                     const SizedBox(height: 4),
                     Text(
                       pharmacy.displayPhone,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF1F2937),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w500,
+                        color: Theme.of(context).textTheme.titleLarge?.color,
                       ),
                     ),
                   ],

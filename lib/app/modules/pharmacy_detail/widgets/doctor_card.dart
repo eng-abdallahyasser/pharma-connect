@@ -20,11 +20,11 @@ class DoctorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(13),
+            color: Theme.of(context).shadowColor.withAlpha(13),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -45,7 +45,7 @@ class DoctorCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Colors.grey[300]!,
+                    color: Theme.of(context).dividerColor,
                     width: 1,
                   ),
                 ),
@@ -56,12 +56,12 @@ class DoctorCard extends StatelessWidget {
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        color: Colors.grey[300],
+                        color: Theme.of(context).disabledColor,
                         child: Center(
                           child: Text(
                             doctor.initials,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
@@ -83,10 +83,9 @@ class DoctorCard extends StatelessWidget {
                     // Name
                     Text(
                       doctor.name,
-                      style: const TextStyle(
-                        fontSize: 14,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1F2937),
+                        color: Theme.of(context).textTheme.titleLarge?.color,
                       ),
                     ),
 
@@ -95,9 +94,8 @@ class DoctorCard extends StatelessWidget {
                     // Specialization
                     Text(
                       doctor.specialization,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                     ),
 
@@ -107,11 +105,7 @@ class DoctorCard extends StatelessWidget {
                       // Rating and experience
                       Row(
                         children: [
-                          Icon(
-                            Icons.star,
-                            size: 14,
-                            color: Colors.amber[600],
-                          ),
+                          Icon(Icons.star, size: 14, color: Colors.amber),
                           const SizedBox(width: 4),
                           Text(
                             '${doctor.rating}',
@@ -123,10 +117,12 @@ class DoctorCard extends StatelessWidget {
                           const SizedBox(width: 8),
                           Text(
                             '${doctor.experience} exp',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey[600],
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.bodyMedium?.color,
+                                ),
                           ),
                         ],
                       ),
@@ -143,8 +139,8 @@ class DoctorCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: doctor.isAvailable
-                      ? const Color(0xFF00C897).withAlpha(26)
-                      : Colors.grey[200],
+                      ? Theme.of(context).colorScheme.secondary.withAlpha(26)
+                      : Theme.of(context).disabledColor.withAlpha(50),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -152,8 +148,8 @@ class DoctorCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 11,
                     color: doctor.isAvailable
-                        ? const Color(0xFF00C897)
-                        : Colors.grey[600],
+                        ? Theme.of(context).colorScheme.secondary
+                        : Theme.of(context).disabledColor,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -172,7 +168,7 @@ class DoctorCard extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -183,7 +179,7 @@ class DoctorCard extends StatelessWidget {
                             Icon(
                               Icons.schedule,
                               size: 14,
-                              color: const Color(0xFF1A73E8),
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                             const SizedBox(width: 4),
                           ],
@@ -191,19 +187,18 @@ class DoctorCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           'Working Hours',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey[600],
-                          ),
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
                         const SizedBox(height: 2),
                         Text(
                           doctor.workingHours,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF1F2937),
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.titleLarge?.color,
+                              ),
                         ),
                       ],
                     ),
@@ -217,7 +212,7 @@ class DoctorCard extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Column(
@@ -228,7 +223,7 @@ class DoctorCard extends StatelessWidget {
                             Icon(
                               Icons.shopping_bag,
                               size: 14,
-                              color: const Color(0xFF1A73E8),
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                             const SizedBox(width: 4),
                           ],
@@ -236,19 +231,18 @@ class DoctorCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         Text(
                           'Consultation',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey[600],
-                          ),
+                          style: Theme.of(context).textTheme.labelSmall,
                         ),
                         const SizedBox(height: 2),
                         Text(
                           doctor.consultationFee,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF1F2937),
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.titleLarge?.color,
+                              ),
                         ),
                       ],
                     ),
@@ -273,8 +267,8 @@ class DoctorCard extends StatelessWidget {
                       ),
                       side: BorderSide(
                         color: doctor.isAvailable
-                            ? Colors.grey[300]!
-                            : Colors.grey[200]!,
+                            ? Theme.of(context).dividerColor
+                            : Theme.of(context).disabledColor.withAlpha(50),
                       ),
                     ),
                     child: Text(
@@ -283,8 +277,8 @@ class DoctorCard extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: doctor.isAvailable
-                            ? Colors.grey[700]
-                            : Colors.grey[400],
+                            ? Theme.of(context).textTheme.bodyMedium?.color
+                            : Theme.of(context).disabledColor,
                       ),
                     ),
                   ),
@@ -298,19 +292,19 @@ class DoctorCard extends StatelessWidget {
                     onPressed: doctor.isAvailable ? onChatPressed : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: doctor.isAvailable
-                          ? const Color(0xFF1A73E8)
-                          : Colors.grey[300],
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).disabledColor,
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Chat Now',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                   ),

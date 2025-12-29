@@ -13,7 +13,7 @@ class PharmacyDetailView extends GetView<PharmacyDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Obx(() {
         final pharmacy = controller.pharmacy.value;
 
@@ -34,7 +34,7 @@ class PharmacyDetailView extends GetView<PharmacyDetailController> {
 
               // Tabs
               Container(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.surface,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
@@ -49,7 +49,7 @@ class PharmacyDetailView extends GetView<PharmacyDetailController> {
                               bottom: BorderSide(
                                 color:
                                     controller.selectedTab.value == 'overview'
-                                    ? const Color(0xFF1A73E8)
+                                    ? Theme.of(context).colorScheme.primary
                                     : Colors.transparent,
                                 width: 2,
                               ),
@@ -62,8 +62,10 @@ class PharmacyDetailView extends GetView<PharmacyDetailController> {
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: controller.selectedTab.value == 'overview'
-                                  ? const Color(0xFF1A73E8)
-                                  : Colors.grey[600],
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium?.color,
                             ),
                           ),
                         ),
@@ -80,7 +82,7 @@ class PharmacyDetailView extends GetView<PharmacyDetailController> {
                             border: Border(
                               bottom: BorderSide(
                                 color: controller.selectedTab.value == 'doctors'
-                                    ? const Color(0xFF1A73E8)
+                                    ? Theme.of(context).colorScheme.primary
                                     : Colors.transparent,
                                 width: 2,
                               ),
@@ -93,8 +95,10 @@ class PharmacyDetailView extends GetView<PharmacyDetailController> {
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: controller.selectedTab.value == 'doctors'
-                                  ? const Color(0xFF1A73E8)
-                                  : Colors.grey[600],
+                                  ? Theme.of(context).colorScheme.primary
+                                  : Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium?.color,
                             ),
                           ),
                         ),
@@ -131,21 +135,25 @@ class PharmacyDetailView extends GetView<PharmacyDetailController> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Available Doctors',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF1F2937),
-                                ),
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(
+                                        context,
+                                      ).textTheme.titleLarge?.color,
+                                    ),
                               ),
                               GestureDetector(
                                 onTap: () => controller.selectTab('doctors'),
-                                child: const Text(
+                                child: Text(
                                   'View All',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFF1A73E8),
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -262,7 +270,9 @@ class PharmacyDetailView extends GetView<PharmacyDetailController> {
                           icon: const Icon(Icons.shopping_bag),
                           label: const Text('Order Medicines'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF1A73E8),
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
                             padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),

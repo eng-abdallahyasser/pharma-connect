@@ -100,7 +100,7 @@ class QuickStats extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.amber[100],
+              color: Colors.amber.withAlpha(26),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Column(
