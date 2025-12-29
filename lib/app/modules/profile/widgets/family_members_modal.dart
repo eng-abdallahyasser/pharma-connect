@@ -25,7 +25,7 @@ class FamilyMembersModal extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints(maxWidth: 500),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
@@ -45,26 +45,25 @@ class FamilyMembersModal extends StatelessWidget {
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF22C55E).withAlpha(25),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.secondary.withAlpha(25),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.people,
-                            color: Color(0xFF22C55E),
+                            color: Theme.of(context).colorScheme.secondary,
                             size: 24,
                           ),
                         ),
                         const SizedBox(width: 12),
 
                         // Title
-                        const Expanded(
+                        Expanded(
                           child: Text(
                             'Family Members',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF1F2937),
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ),
 
@@ -77,22 +76,26 @@ class FamilyMembersModal extends StatelessWidget {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF1A73E8),
+                              color: Theme.of(context).primaryColor,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.add,
                                   size: 14,
-                                  color: Colors.white,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
                                 ),
                                 const SizedBox(width: 4),
-                                const Text(
+                                Text(
                                   'Add',
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: Colors.white,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onPrimary,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -123,7 +126,9 @@ class FamilyMembersModal extends StatelessWidget {
                                 margin: const EdgeInsets.only(bottom: 12),
                                 padding: const EdgeInsets.all(16),
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[100],
+                                  color: Theme.of(
+                                    context,
+                                  ).scaffoldBackgroundColor,
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Row(
@@ -135,7 +140,7 @@ class FamilyMembersModal extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                          color: Colors.grey[300]!,
+                                          color: Theme.of(context).dividerColor,
                                           width: 2,
                                         ),
                                       ),
@@ -148,12 +153,16 @@ class FamilyMembersModal extends StatelessWidget {
                                               (context, error, stackTrace) {
                                                 // Fallback avatar with initials
                                                 return Container(
-                                                  color: Colors.grey[300],
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).disabledColor.withAlpha(50),
                                                   child: Center(
                                                     child: Text(
                                                       member.initials,
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
+                                                      style: TextStyle(
+                                                        color: Theme.of(
+                                                          context,
+                                                        ).colorScheme.onSurface,
                                                         fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -186,14 +195,13 @@ class FamilyMembersModal extends StatelessWidget {
                                                     // Member name
                                                     Text(
                                                       member.displayName,
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Color(
-                                                          0xFF1F2937,
-                                                        ),
-                                                      ),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyLarge
+                                                          ?.copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
                                                     ),
                                                     const SizedBox(height: 2),
 
@@ -201,10 +209,9 @@ class FamilyMembersModal extends StatelessWidget {
                                                     Text(
                                                       member.relationship ??
                                                           'N/A',
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.grey[600],
-                                                      ),
+                                                      style: Theme.of(
+                                                        context,
+                                                      ).textTheme.bodySmall,
                                                     ),
                                                   ],
                                                 ),
@@ -217,7 +224,9 @@ class FamilyMembersModal extends StatelessWidget {
                                                 child: Icon(
                                                   Icons.edit,
                                                   size: 16,
-                                                  color: Colors.grey[600],
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).hintColor,
                                                 ),
                                               ),
                                               const SizedBox(width: 8),
@@ -228,7 +237,9 @@ class FamilyMembersModal extends StatelessWidget {
                                                 child: Icon(
                                                   Icons.delete,
                                                   size: 16,
-                                                  color: Colors.red[400],
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.error,
                                                 ),
                                               ),
                                             ],
@@ -238,10 +249,9 @@ class FamilyMembersModal extends StatelessWidget {
                                           if (member.birthDate != null)
                                             Text(
                                               'Born: ${member.birthDate}',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.grey[600],
-                                              ),
+                                              style: Theme.of(
+                                                context,
+                                              ).textTheme.bodySmall,
                                             ),
                                         ],
                                       ),
@@ -264,16 +274,16 @@ class FamilyMembersModal extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: onClose,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1A73E8),
+                  backgroundColor: Theme.of(context).primaryColor,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Close',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),

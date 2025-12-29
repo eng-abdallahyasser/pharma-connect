@@ -54,7 +54,7 @@ class AddressController extends GetxController {
               width: double.infinity,
               height: Get.height * 0.8,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(Get.context!).cardColor,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(

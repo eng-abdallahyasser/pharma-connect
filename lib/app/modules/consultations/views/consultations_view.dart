@@ -19,9 +19,9 @@ class ConsultationsView extends GetView<ConsultationsController> {
             // Header with search bar
             Container(
               // Blue background matching design
-              decoration: const BoxDecoration(
-                color: Color(0xFF1A73E8),
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(24),
                   bottomRight: Radius.circular(24),
                 ),
@@ -30,15 +30,15 @@ class ConsultationsView extends GetView<ConsultationsController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                            SizedBox(height: MediaQuery.of(context).padding.top),
+                  SizedBox(height: MediaQuery.of(context).padding.top),
 
                   // Header title
                   Text(
                     'consultations.title'.tr,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -46,7 +46,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                   // Search bar
                   Container(
                     decoration: BoxDecoration(
-                      color:Theme.of(context).colorScheme.surface,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(24),
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -55,7 +55,7 @@ class ConsultationsView extends GetView<ConsultationsController> {
                         // Search icon
                         Icon(
                           Icons.search,
-                          color: Colors.grey[600],
+                          color: Theme.of(context).hintColor,
                           size: 20,
                         ),
                         const SizedBox(width: 8),
@@ -65,12 +65,12 @@ class ConsultationsView extends GetView<ConsultationsController> {
                           child: TextField(
                             onChanged: controller.updateSearchQuery,
                             decoration: InputDecoration(
-                              fillColor: Theme.of(context).colorScheme.surface,
-                              hintStyle: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(color: Theme.of(context).hintColor),
-                              
+                              fillColor: Theme.of(context).cardColor,
+                              hintStyle: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(context).hintColor,
+                                  ),
+
                               hintText: 'consultations.search_placeholder'.tr,
                               enabledBorder:
                                   InputBorder.none, // For enabled state
@@ -81,16 +81,19 @@ class ConsultationsView extends GetView<ConsultationsController> {
                               errorBorder: InputBorder.none, // For error state
                               focusedErrorBorder:
                                   InputBorder.none, // For error+focused state
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 12),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                              ),
                             ),
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
-                              color: Color(0xFF1F2937),
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.color,
                             ),
                           ),
                         ),
-                        SizedBox(width: 28)
+                        const SizedBox(width: 28),
                       ],
                     ),
                   ),
@@ -116,200 +119,194 @@ class ConsultationsView extends GetView<ConsultationsController> {
                   const SizedBox(height: 16),
 
                   // Tab content
-                  Obx(
-                    () {
-                      final tabIndex = controller.currentTabIndex.value;
+                  Obx(() {
+                    final tabIndex = controller.currentTabIndex.value;
 
-                      // Available Doctors Tab
-                      if (tabIndex == 0) {
-                        return Column(
-                          children: [
-                            // Filtered doctors list
-                            ...controller.getFilteredDoctors().map((doctor) {
+                    // Available Doctors Tab
+                    if (tabIndex == 0) {
+                      return Column(
+                        children: [
+                          // Filtered doctors list
+                          ...controller.getFilteredDoctors().map((doctor) {
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: DoctorCard(
+                                doctor: doctor,
+                                onChat: () => controller.chatWithDoctor(doctor),
+                                onCall: () => controller.callDoctor(doctor),
+                                onBook: () =>
+                                    controller.bookConsultation(doctor),
+                              ),
+                            );
+                          }),
+
+                          // Empty state if no doctors match search
+                          if (controller.getFilteredDoctors().isEmpty)
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 32,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.person_search,
+                                      size: 48,
+                                      color: Theme.of(context).disabledColor,
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      'consultations.no_doctors'.tr,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Theme.of(context).hintColor,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'consultations.no_doctors_hint'.tr,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context).hintColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                        ],
+                      );
+                    }
+                    // Upcoming Consultations Tab
+                    else if (tabIndex == 1) {
+                      final upcoming = controller.getAllUpcoming();
+                      return Column(
+                        children: [
+                          if (upcoming.isEmpty)
+                            // Empty state
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 32,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.calendar_today,
+                                      size: 48,
+                                      color: Theme.of(context).disabledColor,
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      'consultations.no_upcoming'.tr,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Theme.of(context).hintColor,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'consultations.no_upcoming_hint'.tr,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context).hintColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          else
+                            // Upcoming consultations list
+                            ...upcoming.map((consultation) {
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 12),
-                                child: DoctorCard(
-                                  doctor: doctor,
-                                  onChat: () =>
-                                      controller.chatWithDoctor(doctor),
-                                  onCall: () => controller.callDoctor(doctor),
-                                  onBook: () =>
-                                      controller.bookConsultation(doctor),
+                                child: ConsultationCard(
+                                  consultation: consultation,
+                                  isPast: false,
+                                  onActionPressed: () {
+                                    if (consultation.isVideoCall) {
+                                      controller.startVideoCall(consultation);
+                                    } else if (consultation.isChat) {
+                                      controller.joinChat(consultation);
+                                    }
+                                  },
+                                  onReschedule: () {
+                                    controller.rescheduleConsultation(
+                                      consultation,
+                                    );
+                                  },
+                                  onCancel: () {
+                                    controller.cancelConsultation(consultation);
+                                  },
                                 ),
                               );
                             }),
-
-                            // Empty state if no doctors match search
-                            if (controller.getFilteredDoctors().isEmpty)
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 32,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Icon(
-                                        Icons.person_search,
-                                        size: 48,
-                                        color: Colors.grey[400],
+                        ],
+                      );
+                    }
+                    // History Tab
+                    else {
+                      final past = controller.getAllPast();
+                      return Column(
+                        children: [
+                          if (past.isEmpty)
+                            // Empty state
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 32,
+                                ),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.history,
+                                      size: 48,
+                                      color: Theme.of(context).disabledColor,
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      'consultations.no_history'.tr,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Theme.of(context).hintColor,
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                      const SizedBox(height: 12),
-                                      Text(
-                                        'consultations.no_doctors'.tr,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey[600],
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'consultations.no_history_hint'.tr,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Theme.of(context).hintColor,
                                       ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'consultations.no_doctors_hint'.tr,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey[500],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                          ],
-                        );
-                      }
-
-                      // Upcoming Consultations Tab
-                      else if (tabIndex == 1) {
-                        final upcoming = controller.getAllUpcoming();
-                        return Column(
-                          children: [
-                            if (upcoming.isEmpty)
-                              // Empty state
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 32,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Icon(
-                                        Icons.calendar_today,
-                                        size: 48,
-                                        color: Colors.grey[400],
-                                      ),
-                                      const SizedBox(height: 12),
-                                      Text(
-                                        'consultations.no_upcoming'.tr,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey[600],
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'consultations.no_upcoming_hint'.tr,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey[500],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                            )
+                          else
+                            // Past consultations list
+                            ...past.map((consultation) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: ConsultationCard(
+                                  consultation: consultation,
+                                  isPast: true,
+                                  onActionPressed: () {
+                                    if (consultation.hasPrescription) {
+                                      controller.viewPrescription(consultation);
+                                    }
+                                  },
                                 ),
-                              )
-                            else
-                              // Upcoming consultations list
-                              ...upcoming.map((consultation) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 12),
-                                  child: ConsultationCard(
-                                    consultation: consultation,
-                                    isPast: false,
-                                    onActionPressed: () {
-                                      if (consultation.isVideoCall) {
-                                        controller.startVideoCall(consultation);
-                                      } else if (consultation.isChat) {
-                                        controller.joinChat(consultation);
-                                      }
-                                    },
-                                    onReschedule: () {
-                                      controller
-                                          .rescheduleConsultation(consultation);
-                                    },
-                                    onCancel: () {
-                                      controller
-                                          .cancelConsultation(consultation);
-                                    },
-                                  ),
-                                );
-                              }),
-                          ],
-                        );
-                      }
-
-                      // History Tab
-                      else {
-                        final past = controller.getAllPast();
-                        return Column(
-                          children: [
-                            if (past.isEmpty)
-                              // Empty state
-                              Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 32,
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Icon(
-                                        Icons.history,
-                                        size: 48,
-                                        color: Colors.grey[400],
-                                      ),
-                                      const SizedBox(height: 12),
-                                      Text(
-                                        'consultations.no_history'.tr,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey[600],
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        'consultations.no_history_hint'.tr,
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey[500],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            else
-                              // Past consultations list
-                              ...past.map((consultation) {
-                                return Padding(
-                                  padding: const EdgeInsets.only(bottom: 12),
-                                  child: ConsultationCard(
-                                    consultation: consultation,
-                                    isPast: true,
-                                    onActionPressed: () {
-                                      if (consultation.hasPrescription) {
-                                        controller
-                                            .viewPrescription(consultation);
-                                      }
-                                    },
-                                  ),
-                                );
-                              }),
-                          ],
-                        );
-                      }
-                    },
-                  ),
+                              );
+                            }),
+                        ],
+                      );
+                    }
+                  }),
                 ],
               ),
             ),

@@ -20,18 +20,18 @@ class ConsultationCard extends StatelessWidget {
   });
 
   // Get status badge color
-  Color _getStatusColor() {
+  Color _getStatusColor(BuildContext context) {
     if (isPast) {
-      return Colors.grey[400]!;
+      return Theme.of(context).disabledColor;
     }
 
     switch (consultation.status) {
       case 'confirmed':
-        return const Color(0xFF00C897); // Green
+        return Theme.of(context).colorScheme.secondary; // Green usually
       case 'pending':
-        return const Color(0xFFFCD34D); // Yellow
+        return Colors.amber; // Yellow
       default:
-        return Colors.grey[400]!;
+        return Theme.of(context).disabledColor;
     }
   }
 
@@ -54,11 +54,11 @@ class ConsultationCard extends StatelessWidget {
     return Container(
       // White card with rounded corners and shadow
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.onSurface.withAlpha(26),
+            color: Theme.of(context).shadowColor.withAlpha(26),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -92,7 +92,10 @@ class ConsultationCard extends StatelessWidget {
                     // Specialization
                     Text(
                       consultation.specialization,
-                      style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodyMedium?.color),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
                     ),
                     const SizedBox(height: 8),
 
@@ -109,7 +112,9 @@ class ConsultationCard extends StatelessWidget {
                           consultation.date,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Theme.of(context).textTheme.bodyMedium?.color,
+                            color: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium?.color,
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -117,7 +122,9 @@ class ConsultationCard extends StatelessWidget {
                           consultation.time,
                           style: TextStyle(
                             fontSize: 12,
-                            color: Theme.of(context).textTheme.bodyMedium?.color,
+                            color: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium?.color,
                           ),
                         ),
                       ],
@@ -134,7 +141,7 @@ class ConsultationCard extends StatelessWidget {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: _getStatusColor().withAlpha(26),
+                    color: _getStatusColor(context).withAlpha(26),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -142,7 +149,7 @@ class ConsultationCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color: _getStatusColor(),
+                      color: _getStatusColor(context),
                     ),
                   ),
                 ),
@@ -168,14 +175,14 @@ class ConsultationCard extends StatelessWidget {
                     Icon(
                       _getTypeIcon(),
                       size: 16,
-                      color: const Color(0xFF1A73E8),
+                      color: Theme.of(context).primaryColor,
                     ),
                     const SizedBox(width: 6),
                     Text(
                       consultation.type,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: Color(0xFF1A73E8),
+                        color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -191,7 +198,7 @@ class ConsultationCard extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: onActionPressed,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1A73E8),
+                          backgroundColor: Theme.of(context).primaryColor,
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -200,7 +207,11 @@ class ConsultationCard extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(_getTypeIcon(), size: 16, color: Colors.white),
+                            Icon(
+                              _getTypeIcon(),
+                              size: 16,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
                             const SizedBox(width: 6),
                             Text(
                               consultation.isVideoCall
@@ -208,10 +219,10 @@ class ConsultationCard extends StatelessWidget {
                                   : consultation.isChat
                                   ? 'Join Chat'
                                   : 'Call Now',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                             ),
                           ],
@@ -229,19 +240,25 @@ class ConsultationCard extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          side: BorderSide(color: Theme.of(context).dividerColor),
+                          side: BorderSide(
+                            color: Theme.of(context).dividerColor,
+                          ),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.edit, size: 16, color: Colors.grey[600]),
+                            Icon(
+                              Icons.edit,
+                              size: 16,
+                              color: Theme.of(context).hintColor,
+                            ),
                             const SizedBox(width: 6),
                             Text(
                               'Reschedule',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.grey[600],
+                                color: Theme.of(context).hintColor,
                               ),
                             ),
                           ],
@@ -260,13 +277,17 @@ class ConsultationCard extends StatelessWidget {
                 // Consultation type with icon
                 Row(
                   children: [
-                    Icon(_getTypeIcon(), size: 16, color: Colors.grey[600]),
+                    Icon(
+                      _getTypeIcon(),
+                      size: 16,
+                      color: Theme.of(context).hintColor,
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       consultation.type,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.grey[600],
+                        color: Theme.of(context).hintColor,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -279,9 +300,9 @@ class ConsultationCard extends StatelessWidget {
                     onTap: onActionPressed,
                     child: Text(
                       'View Prescription',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
-                        color: Color(0xFF1A73E8),
+                        color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

@@ -19,11 +19,11 @@ class ConsultationTabs extends StatelessWidget {
     return Container(
       // White background with shadow
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onSurface.withAlpha(26),
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(50),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(26),
+            color: Theme.of(context).shadowColor.withAlpha(26),
             blurRadius: 4,
             spreadRadius: 0,
           ),
@@ -35,6 +35,7 @@ class ConsultationTabs extends StatelessWidget {
           // Available tab
           Expanded(
             child: _buildTab(
+              context: context,
               label: 'consultations.available'.tr,
               isActive: currentIndex == 0,
               onTap: () => onTabChanged(0),
@@ -46,13 +47,15 @@ class ConsultationTabs extends StatelessWidget {
             child: Stack(
               children: [
                 _buildTab(
+                  context: context,
                   label: 'consultations.upcoming'.tr,
                   isActive: currentIndex == 1,
                   onTap: () => onTabChanged(1),
                 ),
 
                 // Badge for upcoming count
-                if (upcomingCount > 0) _buildTabNotifier(upcomingCount),
+                if (upcomingCount > 0)
+                  _buildTabNotifier(context, upcomingCount),
               ],
             ),
           ),
@@ -60,6 +63,7 @@ class ConsultationTabs extends StatelessWidget {
           // History tab
           Expanded(
             child: _buildTab(
+              context: context,
               label: 'consultations.history'.tr,
               isActive: currentIndex == 2,
               onTap: () => onTabChanged(2),
@@ -70,21 +74,21 @@ class ConsultationTabs extends StatelessWidget {
     );
   }
 
-  Widget _buildTabNotifier(int count) {
+  Widget _buildTabNotifier(BuildContext context, int count) {
     return Positioned(
       top: 4,
       right: 4,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: const Color(0xFFEF4444),
+          color: Theme.of(context).colorScheme.error,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(
           count.toString(),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 10,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onError,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -94,6 +98,7 @@ class ConsultationTabs extends StatelessWidget {
 
   // Build individual tab button
   Widget _buildTab({
+    required BuildContext context,
     required String label,
     required bool isActive,
     required VoidCallback onTap,
@@ -103,7 +108,7 @@ class ConsultationTabs extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
-          color: isActive ? const Color(0xFF1A73E8) : Colors.transparent,
+          color: isActive ? Theme.of(context).primaryColor : Colors.transparent,
           borderRadius: BorderRadius.circular(50),
         ),
         child: Center(
@@ -112,7 +117,9 @@ class ConsultationTabs extends StatelessWidget {
             style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: isActive ? Colors.white : Colors.grey[600],
+              color: isActive
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : Theme.of(context).hintColor,
             ),
           ),
         ),

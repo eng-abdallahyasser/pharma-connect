@@ -72,9 +72,9 @@ class _AddEditFamilyMemberModalState extends State<AddEditFamilyMemberModal> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(24),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
         ),
@@ -90,10 +90,9 @@ class _AddEditFamilyMemberModalState extends State<AddEditFamilyMemberModal> {
                 widget.member == null
                     ? 'Add Family Member'
                     : 'Edit Family Member',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 24),
 
@@ -109,7 +108,7 @@ class _AddEditFamilyMemberModalState extends State<AddEditFamilyMemberModal> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.grey[300]!,
+                            color: Theme.of(context).dividerColor,
                             width: 2,
                           ),
                         ),
@@ -136,13 +135,13 @@ class _AddEditFamilyMemberModalState extends State<AddEditFamilyMemberModal> {
                         right: 0,
                         child: Container(
                           padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(
-                            color: Color(0xFF1A73E8),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.camera_alt,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             size: 16,
                           ),
                         ),
@@ -226,7 +225,7 @@ class _AddEditFamilyMemberModalState extends State<AddEditFamilyMemberModal> {
                     )
                     .toList(),
                 onChanged: (v) => setState(() => _gender = v),
-                validator: (v) => v == null ? 'Required' : null
+                validator: (v) => v == null ? 'Required' : null,
               ),
               const SizedBox(height: 12),
 
@@ -254,9 +253,13 @@ class _AddEditFamilyMemberModalState extends State<AddEditFamilyMemberModal> {
 
   Widget _buildFallbackAvatar() {
     return Container(
-      color: Colors.grey[200],
-      child: const Center(
-        child: Icon(Icons.person, color: Colors.grey, size: 40),
+      color: Theme.of(context).disabledColor.withAlpha(50),
+      child: Center(
+        child: Icon(
+          Icons.person,
+          color: Theme.of(context).disabledColor,
+          size: 40,
+        ),
       ),
     );
   }

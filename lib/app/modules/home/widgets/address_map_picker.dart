@@ -36,8 +36,7 @@ class _AddressMapPickerState extends State<AddressMapPicker> {
             initialZoom: 15.0,
             onPositionChanged: (position, hasGesture) {
               if (hasGesture) {
-                setState(() {
-                });
+                setState(() {});
                 widget.onPositionChanged(position.center);
               }
             },
@@ -60,11 +59,10 @@ class _AddressMapPickerState extends State<AddressMapPicker> {
           bottom: 16,
           right: 16,
           child: FloatingActionButton(
-            backgroundColor: Colors.white,
+            backgroundColor: Theme.of(context).cardColor,
             onPressed: () {
               _mapController.move(widget.initialPosition, 15.0);
-              setState(() {
-              });
+              setState(() {});
               widget.onPositionChanged(widget.initialPosition);
             },
             child: Icon(

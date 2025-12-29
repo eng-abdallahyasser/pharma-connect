@@ -128,7 +128,7 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
     return Container(
       constraints: const BoxConstraints(maxWidth: 500),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
@@ -138,13 +138,11 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
             padding: const EdgeInsets.all(12),
             child: Row(
               children: [
-                const Text(
+                Text(
                   'Edit Medical Profile',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF1F2937),
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const Spacer(),
                 IconButton(
@@ -155,7 +153,7 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
             ),
           ),
           const Divider(height: 1),
-    
+
           // Form
           Expanded(
             child: SingleChildScrollView(
@@ -167,15 +165,13 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
                   children: [
                     // Blood Type
                     DropdownButtonFormField<String>(
-                      initialValue: _bloodTypes.contains(_bloodTypeController.text)
+                      initialValue:
+                          _bloodTypes.contains(_bloodTypeController.text)
                           ? _bloodTypeController.text
                           : null,
-                      decoration: _inputDecoration('Blood Type'),
+                      decoration: _inputDecoration('Blood Type', context),
                       items: _bloodTypes.map((type) {
-                        return DropdownMenuItem(
-                          value: type,
-                          child: Text(type),
-                        );
+                        return DropdownMenuItem(value: type, child: Text(type));
                       }).toList(),
                       onChanged: (value) {
                         if (value != null) {
@@ -184,14 +180,17 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
                       },
                     ),
                     const SizedBox(height: 16),
-    
+
                     // Height & Weight
                     Row(
                       children: [
                         Expanded(
                           child: TextFormField(
                             controller: _heightController,
-                            decoration: _inputDecoration('Height (cm)'),
+                            decoration: _inputDecoration(
+                              'Height (cm)',
+                              context,
+                            ),
                             keyboardType: TextInputType.number,
                           ),
                         ),
@@ -199,27 +198,31 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
                         Expanded(
                           child: TextFormField(
                             controller: _weightController,
-                            decoration: _inputDecoration('Weight (kg)'),
+                            decoration: _inputDecoration(
+                              'Weight (kg)',
+                              context,
+                            ),
                             keyboardType: TextInputType.number,
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 16),
-    
+
                     // Allergies
                     _buildListSection(
+                      context,
                       'Allergies',
                       _allergies,
                       _allergyController,
-                      (item) =>
-                          _addItem(_allergies, _allergyController, item),
+                      (item) => _addItem(_allergies, _allergyController, item),
                       (item) => _removeItem(_allergies, item),
                     ),
                     const SizedBox(height: 16),
-    
+
                     // Chronic Conditions
                     _buildListSection(
+                      context,
                       'Chronic Conditions',
                       _chronicConditions,
                       _conditionController,
@@ -231,9 +234,10 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
                       (item) => _removeItem(_chronicConditions, item),
                     ),
                     const SizedBox(height: 16),
-    
+
                     // Current Medications
                     _buildListSection(
+                      context,
                       'Current Medications',
                       _currentMedications,
                       _medicationController,
@@ -245,23 +249,29 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
                       (item) => _removeItem(_currentMedications, item),
                     ),
                     const SizedBox(height: 16),
-    
+
                     // Insurance
                     TextFormField(
                       controller: _insuranceProviderController,
-                      decoration: _inputDecoration('Insurance Provider'),
+                      decoration: _inputDecoration(
+                        'Insurance Provider',
+                        context,
+                      ),
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _insurancePolicyNumberController,
-                      decoration: _inputDecoration('Insurance Policy Number'),
+                      decoration: _inputDecoration(
+                        'Insurance Policy Number',
+                        context,
+                      ),
                     ),
                     const SizedBox(height: 16),
-    
+
                     // Notes
                     TextFormField(
                       controller: _notesController,
-                      decoration: _inputDecoration('Notes'),
+                      decoration: _inputDecoration('Notes', context),
                       maxLines: 3,
                     ),
                   ],
@@ -270,7 +280,7 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
             ),
           ),
           const Divider(height: 1),
-    
+
           // Footer
           Padding(
             padding: const EdgeInsets.all(24),
@@ -281,14 +291,16 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
                     onPressed: () => Get.back(),
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
-                      side: BorderSide(color: Colors.grey[300]!),
+                      side: BorderSide(color: Theme.of(context).dividerColor),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
                     child: Text(
                       'Cancel',
-                      style: TextStyle(color: Colors.grey[700]),
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
                     ),
                   ),
                 ),
@@ -297,16 +309,16 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
                   child: ElevatedButton(
                     onPressed: _save,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF1A73E8),
+                      backgroundColor: Theme.of(context).primaryColor,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Save Changes',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -321,6 +333,7 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
   }
 
   Widget _buildListSection(
+    BuildContext context,
     String title,
     List<String> items,
     TextEditingController controller,
@@ -332,11 +345,9 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF374151),
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: 8),
         Wrap(
@@ -346,9 +357,11 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
             return Chip(
               label: Text(item),
               onDeleted: () => onRemove(item),
-              backgroundColor: Colors.grey[100],
-              deleteIconColor: Colors.grey[600],
-              labelStyle: TextStyle(color: Colors.grey[800], fontSize: 12),
+              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+              deleteIconColor: Theme.of(context).hintColor,
+              labelStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              ),
             );
           }).toList(),
         ),
@@ -358,14 +371,17 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
             Expanded(
               child: TextFormField(
                 controller: controller,
-                decoration: _inputDecoration('Add $title'),
+                decoration: _inputDecoration('Add $title', context),
                 onFieldSubmitted: (value) => onAdd(value),
               ),
             ),
             const SizedBox(width: 8),
             IconButton(
               onPressed: () => onAdd(controller.text),
-              icon: const Icon(Icons.add_circle, color: Color(0xFF1A73E8)),
+              icon: Icon(
+                Icons.add_circle,
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ],
         ),
@@ -373,20 +389,20 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
     );
   }
 
-  InputDecoration _inputDecoration(String label) {
+  InputDecoration _inputDecoration(String label, BuildContext context) {
     return InputDecoration(
       labelText: label,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.grey[300]!),
+        borderSide: BorderSide(color: Theme.of(context).dividerColor),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide(color: Colors.grey[300]!),
+        borderSide: BorderSide(color: Theme.of(context).dividerColor),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF1A73E8), width: 2),
+        borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2),
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
     );

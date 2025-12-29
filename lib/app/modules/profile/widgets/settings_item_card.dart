@@ -36,7 +36,12 @@ class SettingsItemCard extends StatelessWidget {
         // Add border only if not the last item
         decoration: BoxDecoration(
           border: !isLast
-              ? Border(bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1))
+              ? Border(
+                  bottom: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: 1,
+                  ),
+                )
               : null,
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -88,7 +93,7 @@ class SettingsItemCard extends StatelessWidget {
                             width: 24,
                             height: 24,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.surface,
                               borderRadius: BorderRadius.circular(12),
                             ),
                           ),
@@ -104,15 +109,26 @@ class SettingsItemCard extends StatelessWidget {
                 children: [
                   Text(
                     item.value!,
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
                   ),
                   const SizedBox(width: 8),
-                  Icon(Icons.chevron_right, color: Colors.grey[400], size: 20),
+                  Icon(
+                    Icons.chevron_right,
+                    color: Theme.of(context).hintColor,
+                    size: 20,
+                  ),
                 ],
               )
             else
               // Chevron icon
-              Icon(Icons.chevron_right, color: Colors.grey[400], size: 20),
+              Icon(
+                Icons.chevron_right,
+                color: Theme.of(context).hintColor,
+                size: 20,
+              ),
           ],
         ),
       ),

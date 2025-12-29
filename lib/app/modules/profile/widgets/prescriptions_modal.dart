@@ -51,14 +51,11 @@ class PrescriptionsModal extends StatelessWidget {
                         const SizedBox(width: 12),
 
                         // Title
-                        const Expanded(
+                        Expanded(
                           child: Text(
                             'Prescriptions',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF1F2937),
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
@@ -74,7 +71,7 @@ class PrescriptionsModal extends StatelessWidget {
                           margin: const EdgeInsets.only(bottom: 12),
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).cardColor,
+                            color: Theme.of(context).scaffoldBackgroundColor,
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: Column(
@@ -93,21 +90,21 @@ class PrescriptionsModal extends StatelessWidget {
                                         // Diagnosis title
                                         Text(
                                           prescription.diagnosis,
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            color: Color(0xFF1F2937),
-                                          ),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                         ),
                                         const SizedBox(height: 4),
 
                                         // Doctor name
                                         Text(
                                           prescription.doctorName,
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: Colors.grey[600],
-                                          ),
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall,
                                         ),
                                       ],
                                     ),
@@ -121,10 +118,13 @@ class PrescriptionsModal extends StatelessWidget {
                                     ),
                                     decoration: BoxDecoration(
                                       color: prescription.isActive
-                                          ? const Color(
-                                              0xFF00C897,
-                                            ).withAlpha(26)
-                                          : Colors.grey[300],
+                                          ? Theme.of(context)
+                                                .colorScheme
+                                                .secondary
+                                                .withAlpha(26)
+                                          : Theme.of(
+                                              context,
+                                            ).disabledColor.withAlpha(50),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Text(
@@ -133,8 +133,10 @@ class PrescriptionsModal extends StatelessWidget {
                                         fontSize: 12,
                                         fontWeight: FontWeight.w600,
                                         color: prescription.isActive
-                                            ? const Color(0xFF00C897)
-                                            : Colors.grey[600],
+                                            ? Theme.of(
+                                                context,
+                                              ).colorScheme.secondary
+                                            : Theme.of(context).disabledColor,
                                       ),
                                     ),
                                   ),
@@ -148,15 +150,14 @@ class PrescriptionsModal extends StatelessWidget {
                                   Icon(
                                     Icons.calendar_today,
                                     size: 16,
-                                    color: Colors.grey[600],
+                                    color: Theme.of(context).hintColor,
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
                                     prescription.date,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey[600],
-                                    ),
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
                                   ),
                                 ],
                               ),
@@ -168,11 +169,8 @@ class PrescriptionsModal extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Medicines:',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey[600],
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(fontWeight: FontWeight.w500),
                                   ),
                                   const SizedBox(height: 8),
 
@@ -189,7 +187,9 @@ class PrescriptionsModal extends StatelessWidget {
                                           vertical: 4,
                                         ),
                                         decoration: BoxDecoration(
-                                          color: Colors.grey[300],
+                                          color: Theme.of(
+                                            context,
+                                          ).dividerColor.withAlpha(50),
                                           borderRadius: BorderRadius.circular(
                                             12,
                                           ),
@@ -200,15 +200,16 @@ class PrescriptionsModal extends StatelessWidget {
                                             Icon(
                                               Icons.medication,
                                               size: 12,
-                                              color: Colors.grey[600],
+                                              color: Theme.of(
+                                                context,
+                                              ).hintColor,
                                             ),
                                             const SizedBox(width: 4),
                                             Text(
                                               medicine,
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.grey[700],
-                                              ),
+                                              style: Theme.of(
+                                                context,
+                                              ).textTheme.bodySmall,
                                             ),
                                           ],
                                         ),
@@ -229,7 +230,9 @@ class PrescriptionsModal extends StatelessWidget {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
-                                    side: BorderSide(color: Colors.grey[300]!),
+                                    side: BorderSide(
+                                      color: Theme.of(context).dividerColor,
+                                    ),
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -237,14 +240,14 @@ class PrescriptionsModal extends StatelessWidget {
                                       Icon(
                                         Icons.download,
                                         size: 16,
-                                        color: Colors.grey[600],
+                                        color: Theme.of(context).hintColor,
                                       ),
                                       const SizedBox(width: 6),
                                       Text(
                                         'Download Prescription',
                                         style: TextStyle(
                                           fontSize: 12,
-                                          color: Colors.grey[600],
+                                          color: Theme.of(context).hintColor,
                                         ),
                                       ),
                                     ],
@@ -269,16 +272,16 @@ class PrescriptionsModal extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: onClose,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1A73E8),
+                  backgroundColor: Theme.of(context).primaryColor,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Close',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
