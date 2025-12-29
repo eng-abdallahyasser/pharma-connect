@@ -227,9 +227,15 @@ class PharmaciesView extends GetView<PharmaciesController> {
 
             // Content Area
             Obx(
-              () => controller.viewMode.value == 'list'
-                  ? _buildListView(context)
-                  : _buildMapView(context),
+              () {
+                if (!controller.hasAddresses.value) {
+                  return const SizedBox.shrink();
+                } else {
+                  return controller.viewMode.value == 'list'
+                      ? _buildListView(context)
+                      : _buildMapView(context);
+                }
+              },
             ),
           ],
         ),

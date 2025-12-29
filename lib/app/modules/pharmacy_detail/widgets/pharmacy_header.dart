@@ -22,14 +22,14 @@ class PharmacyHeader extends StatelessWidget {
         Container(
           height: 256,
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceVariant,
+            color: Theme.of(context).colorScheme.surfaceContainer,
           ),
           child: Image.network(
             pharmacy.imageUrl,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               return Container(
-                color: Theme.of(context).colorScheme.surfaceVariant,
+                color: Theme.of(context).colorScheme.surfaceContainer,
                 child: Center(
                   child: Icon(
                     Icons.image_not_supported,

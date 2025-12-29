@@ -121,6 +121,9 @@ class ConsultationsView extends GetView<ConsultationsController> {
                   // Tab content
                   Obx(() {
                     final tabIndex = controller.currentTabIndex.value;
+                    if (!controller.hasAddresses.value) {
+                      return const SizedBox.shrink();
+                    }
 
                     // Available Doctors Tab
                     if (tabIndex == 0) {

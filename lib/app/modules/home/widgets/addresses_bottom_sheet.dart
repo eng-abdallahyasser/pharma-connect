@@ -90,12 +90,23 @@ class AddressesBottomSheet extends GetView<AddressController> {
                     ),
                   ),
                   subtitle: Text(address.fullAddress),
-                  trailing: address.isSelected
-                      ? Icon(
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (address.isSelected)
+                        Icon(
                           Icons.check_circle,
                           color: Theme.of(context).primaryColor,
-                        )
-                      : null,
+                        ),
+                      IconButton(
+                        onPressed: () => controller.deleteAddress(address),
+                        icon: const Icon(
+                          Icons.delete_outline,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
+                  ),
                   onTap: () => controller.selectAddress(address),
                 );
               },

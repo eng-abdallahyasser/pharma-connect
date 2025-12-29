@@ -195,6 +195,25 @@ class AddressController extends GetxController {
     Get.back(); // Close bottom sheet
   }
 
+  Future<void> deleteAddress(AddressModel address) async {
+    // If the deleted address is the selected one, clear selection
+    if (selectedAddress.value?.id == address.id) {
+      selectedAddress.value = null;
+    }
+
+    addresses.removeWhere((a) => a.id == address.id);
+
+    // If we just deleted the selected address and there are other addresses, select the first one
+    if (selectedAddress.value == null && addresses.isNotEmpty) {
+      selectAddress(addresses.first);
+      // selectAddress saves addresses, so we don't need to call _saveAddresses again if we branch here
+      return;
+    }
+
+    await _saveAddresses();
+    Get.snackbar("Success", "Address deleted successfully");
+  }
+
   Future<void> _saveAddresses() async {
     await _storageService.saveAddresses(
       addresses.map((e) => e.toJson()).toList(),

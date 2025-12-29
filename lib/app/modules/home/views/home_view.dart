@@ -196,6 +196,7 @@ class HomeView extends GetView<HomeController> {
                           context,
                         ).colorScheme.secondary.withAlpha(26),
                         iconColor: Theme.of(context).colorScheme.secondary,
+                        onTap: controller.onNavigateToConsultations,
                       ),
                       QuickActionCard(
                         icon: Icons.medication,
@@ -211,6 +212,7 @@ class HomeView extends GetView<HomeController> {
                         title: 'home.nearby_pharmacies'.tr,
                         bgColor: Colors.orange.withAlpha(26),
                         iconColor: Colors.orange,
+                        onTap: controller.onNavigateToPharmacies,
                       ),
                     ],
                   ),

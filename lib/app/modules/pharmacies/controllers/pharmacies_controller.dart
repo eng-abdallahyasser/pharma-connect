@@ -1,10 +1,11 @@
 import 'dart:developer';
-
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:pharma_connect/app/modules/navigation/controllers/navigation_controller.dart';
 import 'package:pharma_connect/app/core/services/storage_service.dart';
 import 'package:pharma_connect/app/modules/home/models/address_model.dart';
-import 'package:pharma_connect/app/modules/pharmacy_detail/models/pharmacy_detail_model.dart'; // Import this
+import 'package:pharma_connect/app/modules/pharmacy_detail/models/pharmacy_detail_model.dart';
 import '../models/pharmacy_filter_model.dart';
 import '../../home/models/pharmacy_model.dart';
 import 'package:pharma_connect/app/data/providers/pharmacies_provider.dart';
@@ -37,15 +38,51 @@ class PharmaciesController extends GetxController {
   late final PharmaciesProvider _provider;
   AddressModel? _selectedAddress;
 
+  final hasAddresses = false.obs;
+
   @override
   void onInit() {
     super.onInit();
     _provider = Get.find<PharmaciesProvider>();
+
+    if (!_checkAndHandleAddresses()) {
+      return;
+    }
+
     _loadSelectedAddress();
     if (_selectedAddress != null) {
       fetchNearbyPharmacies();
     }
     _initializeFilters();
+  }
+
+  bool _checkAndHandleAddresses() {
+    final storageService = Get.find<StorageService>();
+    final addresses = storageService.getAddresses();
+
+    if (addresses == null || addresses.isEmpty) {
+      hasAddresses.value = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showNoAddressDialog();
+      });
+      return false;
+    }
+    hasAddresses.value = true;
+    return true;
+  }
+
+  void _showNoAddressDialog() {
+    Get.defaultDialog(
+      title: "Missing Address",
+      middleText: "Please add your address to be able to get nearby entities.",
+      textConfirm: "Add Address",
+      confirmTextColor: Colors.white,
+      onConfirm: () {
+        Get.back();
+        Get.find<NavigationController>().navigateToRoute('/profile');
+      },
+      barrierDismissible: false,
+    );
   }
 
   void _loadSelectedAddress() {

@@ -357,7 +357,7 @@ class _EditMedicalProfileModalState extends State<EditMedicalProfileModal> {
             return Chip(
               label: Text(item),
               onDeleted: () => onRemove(item),
-              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
               deleteIconColor: Theme.of(context).hintColor,
               labelStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: Theme.of(context).textTheme.bodyLarge?.color,

@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:pharma_connect/app/modules/navigation/controllers/navigation_controller.dart';
+import 'package:pharma_connect/app/core/services/storage_service.dart';
 import 'package:get/get.dart';
 import '../models/doctor_model.dart';
 import '../models/consultation_model.dart';
@@ -11,10 +14,12 @@ class ConsultationsController extends GetxController {
   final selectedDoctor = Rxn<DoctorModel>();
   final isLoadingDoctors = false.obs;
 
+  final hasAddresses = false.obs;
+
   // Lists of doctors and consultations
   final availableDoctors = <DoctorModel>[].obs;
-  late List<ConsultationModel> upcomingConsultations;
-  late List<ConsultationModel> pastConsultations;
+  List<ConsultationModel> upcomingConsultations = [];
+  List<ConsultationModel> pastConsultations = [];
 
   // Services
   late DoctorsService _doctorsService;
@@ -22,6 +27,11 @@ class ConsultationsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    if (!_checkAndHandleAddresses()) {
+      return;
+    }
+
     // Initialize services
     _doctorsService = Get.put(DoctorsService());
 
@@ -269,5 +279,34 @@ class ConsultationsController extends GetxController {
   // Get all past consultations
   List<ConsultationModel> getAllPast() {
     return pastConsultations;
+  }
+
+  bool _checkAndHandleAddresses() {
+    final storageService = Get.find<StorageService>();
+    final addresses = storageService.getAddresses();
+
+    if (addresses == null || addresses.isEmpty) {
+      hasAddresses.value = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showNoAddressDialog();
+      });
+      return false;
+    }
+    hasAddresses.value = true;
+    return true;
+  }
+
+  void _showNoAddressDialog() {
+    Get.defaultDialog(
+      title: "Missing Address",
+      middleText: "Please add your address to be able to get nearby entities.",
+      textConfirm: "Add Address",
+      confirmTextColor: Colors.white,
+      onConfirm: () {
+        Get.back();
+        Get.find<NavigationController>().navigateToRoute('/profile');
+      },
+      barrierDismissible: false,
+    );
   }
 }

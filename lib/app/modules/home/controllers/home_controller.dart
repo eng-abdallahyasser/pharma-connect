@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/locales/translations.dart';
+import 'package:pharma_connect/app/modules/navigation/controllers/navigation_controller.dart';
 import '../models/doctor_model.dart';
 import '../models/pharmacy_model.dart';
 import '../models/health_tip_model.dart';
@@ -142,5 +143,13 @@ class HomeController extends GetxController {
 
   void onPharmacySelect(PharmacyModel pharmacy) {
     Get.toNamed('/pharmacy-detail', arguments: pharmacy);
+  }
+
+  void onNavigateToPharmacies() {
+    Get.find<NavigationController>().navigateToRoute('/pharmacies');
+  }
+
+  void onNavigateToConsultations() {
+    Get.find<NavigationController>().navigateToRoute('/consultations');
   }
 }
