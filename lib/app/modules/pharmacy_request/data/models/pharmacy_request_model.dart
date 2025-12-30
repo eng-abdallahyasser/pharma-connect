@@ -10,6 +10,7 @@ class PharmacyRequest {
   final String branchId;
   final RequestMetadata metadata;
   final String id;
+  final DoctorInfo? doctor;
 
   PharmacyRequest({
     required this.requestNo,
@@ -23,6 +24,7 @@ class PharmacyRequest {
     required this.branchId,
     required this.metadata,
     required this.id,
+    this.doctor,
   });
 
   factory PharmacyRequest.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,39 @@ class PharmacyRequest {
         json['metadata'] as Map<String, dynamic>,
       ),
       id: json['id'] as String,
+      doctor: json['doctor'] != null
+          ? DoctorInfo.fromJson(json['doctor'] as Map<String, dynamic>)
+          : null,
+    );
+  }
+
+  PharmacyRequest copyWith({
+    String? requestNo,
+    ServiceRequestType? type,
+    String? status,
+    List<String>? prescriptionImages,
+    List<ManualItem>? manualItems,
+    String? notes,
+    DateTime? expiresAt,
+    String? userId,
+    String? branchId,
+    RequestMetadata? metadata,
+    String? id,
+    DoctorInfo? doctor,
+  }) {
+    return PharmacyRequest(
+      requestNo: requestNo ?? this.requestNo,
+      type: type ?? this.type,
+      status: status ?? this.status,
+      prescriptionImages: prescriptionImages ?? this.prescriptionImages,
+      manualItems: manualItems ?? this.manualItems,
+      notes: notes ?? this.notes,
+      expiresAt: expiresAt ?? this.expiresAt,
+      userId: userId ?? this.userId,
+      branchId: branchId ?? this.branchId,
+      metadata: metadata ?? this.metadata,
+      id: id ?? this.id,
+      doctor: doctor ?? this.doctor,
     );
   }
 
@@ -63,6 +98,7 @@ class PharmacyRequest {
       'branchId': branchId,
       'metadata': metadata.toJson(),
       'id': id,
+      'doctor': doctor?.toJson(),
     };
   }
 }
@@ -112,5 +148,19 @@ class RequestMetadata {
       'version': version,
       'createdAt': createdAt.toIso8601String(),
     };
+  }
+}
+
+class DoctorInfo {
+  final String id;
+
+  DoctorInfo({required this.id});
+
+  factory DoctorInfo.fromJson(Map<String, dynamic> json) {
+    return DoctorInfo(id: json['id'] as String);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'id': id};
   }
 }

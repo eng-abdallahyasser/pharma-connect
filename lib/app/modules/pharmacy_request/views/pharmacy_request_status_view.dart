@@ -10,7 +10,22 @@ class PharmacyRequestStatusView
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Request Status'),
+        title: Column(
+          children: [
+            const Text('Request Status'),
+            Obx(
+              () => Text(
+                controller.isConnected.value ? 'Connected' : 'Disconnected',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: controller.isConnected.value
+                      ? Colors.green
+                      : Colors.red,
+                ),
+              ),
+            ),
+          ],
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -105,25 +120,31 @@ class PharmacyRequestStatusView
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Request Details',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          _buildInfoRow('Type', controller.request.value.type.name),
-          const SizedBox(height: 12),
-          _buildInfoRow(
-            'Medicine Items',
-            '${controller.request.value.manualItems.length}',
-          ),
-          if (controller.request.value.notes != null) ...[
+      child: Obx(
+        () => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Request Details',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            _buildInfoRow('Type', controller.request.value.type.name),
             const SizedBox(height: 12),
-            _buildInfoRow('Notes', controller.request.value.notes!),
+            _buildInfoRow(
+              'Medicine Items',
+              '${controller.request.value.manualItems.length}',
+            ),
+            if (controller.request.value.notes != null) ...[
+              const SizedBox(height: 12),
+              _buildInfoRow('Notes', controller.request.value.notes!),
+            ],
+            if (controller.request.value.doctor != null) ...[
+              const SizedBox(height: 12),
+              _buildInfoRow('Doctor ID', controller.request.value.doctor!.id),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

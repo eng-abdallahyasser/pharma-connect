@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:get/get.dart';
 import 'package:pharma_connect/app/core/services/storage_service.dart';
@@ -200,17 +201,31 @@ class PharmacyDetailController extends GetxController {
   // Get directions
   Future<void> getDirections() async {
     try {
-      // Using data from pharmacy model if available
       if (pharmacy.value != null) {
-        Get.snackbar(
-          'Directions',
-          'Opening directions to ${pharmacy.value!.name}...',
+        final lat = pharmacy.value!.latitude;
+        final lng = pharmacy.value!.longitude;
+
+        if (lat == 0.0 && lng == 0.0) {
+          Get.snackbar('Error', 'Location not available for this pharmacy');
+          return;
+        }
+
+        final Uri googleMapsUrl = Uri.parse(
+          'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
         );
-        // here we could use latitude/longitude from pharmacy.value
+
+        // Try to launch the URL
+        if (!await launchUrl(
+          googleMapsUrl,
+          mode: LaunchMode.externalApplication,
+        )) {
+          Get.snackbar('Error', 'Could not launch maps');
+        }
       } else {
-        Get.snackbar('Directions', 'Opening directions...');
+        Get.snackbar('Error', 'Pharmacy details not loaded');
       }
     } catch (e) {
+      log(name: "PharmacyDetailController", "Failed to get directions: $e");
       Get.snackbar('Error', 'Failed to get directions: $e');
     }
   }

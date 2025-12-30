@@ -129,55 +129,63 @@ class ConsultationsView extends GetView<ConsultationsController> {
                     if (tabIndex == 0) {
                       return Column(
                         children: [
-                          // Filtered doctors list
-                          ...controller.getFilteredDoctors().map((doctor) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: DoctorCard(
-                                doctor: doctor,
-                                onChat: () => controller.chatWithDoctor(doctor),
-                                onCall: () => controller.callDoctor(doctor),
-                                onBook: () =>
-                                    controller.bookConsultation(doctor),
-                              ),
-                            );
-                          }),
+                          if (controller.isLoadingDoctors.value)
+                            const Padding(
+                              padding: EdgeInsets.all(32.0),
+                              child: Center(child: CircularProgressIndicator()),
+                            )
+                          else ...[
+                            // Filtered doctors list
+                            ...controller.getFilteredDoctors().map((doctor) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: DoctorCard(
+                                  doctor: doctor,
+                                  onChat: () =>
+                                      controller.chatWithDoctor(doctor),
+                                  onCall: () => controller.callDoctor(doctor),
+                                  onBook: () =>
+                                      controller.bookConsultation(doctor),
+                                ),
+                              );
+                            }),
 
-                          // Empty state if no doctors match search
-                          if (controller.getFilteredDoctors().isEmpty)
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 32,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Icon(
-                                      Icons.person_search,
-                                      size: 48,
-                                      color: Theme.of(context).disabledColor,
-                                    ),
-                                    const SizedBox(height: 12),
-                                    Text(
-                                      'consultations.no_doctors'.tr,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).hintColor,
-                                        fontWeight: FontWeight.w500,
+                            // Empty state if no doctors match search
+                            if (controller.getFilteredDoctors().isEmpty)
+                              Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 32,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        Icons.person_search,
+                                        size: 48,
+                                        color: Theme.of(context).disabledColor,
                                       ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      'consultations.no_doctors_hint'.tr,
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Theme.of(context).hintColor,
+                                      const SizedBox(height: 12),
+                                      Text(
+                                        'consultations.no_doctors'.tr,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Theme.of(context).hintColor,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'consultations.no_doctors_hint'.tr,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Theme.of(context).hintColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
+                          ],
                         ],
                       );
                     }

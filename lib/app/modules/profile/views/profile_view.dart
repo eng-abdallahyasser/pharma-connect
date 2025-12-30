@@ -166,7 +166,11 @@ class ProfileView extends GetView<ProfileController> {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  Center(
+                    child: TextButton(onPressed: controller.aboutUs, child: Text(" about us "))
+                  ),
+                  const SizedBox(height: 12),
+              
                 ],
               ),
             ),

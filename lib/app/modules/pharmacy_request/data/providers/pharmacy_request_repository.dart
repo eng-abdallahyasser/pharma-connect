@@ -27,8 +27,14 @@ class PharmacyRequestRepository {
       dynamic payload = data;
 
       if (images.isNotEmpty) {
-        // Send the first image in 'image' field
-        data['image'] = await dio.MultipartFile.fromFile(images.first.path);
+        // Send all images in 'images' field
+        final imageFiles = await Future.wait(
+          images.map(
+            (image) async => await dio.MultipartFile.fromFile(image.path),
+          ),
+        );
+        data['images'] = imageFiles;
+
         // Convert to FormData to handle file upload
         payload = dio.FormData.fromMap(data);
       }
@@ -40,17 +46,5 @@ class PharmacyRequestRepository {
     }
   }
 
-  // Poll for request status updates
-  Stream<dynamic> listenToRequestStatus(String requestId) async* {
-    yield* Stream.periodic(const Duration(seconds: 5), (_) async {
-      try {
-        final response = await _apiClient.get(
-          '/api/service-requests/$requestId/stream',
-        );
-        return response;
-      } catch (e) {
-        return null; // Handle error or ignore
-      }
-    }).asyncMap((event) async => await event).where((event) => event != null);
-  }
+  
 }

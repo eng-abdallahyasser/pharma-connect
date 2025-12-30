@@ -826,4 +826,8 @@ class ProfileController extends GetxController {
       Get.snackbar('Error', 'Failed to delete family member: $e');
     }
   }
+
+  void aboutUs() {
+    // TODO: implement aboutUs
+  }
 }

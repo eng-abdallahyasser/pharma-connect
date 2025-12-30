@@ -108,8 +108,8 @@ class NotificationService extends GetxService {
   /// Handle foreground messages
   void _setupForegroundHandler() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      log('📱 FOREGROUND: Got a message!');
-      log('Title: ${message.notification?.title}');
+      log(name : "NotificationService", '📱 FOREGROUND: Got a message!');
+      log(name : "NotificationService", 'Title: ${message.notification?.title}');
 
       // Show local notification
       _showLocalNotification(message);
