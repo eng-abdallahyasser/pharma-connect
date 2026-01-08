@@ -131,10 +131,9 @@ class PharmaciesController extends GetxController {
         lng: _selectedAddress!.longitude,
       );
       final data = response['data'] as List;
-      log("Nearby Pharmacies: $data");
       _processPharmacyData(data);
     } catch (e) {
-      log('Error fetching nearby pharmacies: $e');
+      log(name: 'PharmaciesController', 'Error fetching nearby pharmacies: $e');
     } finally {
       isLoading.value = false;
     }
