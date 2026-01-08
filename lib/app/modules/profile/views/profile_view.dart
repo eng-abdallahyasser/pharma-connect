@@ -154,22 +154,24 @@ class ProfileView extends GetView<ProfileController> {
                   const SizedBox(height: 16),
 
                   // App version text
-                  Center(
-                    child: Obx(
-                      () => Text(
-                        'Version ${controller.version.value}',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).hintColor,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Obx(
+                        () => Text(
+                          'Version ${controller.version.value}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).hintColor,
+                          ),
                         ),
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                  
+                  TextButton(onPressed: controller.aboutUs, child: Text(" about us "))
+                    ],
                   ),
 
-                  Center(
-                    child: TextButton(onPressed: controller.aboutUs, child: Text(" about us "))
-                  ),
-                  const SizedBox(height: 12),
               
                 ],
               ),

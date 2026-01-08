@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' as dio;
 import '../../../../core/network/api_client.dart';
 import '../models/pharmacy_request_model.dart';
 import '../models/item_model.dart';
+import '../models/message_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PharmacyRequestRepository {
@@ -46,5 +47,28 @@ class PharmacyRequestRepository {
     }
   }
 
-  
+  Future<List<Message>> getMessages(String requestId) async {
+    try {
+      final response = await _apiClient.get(
+        '/api/service-requests/$requestId/messages',
+      );
+      return (response as List)
+          .map((e) => Message.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Message> sendMessage(String requestId, String content) async {
+    try {
+      final response = await _apiClient.post(
+        '/api/service-requests/$requestId/messages',
+        {'content': content},
+      );
+      return Message.fromJson(response);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

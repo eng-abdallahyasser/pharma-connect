@@ -153,14 +153,22 @@ class RequestMetadata {
 
 class DoctorInfo {
   final String id;
+  final String firstName;
+  final String lastName;
 
-  DoctorInfo({required this.id});
+  DoctorInfo({required this.id, required this.firstName, required this.lastName});
 
   factory DoctorInfo.fromJson(Map<String, dynamic> json) {
-    return DoctorInfo(id: json['id'] as String);
+    return DoctorInfo(
+      id: json['id'] as String,
+      firstName: json['firstName'] as String,
+      lastName: json['lastName'] as String,
+    );
   }
 
+  String get fullName => "$firstName $lastName";
+
   Map<String, dynamic> toJson() {
-    return {'id': id};
+    return {'id': id, 'firstName': firstName, 'lastName': lastName};
   }
 }

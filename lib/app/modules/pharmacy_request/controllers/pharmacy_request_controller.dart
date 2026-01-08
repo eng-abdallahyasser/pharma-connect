@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pharma_connect/app/core/network/api_exceptions.dart';
 import '../data/models/pharmacy_request_model.dart';
 import '../data/models/item_model.dart';
 import '../data/providers/pharmacy_request_repository.dart';
@@ -205,7 +206,9 @@ class PharmacyRequestController extends GetxController {
 
       Get.snackbar('Success', 'Request submitted successfully');
     } catch (e) {
-      log(e.toString());
+      if(e is ApiException){
+        log(name: 'submitRequest', e.response.toString());
+      }
       Get.snackbar('Error', 'Failed to submit request: $e');
     } finally {
       isLoading.value = false;

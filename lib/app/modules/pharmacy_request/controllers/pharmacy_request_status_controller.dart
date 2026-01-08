@@ -8,22 +8,33 @@ import 'package:get/get.dart';
 import 'package:pharma_connect/app/core/network/api_constants.dart';
 import 'package:pharma_connect/app/core/services/storage_service.dart';
 import '../data/models/pharmacy_request_model.dart';
+import '../data/models/message_model.dart';
+import '../data/providers/pharmacy_request_repository.dart';
 
 class PharmacyRequestStatusController extends GetxController {
   final Rx<PharmacyRequest> request = Rx<PharmacyRequest>(
     Get.arguments as PharmacyRequest,
   );
   final StorageService storageService = Get.find<StorageService>();
+  final PharmacyRequestRepository _repository = PharmacyRequestRepository();
 
+  final messages = <Message>[].obs;
+  final isLoadingMessages = false.obs;
+  final isSendingMessage = false.obs;
+  final TextEditingController messageController = TextEditingController();
+
+  String get currentUserId => storageService.getUser()?.id ?? '';
 
   @override
   void onInit() {
     super.onInit();
+    fetchMessages();
     _startMonitoring();
   }
 
   @override
   void onClose() {
+    messageController.dispose();
     unsubscribeFromRequestStatus();
     super.onClose();
   }
@@ -32,56 +43,63 @@ class PharmacyRequestStatusController extends GetxController {
 
   void _startMonitoring() {
     isConnected.value = true;
-    
-        listenToRequestStatus(request.value.id)
-        .listen(
-          (data) {
-            isConnected.value = true;
+
+    listenToRequestStatus(request.value.id).listen(
+      (data) {
+        isConnected.value = true;
+        try {
+          if (data.isEmpty) return; // Skip empty keep-alive or error parses
+
+          log(name: "PharmacyRequestStatusController", " stream data: $data");
+
+          // Check if data is a message (has content or type TEXT)
+          if (data['type'] == 'TEXT' || data['content'] != null) {
             try {
-              if (data.isEmpty) return; // Skip empty keep-alive or error parses
+              // Pass 'data' directly since it contains the message fields
+              final newMessage = Message.fromJson(data);
 
-              log(
-                name: "PharmacyRequestStatusController",
-                " stream data: $data",
-              );
-
-              // Handle partial updates using copyWith
-              request.value = request.value.copyWith(
-                status: data['status'] as String?,
-                notes: data['notes'] as String?,
-                doctor: data['doctor'] != null
-                    ? DoctorInfo.fromJson(
-                        data['doctor'] as Map<String, dynamic>,
-                      )
-                    : null,
-                // We can add other fields here if they are expected to change
-              );
-
-              // Log the update for debugging
-              log(
-                name: "PharmacyRequestStatusController",
-                "Updated request status: ${request.value.status}",
-              );
+              // Avoid duplicates
+              if (!messages.any((m) => m.id == newMessage.id)) {
+                messages.add(newMessage);
+              }
             } catch (e) {
               log(
                 name: "PharmacyRequestStatusController",
-                "Error parsing update: $e",
+                "Error parsing message from stream: $e",
               );
             }
-          },
-          onError: (error) {
-            log(
-              name: "PharmacyRequestStatusController",
-              "Stream error: $error",
+          } else {
+            // Handle partial updates using copyWith (request status updates)
+            request.value = request.value.copyWith(
+              status: data['status'] as String?,
+              notes: data['notes'] as String?,
+              doctor: data['doctor'] != null
+                  ? DoctorInfo.fromJson(data['doctor'] as Map<String, dynamic>)
+                  : null,
             );
-            isConnected.value = false;
-          },
-          onDone: () {
-            log(name: "PharmacyRequestStatusController", "Stream closed");
-            isConnected.value = false;
-          },
-            
-        );
+          }
+
+          // Log the update for debugging
+          log(
+            name: "PharmacyRequestStatusController",
+            "Updated request status: ${request.value.status}",
+          );
+        } catch (e) {
+          log(
+            name: "PharmacyRequestStatusController",
+            "Error parsing update: $e",
+          );
+        }
+      },
+      onError: (error) {
+        log(name: "PharmacyRequestStatusController", "Stream error: $error");
+        isConnected.value = false;
+      },
+      onDone: () {
+        log(name: "PharmacyRequestStatusController", "Stream closed");
+        isConnected.value = false;
+      },
+    );
   }
 
   Color getStatusColor() {
@@ -118,23 +136,56 @@ class PharmacyRequestStatusController extends GetxController {
             "Cache-Control": "no-cache",
             "Connection": "keep-alive",
           },
-
-          
         )
         .map((event) {
           if (event.data != null && event.data!.isNotEmpty) {
             try {
               return jsonDecode(event.data!) as Map<String, dynamic>;
             } catch (e) {
-              return <String, dynamic>{"message":"Error parsing update: $e"};
+              return <String, dynamic>{"message": "Error parsing update: $e"};
             }
           }
-          return <String, dynamic>{"message":"no data received"};
+          return <String, dynamic>{"message": "no data received"};
         })
         .where((data) => data.isNotEmpty);
   }
 
   void unsubscribeFromRequestStatus() {
     SSEClient.unsubscribeFromSSE();
+  }
+
+  Future<void> fetchMessages() async {
+    try {
+      isLoadingMessages.value = true;
+      final fetchedMessages = await _repository.getMessages(request.value.id);
+      messages.assignAll(fetchedMessages);
+    } catch (e) {
+      log('Error fetching messages: $e');
+    } finally {
+      isLoadingMessages.value = false;
+    }
+  }
+
+  Future<void> sendMessage() async {
+    final content = messageController.text.trim();
+    if (content.isEmpty) return;
+
+    try {
+      isSendingMessage.value = true;
+      final newMessage = await _repository.sendMessage(
+        request.value.id,
+        content,
+      );
+      if (!messages.any((m) => m.id == newMessage.id)) {
+        messages.add(newMessage);
+      }
+      messageController.clear();
+      // Optionally scroll to bottom
+    } catch (e) {
+      log('Error sending message: $e');
+      Get.snackbar('Error', 'Failed to send message');
+    } finally {
+      isSendingMessage.value = false;
+    }
   }
 }
